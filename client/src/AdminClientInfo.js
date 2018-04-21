@@ -47,40 +47,48 @@ class AdminClientInfo extends React.Component {
           filterable
           columns={[
             {
-              Header: "PID",
-              accessor: "PID",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["PID"] }),
-              filterAll: true
+              Header: "Details",
+              filterable: false,
+              columns: [
+                {
+                  Header: "PID",
+                  accessor: "PID",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["PID"] }),
+                  filterAll: true
+                  },
+                {
+                  Header: "Name",
+                  accessor: "name",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["name"] }),
+                  filterAll: true
+                },
+                {
+                  Header: "Gender",
+                  accessor: "gender",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["gender"] }),
+                  filterAll: true
+                },
+                {
+                  Header: "Age",
+                  accessor: "age",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["age"] }),
+                  filterAll: true
+                },
+                {
+                  Header: "SSN",
+                  accessor: "SSN",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["SSN"] }),
+                  filterAll: true
+                }
+
+              ]
             },
-            {
-              Header: "Name",
-              accessor: "name",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["name"] }),
-              filterAll: true
-            },
-            {
-              Header: "Gender",
-              accessor: "gender",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["gender"] }),
-              filterAll: true
-            },
-            {
-              Header: "Age",
-              accessor: "age",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["age"] }),
-              filterAll: true
-            },
-            {
-              Header: "SSN",
-              accessor: "SSN",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["SSN"] }),
-              filterAll: true
-            },
+            
             {
               Header: "Room",
               //accessor: "age"
@@ -88,16 +96,23 @@ class AdminClientInfo extends React.Component {
               columns:[
                 {
                   Header: "RID",
-                  accessor: "RID",
-                  filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["SSN"] }),
-                  filterAll: true
+                  accessor: "RID"
                 },
                 {
                   Header: "Leave",
-                  filterable: false                  
+                  filterable: false,
+                  Cell: row => (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#dadada",
+          borderRadius: "2px"
+        }}
+      > Leave </div>   )            
                 }
               ]
+
             },
             {
               Header: "Admission",
