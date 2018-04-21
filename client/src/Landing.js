@@ -6,7 +6,7 @@ import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react
 import App from './App';
 import DoctorLanding from './DoctorLanding';
 
-export default class Menu extends React.Component
+export default class Landing extends React.Component
 {
   /**
   * Constructor
