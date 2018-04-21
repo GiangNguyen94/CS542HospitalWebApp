@@ -57,6 +57,8 @@ searchIndex.push(i);
 
 
       if(modCond != -1 && modCond == i){
+
+
         temp.push(<td contenteditable={'true'}>{product[i][key[j]]}</td>);
 
       }else{

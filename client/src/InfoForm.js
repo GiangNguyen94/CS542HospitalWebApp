@@ -80,13 +80,54 @@ if(this.state.revealForm == 0){
 
 	);
 	} else {
-		page.push(
-			<tr>
-			<td>{this.props.row[i][this.state.key[0]]}</td>
-			<td>{this.props.row[i][this.state.key[1]]}</td>
-			</tr>
 
-		);
+		if(this.props.row[i][this.state.key[1]] == 'dropdownGender'){
+			page.push(
+				<tr>
+				<td>{this.props.row[i][this.state.key[0]]}</td>
+				<td>			{<select>
+												<option value="Female">Female</option>
+												<option value="Male">Male</option>
+											</select>}</td>
+				</tr>
+
+			);
+
+
+		} else 	if(this.props.row[i][this.state.key[1]] == 'dropdownTrueFalse'){
+				page.push(
+					<tr>
+					<td>{this.props.row[i][this.state.key[0]]}</td>
+					<td>			{<select>
+													<option value="True">True</option>
+													<option value="False">False</option>
+												</select>}</td>
+					</tr>
+
+				);
+
+
+			}else 	if(this.props.row[i][this.state.key[1]] == 'dropdownDate'){
+					page.push(
+						<tr>
+						<td>{this.props.row[i][this.state.key[0]]}</td>
+						<td>			{  <input id="date" type="date" />}</td>
+						</tr>
+
+					);
+
+
+				}else{
+			page.push(
+				<tr>
+				<td>{this.props.row[i][this.state.key[0]]}</td>
+				<td>{this.props.row[i][this.state.key[1]]}</td>
+				</tr>
+
+			);
+
+		}
+
 
 
 	}

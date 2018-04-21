@@ -8,16 +8,18 @@ import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-boo
 import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
 
 //import PatientMgmt from './PatientMgmt';
+
+// remember content:dropdownGender = gender dropdown menu
+// content: dropdownTrueFalse = true false dropdown menur
+// content: dropdownDate = dropt down date
+// array for each form must match this format variablename = [{attribute: , content: }]
 let PatientInfo = [{attribute: "PID", content: ''},{attribute: "Name", content: ''},
-{attribute: "Gender", content: (<select>
-  <option value="Female">Female</option>
-  <option value="Male">Male</option>
-</select>)},
+{attribute: "Gender", content: "dropdownDate"},
 {attribute: "SSN", content: ''}, {attribute: "Room Staying", content: ''}];
 
 
-let key = ['PID', 'SSN', 'Name', 'Gender', 'Age'];
-
+let key = ['PID', 'SSN', 'Name', 'Gender', 'Age']; //needs key for header content
+// only need to match each object key with keys in key array
 let product = [{PID: '1234', SSN: '01234', Name:'Jane', Gender: 'F', Age:10},
 {PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
 {PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
