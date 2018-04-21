@@ -3,7 +3,7 @@ import React from 'react';
 import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-bootstrap';
 import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
 
-import AdminLanding from './AdminLanding';
+import App from './App';
 import DoctorLanding from './DoctorLanding';
 
 export default class Menu extends React.Component
@@ -51,7 +51,7 @@ export default class Menu extends React.Component
         </div>);
         test.push(<div class="sub"> <br></br><p>Are you an Administrator or Physician?</p>
         </div>);
-        test.push(  
+        test.push(
         <div className = "sub">
         <span>
         <button class="w3-button w3-xlarge w3-teal menuButton" onClick = {this.handleClick.bind(this, 1)}>Administrator</button>
@@ -67,7 +67,7 @@ export default class Menu extends React.Component
 
       } else if(this.state.menuCon == 1){
         //test.push(<div> lmao </div>);
-        test.push(   <AdminLanding/ >);
+        test.push(   <App/ >);
 
       }else if(this.state.menuCon == 2){
         //test.push(<div>lmaokai</div>);
