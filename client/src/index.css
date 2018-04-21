@@ -1,46 +1,11 @@
 .container {
-  width: 700px;
+  width: 100%;
   margin-top: 10px;
 }
 
 div.sub {
  text-align: center;
 }
-
-
-
-
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-       border-style: hidden;
-    width: 100%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-}
-
-.pagination {
-    display: inline-block;
-}
-
-.pagination a {
-    color: black;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-}
-
-.pagination a.active {
-    background-color: #0F1FE7;
-    color: white;
-}
-
-.pagination a:hover:not(.active) {background-color: #ddd;}
-
 
 
 body {
@@ -50,8 +15,7 @@ body {
 
 
 .divSty{
-margin-left:18%;
-padding:1px 16px;
+margin-left:0%;
 
 }
 
@@ -70,11 +34,11 @@ width: 200px;
 
 .sidebarMenu{
     float: left;
-    width: 33%;
+    width: 20%;
     color: #555;
 }
 
 .contentPage{
     float: right;
-    width: 67%;
+    width: 80%;
 }

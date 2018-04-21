@@ -2,12 +2,12 @@ import React from 'react';
 import Menu, { SubMenu, MenuItem } from 'rc-menu';
 import Landing from './Landing.js';
 import App from './App.js';
-import InfoForm from './InfoForm.js';
-import RecordTable from './RecordTable.js';
-import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-bootstrap';
-import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
+import AdminClientInfo from './AdminClientInfo';
+//import InfoForm from './InfoForm.js';
+//import RecordTable from './RecordTable.js';
+//import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-bootstrap';
+//import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
 
-//import PatientMgmt from './PatientMgmt';
 
 // remember content:dropdownGender = gender dropdown menu
 // content: dropdownTrueFalse = true false dropdown menur
@@ -43,8 +43,6 @@ let product = [{PID: '1234', SSN: '01234', Name:'Jane', Gender: 'F', Age:10},
 {PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
 {PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
 {PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
-
-
 
 ];
 
@@ -134,31 +132,36 @@ class AdminLanding extends React.Component{
 
 		let page = []
 
-		page.push(
-		<div>
-		<div class="sidebarMenu">
-
-			{this.getMenu()}
-
-			</div>
-			</div>
-		);
 
 		switch(this.state.Page){
 			case 0:
-			page.push(	      		<div class="contentPage"> <RecordTable reveal = {0}
-			RowInfoForm = {PatientInfo}
-			formOrSearch = {0}
-			product1 = {product} key1 = {key}/>
-								</div>);
+				page.push(	   
+					<div>
+					<div class="sidebarMenu">
 
+					{this.getMenu()}
 
-
+					</div>
+					  		
+					<div class="contentPage">
+						<div>
+						<center>
+						Welcome Admin user!
+						</center>
+						</div>
+		     	 	</div>
+		     	 	</div>);
 				break;
 			case 1:
-				page.push(	      		<div class="contentPage"> <br></br>
-					       		<InfoForm row = {PatientInfo}/>
-					     	 	</div>);
+				page.push(
+					<div>
+					<div class="sidebarMenu">
+
+					{this.getMenu()}
+
+					</div>
+					</div>);
+				page.push(<AdminClientInfo/>);	      		
 				break;
 			case 2:
 				page.push(<App/>);
