@@ -2,10 +2,19 @@ import React from 'react';
 import Menu, { SubMenu, MenuItem } from 'rc-menu';
 import Landing from './Landing.js';
 import App from './App.js';
+import PatientInfoForm from './PatientInfoForm.js';
+import RecordTable from './RecordTable.js';
 import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-bootstrap';
 import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
 
 //import PatientMgmt from './PatientMgmt';
+let PatientInfo = [{attribute: "PID", content: ''},{attribute: "Name", content: ''},
+{attribute: "Gender", content: (<select>
+  <option value="Female">Female</option>
+  <option value="Male">Male</option>
+</select>)},
+{attribute: "SSN", content: ''}, {attribute: "Room Staying", content: ''}];
+
 
 
 class AdminLanding extends React.Component{
@@ -18,14 +27,14 @@ class AdminLanding extends React.Component{
 			Patient 1
 			Admissions 2
 			Report 3
-			Employee 4 
+			Employee 4
 			Department 5
 			Room 6
 			Equipment 7
 			*/
 		}
 		this.handleMenuClick = this.handleMenuClick.bind(this);
-		
+
 	}
 
 	handleMenuClick(info){
@@ -93,24 +102,29 @@ class AdminLanding extends React.Component{
 	render() {
 
 		let page = []
+
+		page.push(
+		<div>
+		<div class="sidebarMenu">
+
+			{this.getMenu()}
+
+			</div>
+			</div>
+		);
+
 		switch(this.state.Page){
 			case 0:
-				page.push(
-				<div>
-				<div class="sidebarMenu">
-	     	
-	     		{this.getMenu()}
+			page.push(	      		<div class="contentPage"> <RecordTable/>
+								</div>);
 
-	     		</div>
-	     	
-	      		<div class="contentPage"> <br></br>
-	       			Landing Admin 
-	     	 	</div>
-	     	 	</div>
-				);
+
+
 				break;
 			case 1:
-				page.push(<Landing/>);
+				page.push(	      		<div class="contentPage"> <br></br>
+					       		<PatientInfoForm row = {PatientInfo}/>
+					     	 	</div>);
 				break;
 			case 2:
 				page.push(<App/>);
@@ -131,15 +145,15 @@ class AdminLanding extends React.Component{
 				page.push(<Landing/>);
 				break;
 		}
-		
+
 	    return (
-	    	
+
 	      	<div className="AdminLanding">
-	      	
+
 	     		{page}
-	      	
+
 	      	</div>
-	      	
+
 	    );
   }
 

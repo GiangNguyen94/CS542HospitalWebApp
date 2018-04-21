@@ -10,36 +10,22 @@ class App extends Component {
   state = {users:[]}
 
   //functions handling api
-  constructor(props, context){
-    super(props, context);
-
-
-    // save the users in the state
-    this.state = {
-      menuCon: 0,
-
-    };
-
-    this.handleClick = this.handleClick.bind(this);
-
+  componentDidMount(){
+   // fetch('/landing')
+    //  .then(res => res.json())
+     // .then(users => this.setState({users}));
   }
-  //menu
-
-handleClick(n){
-
-alert("hello" + n);
-
-}
+  //menu 
 
   getMenu() {
   return (
     <Menu
-      onClick={this.handleClick}
+      onClick={this.onClick}
       mode="inline"
     >
       <SubMenu key="1" title="submenu1">
-        <MenuItem key="1-1" onClick={this.handleClick.bind(this, 0)}>item1-1</MenuItem>
-        <MenuItem key="1-2" onClick={this.handleClick.bind(this, 2)}>item1-2</MenuItem>
+        <MenuItem key="1-1">item1-1</MenuItem>
+        <MenuItem key="1-2">item1-2</MenuItem>
       </SubMenu>
       <SubMenu key="2" title="submenu2">
         <MenuItem key="2-1">item2-1</MenuItem>
@@ -54,9 +40,9 @@ alert("hello" + n);
     return (
       <div className="App">
       <div>
-      <div class="sidebarMenu">   {this.getMenu(this.handleClick)}</div>
+      <div class="sidebarMenu">{this.getMenu()}</div>
       <div class="contentPage"> <br></br>
-       aefaea
+       aefaea 
       </div>
       </div>
       </div>
