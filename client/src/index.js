@@ -4,6 +4,7 @@ import Menu, { SubMenu, MenuItem } from 'rc-menu';
 import './index.css';
 import App from './App';
 import Landing from './Landing';
+import 'rc-menu/assets/index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<Landing />, document.getElementById('root'));
