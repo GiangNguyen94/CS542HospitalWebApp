@@ -2,7 +2,7 @@ import React from 'react';
 import Menu, { SubMenu, MenuItem } from 'rc-menu';
 import Landing from './Landing.js';
 import App from './App.js';
-import PatientInfoForm from './PatientInfoForm.js';
+import InfoForm from './InfoForm.js';
 import RecordTable from './RecordTable.js';
 import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-bootstrap';
 import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
@@ -16,6 +16,35 @@ let PatientInfo = [{attribute: "PID", content: ''},{attribute: "Name", content: 
 {attribute: "SSN", content: ''}, {attribute: "Room Staying", content: ''}];
 
 
+let key = ['PID', 'SSN', 'Name', 'Gender', 'Age'];
+
+let product = [{PID: '1234', SSN: '01234', Name:'Jane', Gender: 'F', Age:10},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+{PID: 'er1234', SSN: '501234', Name:'Rob', Gender: 'M', Age:20},
+{PID: 'fefe1234', SSN: '8701234', Name:'MArk', Gender: 'F', Age:90},
+
+
+
+];
 
 class AdminLanding extends React.Component{
 
@@ -115,7 +144,10 @@ class AdminLanding extends React.Component{
 
 		switch(this.state.Page){
 			case 0:
-			page.push(	      		<div class="contentPage"> <RecordTable/>
+			page.push(	      		<div class="contentPage"> <RecordTable reveal = {0}
+			RowInfoForm = {PatientInfo}
+			formOrSearch = {0}
+			product1 = {product} key1 = {key}/>
 								</div>);
 
 
@@ -123,7 +155,7 @@ class AdminLanding extends React.Component{
 				break;
 			case 1:
 				page.push(	      		<div class="contentPage"> <br></br>
-					       		<PatientInfoForm row = {PatientInfo}/>
+					       		<InfoForm row = {PatientInfo}/>
 					     	 	</div>);
 				break;
 			case 2:
