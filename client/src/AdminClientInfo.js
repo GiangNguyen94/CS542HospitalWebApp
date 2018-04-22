@@ -15,6 +15,7 @@ import ModifyAdmission from './ModifyAdmission';
 class AdminClientInfo extends React.Component {
   constructor() {
     super();
+    this.handleChangePageClick = this.handleChangePageClick.bind(this);
     this.state = {
       Page: 0,
       /*
@@ -32,28 +33,8 @@ class AdminClientInfo extends React.Component {
   }
 
   //API
-  componentWillMount(){
+  componentDidMount(){
     console.log('Component has mounted');
-    
-    // fetch('/api/patient',{
-    //   method: "GET",
-    //   headers: {
-    //     "Accept":"application/json",
-    //     "Content-Type":"application/json"
-    //   }
-    // })
-    // .then(function(response){
-    //   response.json()
-    //   .then(function(data){
-    //     //res = data
-    //     console.log('data',data);
-        
-    //     //console.log("state",this.state);
-    //   })
-    // })
-    // console.log(res);
-    // this.setState({patientData: ...res});
-    // console.log(this.state);
 
     fetch("/api/patient")
       .then(res => res.json())
@@ -72,8 +53,10 @@ class AdminClientInfo extends React.Component {
         }
         
     )
-    
+  }
 
+  handleChangePageClick(num){
+    this.setState({Page:num});
   }
 
   render() {
@@ -122,7 +105,7 @@ class AdminClientInfo extends React.Component {
         page.push(
           <div>
           <div>
-          <button type="button"> Add New Patient </button>
+          <button type="button" onClick={this.handleChangePageClick.bind(this,1)}> Add New Patient </button>
           </div>
             <ReactTable
               getTdProps={onRowClick}

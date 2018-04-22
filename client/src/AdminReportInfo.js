@@ -12,14 +12,35 @@ class AdminReportInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataReport()
+      reportData: []
     };
   }
 
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/report")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          console.log(arr);
+          this.setState({reportData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
   
 
   render() {
-    const { data } = this.state;
+    const { reportData } = this.state;
 
 
     return (
@@ -46,21 +67,21 @@ class AdminReportInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={reportData}
           filterable
           columns={[
             
               
             {
               Header: "Patient",
-              accessor: "PatientName",
+              accessor: "p_name",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["PatientName"] }),
               filterAll: true,
               },
             {
               Header: "Doctor",
-              accessor: "DocName",
+              accessor: "e_name",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["DocName"] }),
               filterAll: true,
@@ -68,7 +89,7 @@ class AdminReportInfo extends React.Component {
             },
             {
               Header: "Record Time",
-              accessor: "Record_date",
+              accessor: "record_date",
               
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["Record_date"] }),
@@ -78,7 +99,7 @@ class AdminReportInfo extends React.Component {
             },
             {
               Header: "Detail",
-              //accessor: "Detail",
+              accessor: "detail",
               filterable: false,
               Cell: row => (
                 <div

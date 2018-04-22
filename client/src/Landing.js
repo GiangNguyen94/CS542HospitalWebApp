@@ -101,7 +101,6 @@ export default class Landing extends React.Component
         
 
 
-        <button class="menuButton" onClick = {this.testPost.bind(this)}>TEST</button>
         </div>        
 
         );
@@ -115,8 +114,6 @@ export default class Landing extends React.Component
         //test.push(<div>lmaokai</div>);
         test.push(   <DoctorLanding/ >);
 
-      }else if(this.state.menuCon==3){
-        test.push( <ModifyPatient/>);
       }
 
 

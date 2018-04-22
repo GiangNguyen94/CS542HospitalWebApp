@@ -97,13 +97,51 @@ app.get('/api/patient',function(req,res,next){
 		})
 	})
 });
+//Admission select all
+app.get('/api/admission',function(req,res,next){
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select AID,P.Name,to_char(\"enter_time\",'MM/DD/YYYY') AS enter_time,to_char(\"leave_time\",'MM/DD/YYYY') AS leave_time,PaymentInfo,InsuranceCover,Detail from Admission Join Patient P ON P.PID=Admission.PID;", [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Report select all
+app.get('/api/report',function(req,res,next){
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select E.name as e_name,P.name as p_name,Diagnosis,to_char(\"record_date\",'MM/DD/YYYY') AS record_date,Detail,Remark from Report join employee E ON E.eid = Report.docid join Patient P ON P.pid=Report.pid;", [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
 //Employee select all
 app.get('/api/employee',function(req,res,next){
 	pool.connect(function(err,client,done){
 		if (err){
 			return res.status(400).send(err);
 		}
-		client.query('Select * from Employee;', [], function(err, result) {
+		client.query("Select e.essn, e.eid, e.name, e.gender, e.age, e.salary, e.job_title, case when (e.eid in (select a.eid from administrator a)) then 'Admnistrator' when (e.eid in (select d.eid from doctor d)) then 'Doctor' else 'Other' end as type from employee e;", [], function(err, result) {
 			done();
 			if (err){
 				return next(err);

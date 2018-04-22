@@ -12,14 +12,36 @@ class AdminEmployeeInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataEmployee()
+      employeeData: []
     };
   }
 
+  //API
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/employee")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          //console.log(arr);
+          this.setState({employeeData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
   
 
   render() {
-    const { data } = this.state;
+    const { employeeData } = this.state;
 
 
     return (
@@ -46,14 +68,14 @@ class AdminEmployeeInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={employeeData}
           filterable
           columns={[
             
               
             {
               Header: "EID",
-              accessor: "EID",
+              accessor: "eid",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["EID"] }),
               filterAll: true,
@@ -61,7 +83,7 @@ class AdminEmployeeInfo extends React.Component {
               },
             {
               Header: "Name",
-              accessor: "Name",
+              accessor: "name",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["Name"] }),
               filterAll: true,
@@ -69,7 +91,7 @@ class AdminEmployeeInfo extends React.Component {
             },
             {
               Header: "Gender",
-              accessor: "Gender",
+              accessor: "gender",
               
               filterMethod: (filter, row) => {
                     if (filter.value === "all") {
@@ -97,7 +119,7 @@ class AdminEmployeeInfo extends React.Component {
             },
             {
               Header: "Age",
-              accessor: "Age",
+              accessor: "age",
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["Age"] }),
               
@@ -105,7 +127,7 @@ class AdminEmployeeInfo extends React.Component {
             },
             {
               Header: "SSN",
-              accessor: "SSN",
+              accessor: "essn",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["SSN"] }),
               filterAll: true,
@@ -114,7 +136,7 @@ class AdminEmployeeInfo extends React.Component {
 
             {
               Header: "Salary",
-              accessor: "Salary",
+              accessor: "salary",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["Salary"] }),
               filterAll: true,
@@ -122,7 +144,7 @@ class AdminEmployeeInfo extends React.Component {
             },
             {
               Header: "Job Title",
-              accessor: "JobTitle",
+              accessor: "job_title",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["JobTitle"] }),
               filterAll: true,
@@ -130,7 +152,7 @@ class AdminEmployeeInfo extends React.Component {
             },  
             {
               Header: "Type",
-              accessor: "Type",
+              accessor: "type",
               filterMethod: (filter, row) => {
                     if (filter.value === "all") {
                       return true;
