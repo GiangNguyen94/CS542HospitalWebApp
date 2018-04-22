@@ -8,7 +8,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { makeDataPerson, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
-
+import BookRoom from './BookRoom';
 
 
 class AdminClientInfo extends React.Component {
@@ -60,6 +60,11 @@ class AdminClientInfo extends React.Component {
                     console.log("");
                   };
                 }
+                if (column["Header"] == "Book"){
+                  this.setState({Page:6})
+                }
+
+
               }
           }
       }
@@ -302,6 +307,9 @@ class AdminClientInfo extends React.Component {
 
       case 1:
         page.push(<ModifyPatient/>);
+        break;
+        case 6:
+page.push(<BookRoom/>);
         break;
 
     //    case 6:
