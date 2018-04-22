@@ -8,6 +8,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { makeDataPerson, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
+import BookRoom from './BookRoom';
+import ModifyAdmission from './ModifyAdmission';
 
 
 class AdminClientInfo extends React.Component {
@@ -103,6 +105,13 @@ class AdminClientInfo extends React.Component {
                     console.log("");
                   };
                 }
+                if (column["Header"] == "Book"){
+                  this.setState({Page:6})
+                }
+                if (column["Header"] == "New"){
+                  this.setState({Page:8})
+                }
+
               }
           }
       }
@@ -110,7 +119,7 @@ class AdminClientInfo extends React.Component {
 
     switch(this.state.Page){
       case 0:
-        page.push(     
+        page.push(
           <div>
           <div>
           <button type="button"> Add New Patient </button>
@@ -167,7 +176,7 @@ class AdminClientInfo extends React.Component {
                           <option value="true">Male</option>
                           <option value="false">Female</option>
                         </select>,
-                    
+
                       width: 45
                     },
                     {
@@ -175,8 +184,8 @@ class AdminClientInfo extends React.Component {
                       accessor: "age",
                       filterMethod: (filter, rows) =>
                            matchSorter(rows, filter.value, { keys: ["age"] }),
-                      
-                      
+
+
                       width: 50
                     },
                     {
@@ -190,7 +199,7 @@ class AdminClientInfo extends React.Component {
 
                   ]
                 },
-                
+
                 {
                   Header: "Room",
                   //accessor: "age"
@@ -213,7 +222,7 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > Leave </div>   )            
+                        > Leave </div>   )
                     },
                     {
                       Header: "Book",
@@ -228,7 +237,7 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > Book </div>   ) 
+                        > Book </div>   )
                     }
                   ]
 
@@ -250,7 +259,7 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > History </div>   )   
+                        > History </div>   )
                     },
                     {
                       Header: "New",
@@ -265,7 +274,7 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > New </div>   ) 
+                        > New </div>   )
                     }
                   ]
                 },
@@ -287,16 +296,16 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > History </div>   ) 
+                        > History </div>   )
                     }
-                    
+
                   ]
                 },
                 {
                   Header: "Operation",
                   //accessor: "age"
                   filterable: false,
-                  
+
                   columns:[
                     {
                       Header: "Modify",
@@ -311,7 +320,7 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > Modify </div>   ) 
+                        > Modify </div>   )
                     },
                     {
                       Header: "Delete",
@@ -326,19 +335,19 @@ class AdminClientInfo extends React.Component {
                             backgroundColor: "coral",
                             borderRadius: "2px"
                           }}
-                        > Delete </div>   ) 
+                        > Delete </div>   )
                     }
-                    
+
                   ]
                 }
-                
+
               ]}
-              
+
               defaultPageSize={10}
               className="-striped -highlight"
             />
             <br />
-            
+
           </div>
           );
         break;
@@ -346,8 +355,18 @@ class AdminClientInfo extends React.Component {
       case 1:
         page.push(<ModifyPatient/>);
         break;
+      case 6:
+        page.push(<BookRoom/>);
+        break;
+      case 8:
+        page.push(<ModifyAdmission/>);
+        break;
+    //    case 6:
+      //    page.push(<BookRoom/>);
+        //  break;
 
       }
+
 
     return (
       <div className="AdminClientInfo">
