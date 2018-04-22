@@ -97,6 +97,14 @@ const newEquipment = () => {
   };
 }
 
+export function makeOnePerson(len = 1){
+  return range(len).map(d => {
+    return {
+      ...newPerson(),
+    };
+  });
+}
+
 export function makeDataPerson(len = 50) {
   return range(len).map(d => {
     return {
@@ -159,6 +167,7 @@ export function makeDataEquipment(len = 50) {
     };
   });
 }
+
 
 export const Logo = () =>
   <div style={{ margin: '1rem auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center'}}>

@@ -5,6 +5,7 @@ import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react
 
 import AdminLanding from './AdminLanding';
 import DoctorLanding from './DoctorLanding';
+import ModifyPatient from './ModifyPatient';
 
 export default class Landing extends React.Component
 {
@@ -59,8 +60,11 @@ export default class Landing extends React.Component
         </span>{"                                                 "}
 
         <button class="w3-button w3-xlarge w3-red w3-card-4 menuButton" onClick = {this.handleClick.bind(this, 2)}>Doctor</button>
-        </div>
+        
 
+
+        <button class="menuButton" onClick = {this.handleClick.bind(this, 3)}>TEST</button>
+        </div>        
 
         );
 
@@ -73,6 +77,8 @@ export default class Landing extends React.Component
         //test.push(<div>lmaokai</div>);
         test.push(   <DoctorLanding/ >);
 
+      }else if(this.state.menuCon==3){
+        test.push( <ModifyPatient/>);
       }
 
 

@@ -30,15 +30,20 @@ class AdminLanding extends React.Component{
 
 	}
 
+
 	handleMenuClick(info){
 		//e.preventDefault();
 		var keyMenu = info.item.props['children'];
 		//console.log(info);
-		console.log(keyMenu);
+		console.log(this.state["Page"]);
 
 		if (keyMenu == "Patient Info"){
 			console.log("Patient");
+			if (this.state["Page"] == 1){
+				setTimeout(function(){this.state["Page"]=0; this.forceUpdate()}.bind(this),100);
+			}
 			this.setState({Page: 1});
+			setTimeout(function(){this.state["Page"]=1; this.forceUpdate()}.bind(this),100);
 		}
 		if (keyMenu == "Admissions"){
 			console.log("Admissions");
@@ -125,7 +130,10 @@ class AdminLanding extends React.Component{
 
 					</div>
 					</div>);
-				page.push(<AdminClientInfo/>);	      		
+
+				
+				page.push(<AdminClientInfo/>);
+				
 				break;
 			case 2:
 				page.push(
