@@ -12,14 +12,35 @@ class AdminDepartmentInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataDepartment()
+      departmentData: []
     };
   }
 
-  
+  //API
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/department")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          //console.log(arr);
+          this.setState({departmentData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
 
   render() {
-    const { data } = this.state;
+    const { departmentData } = this.state;
 
 
     return (
@@ -46,14 +67,14 @@ class AdminDepartmentInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={departmentData}
           filterable
           columns={[
             
               
             {
               Header: "DID",
-              accessor: "DID",
+              accessor: "did",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["DID"] }),
               filterAll: true,
@@ -61,7 +82,7 @@ class AdminDepartmentInfo extends React.Component {
               },
             {
               Header: "Department Name",
-              accessor: "DepName",
+              accessor: "d_name",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["DepName"] }),
               filterAll: true,

@@ -12,14 +12,35 @@ class AdminEquipmentInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataEquipment()
+      equipmentData: []
     };
   }
 
-  
+  //API
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/equipment")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          //console.log(arr);
+          this.setState({equipmentData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
 
   render() {
-    const { data } = this.state;
+    const { equipmentData } = this.state;
 
 
     return (
@@ -46,14 +67,14 @@ class AdminEquipmentInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={equipmentData}
           filterable
           columns={[
             
               
             {
               Header: "SerialNum",
-              accessor: "SerialNum",
+              accessor: "serialnum",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["SerialNum"] }),
               filterAll: true,
@@ -61,7 +82,7 @@ class AdminEquipmentInfo extends React.Component {
               },
             {
               Header: "RID",
-              accessor: "RID",
+              accessor: "rid",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["RID"] }),
               filterAll: true,
@@ -69,7 +90,7 @@ class AdminEquipmentInfo extends React.Component {
             },
             {
               Header: "Purchase Time",
-              accessor: "PurchaseTime",
+              accessor: "purchasetime",
               
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["PurchaseTime"] }),
@@ -78,7 +99,7 @@ class AdminEquipmentInfo extends React.Component {
             },
             {
               Header: "Inspection Time",
-              accessor: "LatestInspect",
+              accessor: "inspectime",
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["LatestInspect"] }),
               

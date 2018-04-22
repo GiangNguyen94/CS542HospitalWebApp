@@ -12,14 +12,36 @@ class AdminRoomInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataRoom()
+      roomData: []
     };
   }
 
+//API
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/room")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          console.log(arr[0]["occupiedflag"].toString()=="false");
+          this.setState({roomData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
   
 
   render() {
-    const { data } = this.state;
+    const { roomData } = this.state;
 
 
     return (
@@ -46,14 +68,14 @@ class AdminRoomInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={roomData}
           filterable
           columns={[
             
               
             {
               Header: "RID",
-              accessor: "RID",
+              accessor: "rid",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["RID"] }),
               filterAll: true,
@@ -61,7 +83,7 @@ class AdminRoomInfo extends React.Component {
               },
             {
               Header: "Location",
-              accessor: "Loca",
+              accessor: "location",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["Loca"] }),
               filterAll: true,
@@ -69,7 +91,16 @@ class AdminRoomInfo extends React.Component {
             },
             {
               Header: "Department",
-              accessor: "DepName",
+              accessor: "d_name",
+              
+              filterMethod: (filter, rows) =>
+                   matchSorter(rows, filter.value, { keys: ["DepName"] }),
+              filterAll: true,
+            
+            },
+            {
+              Header: "Capacity",
+              accessor: "capacity",
               
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["DepName"] }),
@@ -78,17 +109,17 @@ class AdminRoomInfo extends React.Component {
             },
             {
               Header: "Occupied",
-              accessor: "Occupied",
+              accessor: "occupiedflag",
+              Cell: ({ value }) => (value == true ? "True" : "False"),
               filterMethod: (filter, row) => {
                     if (filter.value === "all") {
                       return true;
                     }
-                    
                     if (filter.value === "true") {
-                      return row[filter.id] =="Doctor" ;
+                      return row[filter.id] == "True" ;
                     }
                     if (filter.value ==="false"){
-                      return row[filter.id] == "Administrator";
+                      return row[filter.id] == "False";
                     }
                   },
               Filter: ({ filter, onChange }) =>
@@ -100,7 +131,6 @@ class AdminRoomInfo extends React.Component {
                       <option value="all">Show All</option>
                       <option value="true">True</option>
                       <option value="false">False</option>
-                      
                     </select>,
               
              
