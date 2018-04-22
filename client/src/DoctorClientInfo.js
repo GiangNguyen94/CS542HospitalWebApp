@@ -8,7 +8,8 @@ import { makeDataPerson, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
 
 
-class AdminClientInfo extends React.Component {
+class DoctorClientInfo extends React.Component {
+  //constructor
   constructor() {
     super();
     this.state = {
@@ -24,9 +25,8 @@ class AdminClientInfo extends React.Component {
 
     return (
       <div>
-      <div>
-      <button type="button"> Add New Patient </button>
-      </div>
+      
+
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -69,7 +69,7 @@ class AdminClientInfo extends React.Component {
                   filterMethod: (filter, rows) =>
                         matchSorter(rows, filter.value, { keys: ["name"] }),
                   filterAll: true,
-                  width: 100
+                  
                 },
                 {
                   Header: "Sex",
@@ -99,7 +99,7 @@ class AdminClientInfo extends React.Component {
                       <option value="false">Female</option>
                     </select>,
                 
-                  width: 45
+                  
                 },
                 {
                   Header: "Age",
@@ -110,14 +110,7 @@ class AdminClientInfo extends React.Component {
                   
                   width: 50
                 },
-                {
-                  Header: "SSN",
-                  accessor: "SSN",
-                  filterMethod: (filter, rows) =>
-                        matchSorter(rows, filter.value, { keys: ["SSN"] }),
-                  filterAll: true,
-                  width: 100
-                }
+          
 
               ]
             },
@@ -132,25 +125,12 @@ class AdminClientInfo extends React.Component {
                   accessor: "RID",
                   width: 50
                 },
-                {
-                  Header: "Leave",
-                  filterable: false,
-                  width: 65,
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > Leave </div>   )            
-                },
+                
                 {
                   Header: "Book",
                   //accessor: "age"
                   filterable: false,
-                  width: 65,
+                  
                   Cell: row => (
                     <div
                       style={{
@@ -172,7 +152,7 @@ class AdminClientInfo extends React.Component {
                   Header: "History",
                   //accessor: "age"
                   filterable: false,
-                  width: 75,
+                  
                   Cell: row => (
                     <div
                       style={{
@@ -183,21 +163,7 @@ class AdminClientInfo extends React.Component {
                       }}
                     > History </div>   )   
                 },
-                {
-                  Header: "New",
-                  //accessor: "age"
-                  filterable: false,
-                  width: 50,
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > New </div>   ) 
-                }
+                
               ]
             },
             {
@@ -209,7 +175,7 @@ class AdminClientInfo extends React.Component {
                   Header: "History",
                   //accessor: "age"
                   filterable: false,
-                  width: 75,
+                  
                   Cell: row => (
                     <div
                       style={{
@@ -219,36 +185,12 @@ class AdminClientInfo extends React.Component {
                         borderRadius: "2px"
                       }}
                     > History </div>   ) 
-                }
-                
-              ]
-            },
-            {
-              Header: "Operation",
-              //accessor: "age"
-              filterable: false,
-              
-              columns:[
-                {
-                  Header: "Modify",
-                  //accessor: "age"
-                  filterable: false,
-                  width: 75,
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > Modify </div>   ) 
                 },
                 {
-                  Header: "Delete",
+                  Header: "New",
                   //accessor: "age"
                   filterable: false,
-                  width: 75,
+                  
                   Cell: row => (
                     <div
                       style={{
@@ -257,11 +199,12 @@ class AdminClientInfo extends React.Component {
                         backgroundColor: "coral",
                         borderRadius: "2px"
                       }}
-                    > Delete </div>   ) 
+                    > New </div>   ) 
                 }
                 
               ]
             }
+              
             
           ]}
           
@@ -275,4 +218,4 @@ class AdminClientInfo extends React.Component {
   }
 }
 
-export default AdminClientInfo
+export default DoctorClientInfo

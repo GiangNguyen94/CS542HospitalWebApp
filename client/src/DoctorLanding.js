@@ -2,6 +2,9 @@ import React from 'react';
 import Menu, { SubMenu, MenuItem } from 'rc-menu';
 import Landing from './Landing.js';
 import App from './App.js';
+import DoctorClientInfo from './DoctorClientInfo.js';
+import DoctorReportInfo from './DoctorReportInfo.js';
+import DoctorAdmissionInfo from './DoctorAdmissionInfo.js';
 import { ButtonToolbar, Button,Breadcrumb,Jumbotron,ButtonGroup} from 'react-bootstrap';
 import { Form, FormGroup, FormControl, Nav, ControlLabel, HelpBlock} from 'react-bootstrap';
 
@@ -68,27 +71,56 @@ class DoctorLanding extends React.Component{
 		switch(this.state.Page){
 			case 0:
 				page.push(
-				<div>
-				<div class="sidebarMenu">
-	     	
-	     		{this.getMenu()}
+					<div>
+					<div class="sidebarMenu">
 
-	     		</div>
-	     	
-	      		<div class="contentPage"> <br></br>
-	       			Landing Doctor 
-	     	 	</div>
-	     	 	</div>
+					{this.getMenu()}
+
+					</div>
+					  		
+					<div class="contentPage">
+						<div>
+						<center>
+						Welcome Doctor user!
+						</center>
+						</div>
+		     	 	</div>
+		     	 	</div>
 				);
 				break;
 			case 1:
-				page.push(<Landing/>);
+				page.push(
+					<div>
+					<div class="sidebarMenu">
+
+					{this.getMenu()}
+
+					</div>
+					</div>);
+				page.push(<DoctorClientInfo/>);	  
 				break;
 			case 2:
-				page.push(<App/>);
+				page.push(
+					<div>
+					<div class="sidebarMenu">
+
+					{this.getMenu()}
+
+					</div>
+					</div>);
+				page.push(<DoctorAdmissionInfo/>);	  
 				break;
 			case 3:
-				page.push(<Landing/>);
+				page.push(
+					<div>
+					<div class="sidebarMenu">
+
+					{this.getMenu()}
+
+					</div>
+					</div>);
+				page.push(<DoctorReportInfo/>);	  
+				break;
 				break;
 			
 		}
