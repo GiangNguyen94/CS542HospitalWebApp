@@ -25,14 +25,58 @@ class AdminClientInfo extends React.Component {
       History Admission 7
       New Admission 8
       */
-      data: makeDataPerson()
+      patientData: []
     };
   }
 
-  
+  //API
+  componentWillMount(){
+    console.log('Component has mounted');
+    
+    // fetch('/api/patient',{
+    //   method: "GET",
+    //   headers: {
+    //     "Accept":"application/json",
+    //     "Content-Type":"application/json"
+    //   }
+    // })
+    // .then(function(response){
+    //   response.json()
+    //   .then(function(data){
+    //     //res = data
+    //     console.log('data',data);
+        
+    //     //console.log("state",this.state);
+    //   })
+    // })
+    // console.log(res);
+    // this.setState({patientData: ...res});
+    // console.log(this.state);
+
+    fetch("/api/patient")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          //console.log(arr);
+          this.setState({patientData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+    
+
+  }
 
   render() {
-    const { data } = this.state;
+    const { patientData } = this.state;
+    console.log('toReact',{patientData});
     let page = [];
     const onRowClick = (state, rowInfo, column, instance) => {
       return {
@@ -73,7 +117,7 @@ class AdminClientInfo extends React.Component {
           </div>
             <ReactTable
               getTdProps={onRowClick}
-              data={data}
+              data={patientData}
               filterable
               columns={[
                 {
@@ -82,7 +126,7 @@ class AdminClientInfo extends React.Component {
                   columns: [
                     {
                       Header: "PID",
-                      accessor: "PID",
+                      accessor: "pid",
                       filterMethod: (filter, rows) =>
                             matchSorter(rows, filter.value, { keys: ["PID"] }),
                       filterAll: true,
@@ -137,7 +181,7 @@ class AdminClientInfo extends React.Component {
                     },
                     {
                       Header: "SSN",
-                      accessor: "SSN",
+                      accessor: "pssn",
                       filterMethod: (filter, rows) =>
                             matchSorter(rows, filter.value, { keys: ["SSN"] }),
                       filterAll: true,
@@ -154,7 +198,7 @@ class AdminClientInfo extends React.Component {
                   columns:[
                     {
                       Header: "RID",
-                      accessor: "RID",
+                      accessor: "rid",
                       width: 50
                     },
                     {

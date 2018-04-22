@@ -25,7 +25,8 @@ export default class Landing extends React.Component
     };
 
     this.handleClick = this.handleClick.bind(this);
-
+    this.testGet = this.testGet.bind(this);
+    this.testPost = this.testPost.bind(this);
   }
 
   handleClick(num){
@@ -34,7 +35,44 @@ export default class Landing extends React.Component
 
   }
 
+  //API calls
+  //POST
+  testPost(event){
+    event.preventDefault();
 
+    var request = new Request("/api/addPatient",{
+      method:"POST",
+      mode: "cors",
+      body: JSON.stringify({"pssn":"PssnAPI01","pname":"APItest1","gender":"M","age":10}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    fetch(request)
+    .then(function(response){
+      response.json()
+      .then(function(data){
+        console.log(data)
+      })
+    })
+  }
+
+  //GET
+  testGet(){
+    fetch('/api/patient',{
+      method: "GET",
+      headers: {
+        "Accept":"application/json",
+        "Content-Type":"application/json"
+      }
+    })
+    .then(function(response){
+      response.json()
+      .then(function(data){
+        console.log(data)
+      })
+    })
+  }
 
   /**
   * Render
@@ -63,7 +101,7 @@ export default class Landing extends React.Component
         
 
 
-        <button class="menuButton" onClick = {this.handleClick.bind(this, 3)}>TEST</button>
+        <button class="menuButton" onClick = {this.testPost.bind(this)}>TEST</button>
         </div>        
 
         );

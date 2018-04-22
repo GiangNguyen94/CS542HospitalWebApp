@@ -3,42 +3,123 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var employeeRouter = require('./routes/employee');
-var landingRouter = require('./routes/landing');
+var bodyparser = require('body-parser');
+var pg = require('pg');
 
 var app = express();
+
+const PORT = process.env.PORT || 3001;
+//print function
+function sprintf(template, values) {
+  return template.replace(/%s/g, function() {
+    return values.shift();
+  });
+}
+
+
+//database credentials
+var configDB = {
+	database: 'd5r8q9aits7tmi',
+	port: 5432,
+	host: 'ec2-23-21-217-27.compute-1.amazonaws.com',
+	user: 'cvbkopwrapmbzf',
+	password: 'e580720ea2ff3875334d1b84d5f33afccc2afe0c8b6f3c0aa88562c4e6367b8d',
+	ssl: true
+}
+
+//Create pg Pool with configDB
+var pool = new pg.Pool(configDB);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended:true}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/employee', employeeRouter);
-app.use('/landing', landingRouter);
-
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
-module.exports = app;
+//Post
+//Insert Patient
+//For Insert Patients
+app.post('/api/addPatient', function(req,res){
+	//console.log(req.body);
+	var pssn = req.body.pssn;
+	var pname = req.body.pname;
+	var gender = req.body.gender;
+	var age = req.body.age;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			var values = sprintf("'%s', '%s', '%s', ",[pssn,pname,gender]);
+			client.query("INSERT INTO Patient(PSSN, Name, Gender, Age) VALUES ("+values+age+");", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Insert Success'});
+			})
+		}
+	})
+})
+//Get
+//Patient select all
+app.get('/api/patient',function(req,res,next){
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query('Select PID,PSSN,Name,Gender,Age,R.RID from Patient Join Room R ON Patient.PID = R.RID;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Employee select all
+app.get('/api/employee',function(req,res,next){
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query('Select * from Employee;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+
+
+
+//module.exports = app;
+app.listen(PORT, function(){
+	console.log('app listening on port '+ PORT + '!');
+});
