@@ -12,14 +12,35 @@ class DoctorAdmissionInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataAdmission()
+      admissionData: []
     };
+  }
+
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/admission")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          this.setState({admissionData: arr});
+          //console.log(this.state);
+        }
+        
+    )
   }
 
   
 
   render() {
-    const { data } = this.state;
+    const { admissionData } = this.state;
 
 
     return (
@@ -46,14 +67,14 @@ class DoctorAdmissionInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={admissionData}
           filterable
           columns={[
             
               
             {
               Header: "AID",
-              accessor: "AID",
+              accessor: "aid",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["AID"] }),
               filterAll: true,
@@ -65,45 +86,46 @@ class DoctorAdmissionInfo extends React.Component {
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["name"] }),
               filterAll: true,
-              
+              width: 100
             },
             {
               Header: "Enter Time",
-              accessor: "EnterTime",
+              accessor: "enter_time",
               
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["EnterTime"] }),
               filterAll: true,
             
-              
+              width: 100
             },
             {
               Header: "Leave Time",
-              accessor: "LeaveTime",
+              accessor: "leave_time",
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["LeaveTime"] }),
               
               
+              width: 100
             },
             {
               Header: "Payment",
-              accessor: "PaymentInfo",
+              accessor: "paymentinfo",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["PaymentInfo"] }),
               filterAll: true,
-              
+              width: 100
             },
             {
               Header: "Insurance",
-              accessor: "InsuranceCover",
+              accessor: "insurancecover",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["InsuranceCover"] }),
               filterAll: true,
-              
+              width: 100
             },
             {
-              Header: "Details",
-              accessor: "Detail",
+              Header: "Notes",
+              accessor: "detail",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["Detail"] }),
               filterAll: true,

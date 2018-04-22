@@ -84,7 +84,7 @@ class AdminLanding extends React.Component{
 	        <MenuItem key="1-3">Report Info</MenuItem>
 	      </SubMenu>
 	      <SubMenu key="2" title="Employee Management">
-	        <MenuItem key="2-1">Employee Menu</MenuItem>
+	        <MenuItem key="2-1">Employee Info</MenuItem>
 	      </SubMenu>
 	      <SubMenu key="3" title="Other Management">
 	        <MenuItem key="3-1">Department Info</MenuItem>

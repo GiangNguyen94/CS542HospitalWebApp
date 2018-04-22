@@ -12,14 +12,35 @@ class DoctorReportInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataReport()
+      reportData: []
     };
   }
 
-  
+  //API
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/report")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          //console.log(arr);
+          this.setState({reportData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
 
   render() {
-    const { data } = this.state;
+    const { reportData } = this.state;
 
 
     return (
@@ -46,21 +67,20 @@ class DoctorReportInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={reportData}
           filterable
           columns={[
             
-              
             {
               Header: "Patient",
-              accessor: "PatientName",
+              accessor: "p_name",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["PatientName"] }),
               filterAll: true,
               },
             {
               Header: "Doctor",
-              accessor: "DocName",
+              accessor: "e_name",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["DocName"] }),
               filterAll: true,
@@ -68,7 +88,7 @@ class DoctorReportInfo extends React.Component {
             },
             {
               Header: "Record Time",
-              accessor: "Record_date",
+              accessor: "record_date",
               
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["Record_date"] }),
@@ -78,7 +98,7 @@ class DoctorReportInfo extends React.Component {
             },
             {
               Header: "Detail",
-              //accessor: "Detail",
+              accessor: "detail",
               filterable: false,
               Cell: row => (
                 <div
@@ -93,7 +113,6 @@ class DoctorReportInfo extends React.Component {
             },
             {
               Header: "Modify",
-              //accessor: "PaymentInfo",
               filterable: false,
               Cell: row => (
                 <div
@@ -117,9 +136,9 @@ class DoctorReportInfo extends React.Component {
                     backgroundColor: "coral",
                     borderRadius: "2px"
                   }}
-                > Delete </div>   )   
-            }
-            
+                > Delete </div>   ) 
+              
+            },
           ]}
           
           defaultPageSize={10}

@@ -13,14 +13,35 @@ class DoctorClientInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: makeDataPerson()
+      patientData: []
     };
   }
 
-  
+  //API
+  componentDidMount(){
+    console.log('Component has mounted');
+
+    fetch("/api/patient")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          //console.log(arr);
+          this.setState({patientData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }  
 
   render() {
-    const { data } = this.state;
+    const { patientData } = this.state;
 
 
     return (
@@ -48,162 +69,146 @@ class DoctorClientInfo extends React.Component {
               }
             };
           }}
-          data={data}
+          data={patientData}
           filterable
           columns={[
-            {
-              Header: "Details",
-              filterable: false,
-              columns: [
-                {
-                  Header: "PID",
-                  accessor: "PID",
-                  filterMethod: (filter, rows) =>
-                        matchSorter(rows, filter.value, { keys: ["PID"] }),
-                  filterAll: true,
-                  width: 50
-                  },
-                {
-                  Header: "Name",
-                  accessor: "name",
-                  filterMethod: (filter, rows) =>
-                        matchSorter(rows, filter.value, { keys: ["name"] }),
-                  filterAll: true,
-                  
-                },
-                {
-                  Header: "Sex",
-                  accessor: "gender",
-                  id: "sex",
-                  //filterMethod: (filter, rows) =>
-                  //      matchSorter(rows, filter.value, { keys: ["gender"] }),
-                  filterMethod: (filter, row) => {
-                    if (filter.value === "all") {
-                      return true;
-                    }
-                    if (filter.value === "true") {
-                      return row[filter.id] =="M" ;
-                    }
-                    if (filter.value ==="false"){
-                      return row[filter.id] == "F";
-                    }
-                  },
-                  Filter: ({ filter, onChange }) =>
-                    <select
-                      onChange={event => onChange(event.target.value)}
-                      style={{ width: "100%" }}
-                      value={filter ? filter.value : "all"}
-                    >
-                      <option value="all">Show All</option>
-                      <option value="true">Male</option>
-                      <option value="false">Female</option>
-                    </select>,
-                
-                  
-                },
-                {
-                  Header: "Age",
-                  accessor: "age",
-                  filterMethod: (filter, rows) =>
-                       matchSorter(rows, filter.value, { keys: ["age"] }),
-                  
-                  
-                  width: 50
-                },
-          
+            { 
+                  Header: "Details",
+                  filterable: false,
+                  columns: [
+                  {
+                      Header: "PID",
+                      accessor: "pid",
+                      filterMethod: (filter, rows) =>
+                            matchSorter(rows, filter.value, { keys: ["PID"] }),
+                      filterAll: true,
+                      width: 50
+                      },
+                    {
+                      Header: "Name",
+                      accessor: "name",
+                      filterMethod: (filter, rows) =>
+                            matchSorter(rows, filter.value, { keys: ["name"] }),
+                      filterAll: true,
+                      
+                    },
+                    {
+                      Header: "Sex",
+                      accessor: "gender",
+                      id: "sex",
+                      //filterMethod: (filter, rows) =>
+                      //      matchSorter(rows, filter.value, { keys: ["gender"] }),
+                      filterMethod: (filter, row) => {
+                        if (filter.value === "all") {
+                          return true;
+                        }
+                        if (filter.value === "true") {
+                          return row[filter.id] =="M" ;
+                        }
+                        if (filter.value ==="false"){
+                          return row[filter.id] == "F";
+                        }
+                      },
+                      Filter: ({ filter, onChange }) =>
+                        <select
+                          onChange={event => onChange(event.target.value)}
+                          style={{ width: "100%" }}
+                          value={filter ? filter.value : "all"}
+                        >
+                          <option value="all">Show All</option>
+                          <option value="true">Male</option>
+                          <option value="false">Female</option>
+                        </select>,
 
-              ]
-            },
-            
-            {
-              Header: "Room",
-              //accessor: "age"
-              filterable: false,
-              columns:[
-                {
-                  Header: "RID",
-                  accessor: "RID",
-                  width: 50
-                },
-                
-                {
-                  Header: "Book",
-                  //accessor: "age"
-                  filterable: false,
-                  
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > Book </div>   ) 
-                }
-              ]
+                      width: 45
+                    },
+                    {
+                      Header: "Age",
+                      accessor: "age",
+                      filterMethod: (filter, rows) =>
+                           matchSorter(rows, filter.value, { keys: ["age"] }),
 
-            },
-            {
-              Header: "Admission",
-              filterable: false,
-              columns:[
-                {
-                  Header: "History",
-                  //accessor: "age"
-                  filterable: false,
-                  
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > History </div>   )   
+
+                      width: 50
+                    }
+
+                  ]
                 },
-                
-              ]
-            },
-            {
-              Header: "Report",
-              //accessor: "age"
-              filterable: false,
-              columns:[
+
                 {
-                  Header: "History",
+                  Header: "Room",
                   //accessor: "age"
                   filterable: false,
-                  
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > History </div>   ) 
+                  columns:[
+                    {
+                      Header: "RID",
+                      accessor: "rid",
+                      width: 50
+                    },
+                    
+                    {
+                      Header: "Book",
+                      //accessor: "age"
+                      filterable: false,
+                      
+                      Cell: row => (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "coral",
+                            borderRadius: "2px"
+                          }}
+                        > Book </div>   )
+                    }
+                  ]
+
                 },
                 {
-                  Header: "New",
+                  Header: "Admission",
+                  filterable: false,
+                  columns:[
+                    {
+                      Header: "History",
+                      //accessor: "age"
+                      filterable: false,
+                      
+                      Cell: row => (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "coral",
+                            borderRadius: "2px"
+                          }}
+                        > History </div>   )
+                    }
+                  ]
+                },
+                {
+                  Header: "Report",
                   //accessor: "age"
                   filterable: false,
-                  
-                  Cell: row => (
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "coral",
-                        borderRadius: "2px"
-                      }}
-                    > New </div>   ) 
+                  columns:[
+                    {
+                      Header: "History",
+                      //accessor: "age"
+                      filterable: false,
+                      
+                      Cell: row => (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "coral",
+                            borderRadius: "2px"
+                          }}
+                        > History </div>   )
+                    }
+
+                  ]
                 }
                 
-              ]
-            }
               
             
           ]}

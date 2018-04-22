@@ -30,7 +30,7 @@ class AdminReportInfo extends React.Component {
 
           }
           
-          console.log(arr);
+          //console.log(arr);
           this.setState({reportData: arr});
           //console.log(this.state);
         }
