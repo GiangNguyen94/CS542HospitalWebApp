@@ -9,6 +9,7 @@ import "react-table/react-table.css";
 import { makeDataPerson, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
 import BookRoom from './BookRoom';
+import ModifyAdmission from './ModifyAdmission';
 
 
 class AdminClientInfo extends React.Component {
@@ -63,7 +64,9 @@ class AdminClientInfo extends React.Component {
                 if (column["Header"] == "Book"){
                   this.setState({Page:6})
                 }
-
+                if (column["Header"] == "New"){
+                  this.setState({Page:8})
+                }
 
               }
           }
@@ -311,7 +314,9 @@ class AdminClientInfo extends React.Component {
         case 6:
 page.push(<BookRoom/>);
         break;
-
+        case 8:
+page.push(<ModifyAdmission/>);
+        break;
     //    case 6:
       //    page.push(<BookRoom/>);
         //  break;
