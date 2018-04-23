@@ -28,7 +28,8 @@ class AdminClientInfo extends React.Component {
       History Admission 7
       New Admission 8
       */
-      patientData: []
+      patientData: [],
+      singlePatient: []
     };
   }
 
@@ -61,6 +62,7 @@ class AdminClientInfo extends React.Component {
 
   render() {
     const { patientData } = this.state;
+    const {singlePatient} = this.state;
     console.log('toReact',{patientData});
     let page = [];
     const onRowClick = (state, rowInfo, column, instance) => {
@@ -74,6 +76,8 @@ class AdminClientInfo extends React.Component {
 
               if (handleOriginal) {
                 if (column["Header"] == "Modify"){
+                  this.setState({singlePatient:rowInfo["original"]["pid"]});
+                  console.log({singlePatient});
                   this.setState({Page:1})
                 }
                 if (column["Header"] == "Delete"){
@@ -336,7 +340,7 @@ class AdminClientInfo extends React.Component {
         break;
 
       case 1:
-        page.push(<ModifyPatient/>);
+        page.push(<ModifyPatient singlePatientFromParent={singlePatient}/>);
         break;
       case 6:
         page.push(<BookRoom/>);

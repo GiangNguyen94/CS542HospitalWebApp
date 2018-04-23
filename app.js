@@ -84,7 +84,27 @@ app.get('/api/patient',function(req,res,next){
 		if (err){
 			return res.status(400).send(err);
 		}
-		client.query('Select PID,PSSN,Name,Gender,Age,R.RID from Patient Join Room R ON Patient.PID = R.RID;', [], function(err, result) {
+		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient Join stay s ON Patient.PID = s.PID join room r on r.rid=s.rid;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Patient by ID
+app.get('/api/patient/:id',function(req,res,next){
+	var patientID = req.params.id;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient Join stay s ON Patient.PID = s.PID where patient.pid='+patientID+' ;', [], function(err, result) {
 			done();
 			if (err){
 				return next(err);

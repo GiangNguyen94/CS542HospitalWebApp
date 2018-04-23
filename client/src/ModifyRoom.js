@@ -18,8 +18,8 @@ class ModifyRoom extends React.Component {
           {att:"Location", content:makeOnePerson()[0]["Loca"]},
           {att:"Department", content:makeOnePerson()[0]["DepName"]},
           {att:"Capacity", content:makeOnePerson()[0][""]},
-        {att:"Occupied/Full", content:makeOnePerson()[0]["Occupied"]},
-        {att:"People Inside", content:makeOnePerson()[0][""]},
+          {att:"Occupied/Full", content:makeOnePerson()[0]["Occupied"]},
+          {att:"People Inside", content:makeOnePerson()[0][""]},
         ]
     };
 

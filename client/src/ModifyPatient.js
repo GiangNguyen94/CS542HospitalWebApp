@@ -26,6 +26,29 @@ class ModifyPatient extends React.Component {
  
   }
 
+  //API
+  componentDidMount(){
+    console.log('props',this.props.singlePatientFromParent);
+    var patientID = this.props.singlePatientFromParent;
+    fetch("/api/patient/"+patientID)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          let arr = [];
+          for (var i = 0; i< result.length; i++){
+            arr.push(result[i]);
+
+          }
+          
+          console.log(arr);
+          this.setState({patientData: arr});
+          //console.log(this.state);
+        }
+        
+    )
+  }
+
   renderEditable(cellInfo) {
     return (
       <div
@@ -43,6 +66,8 @@ class ModifyPatient extends React.Component {
       />
     );
   }
+
+
 
   render() {
     const { data } = this.state;
