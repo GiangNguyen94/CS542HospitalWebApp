@@ -9,29 +9,59 @@ import matchSorter from 'match-sorter'
 
 
 class BookRoom extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       data:
       [
-        {att:"PID", content:makeOnePerson()[0]["PID"]},
-        {att:"Name", content:makeOnePerson()[0]["name"]},
-        {att:"Gender", content:makeOnePerson()[0]["gender"]},
-        {att:"SSN", content:makeOnePerson()[0]["SSN"]}
+        {att:"PID", content:[]},
+        {att:"Name", content:[]},
+        {att:"Gender", content:[]},
+        {att:"SSN", content:[]}
+        
 
       ],
       dataAvailableRoom:
       [
-        {RID:"", Department:"", Location:"", Opertation: ""},
-        {RID:"", Department:"", Location:"", Opertation: ""},
-        {RID:"", Department:"", Location:"", Opertation: ""},
-        {RID:"", Department:"", Location:"", Opertation: ""}
+        {RID:"", Location:"", Operation: ""}
 
       ]
     };
 
     this.renderEditable = this.renderEditable.bind(this);
 
+  }
+
+  componentDidMount(){
+    console.log(this.props.singleID);
+    this.setState({data: [
+          {att:"PID", content:this.props.singleID},
+          {att:"Name", content:this.props.singleName},
+          {att:"Gender", content:this.props.singleGender},
+          {att:"SSN", content:this.props.singleSSN}
+          ]
+        }
+      );
+
+    fetch("/api/availableRoom/")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //console.log(result[0]);
+          var arr = [
+            {RID:"", Location:"", Operation: ""},
+          ]
+          arr[0]["RID"] = result[0].rid;
+          arr[0]["Location"] = result[0].location;
+          
+          //console.log(arr);
+          this.setState({dataAvailableRoom: arr});
+          console.log(this.state);
+        }
+        
+    )
+
+      
   }
 
   renderEditable(cellInfo) {
@@ -64,6 +94,7 @@ class BookRoom extends React.Component {
       getTdProps={(state, rowInfo, column, instance) => {
         return {
           onClick: (e, handleOriginal) => {
+            console.log(this.props.singleID);
             console.log("A Td Element was clicked!");
             console.log("it produced this event:", e);
             console.log("It was in this column:", column);
@@ -83,7 +114,7 @@ class BookRoom extends React.Component {
       }}
       data={data}
       showPagination = {false}
-      defaultPageSize = {5}
+      defaultPageSize = {4}
       columns={[
 
 
@@ -128,7 +159,7 @@ class BookRoom extends React.Component {
       }}
       data={dataAvailableRoom}
       showPagination = {false}
-      defaultPageSize = {5}
+      defaultPageSize = {3}
 
       columns={[
 
@@ -138,19 +169,15 @@ class BookRoom extends React.Component {
           accessor: "RID",
           Cell: this.renderEditable
         },
-        {
-          Header: "Department",
-          accessor: "Department",
-          Cell: this.renderEditable
-        },
+        
         {
           Header: "Location",
           accessor: "Location",
           Cell: this.renderEditable
         },
         {
-          Header: "Opertation",
-          accessor: "Opertation",
+          Header: "Operation",
+          accessor: "Operation",
           Cell: this.renderEditable
         },
 

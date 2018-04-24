@@ -9,7 +9,7 @@ import matchSorter from 'match-sorter';
 import AdminClientInfo from './AdminClientInfo';
 
 
-class ModifyPatient extends React.Component {
+class AddNewPatient extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -18,6 +18,11 @@ class ModifyPatient extends React.Component {
       data: 
         [
           
+          {att:"Name", content:[]},
+          {att:"Gender", content:[]},
+          {att:"SSN", content:[]},
+          {att:"Age", content:[]},
+        
         ]
     };
 
@@ -26,63 +31,17 @@ class ModifyPatient extends React.Component {
   }
 
   //API
-  componentDidMount(){
-    console.log('props',this.props.singlePatientFromParent);
-    var patientID = this.props.singlePatientFromParent;
-    fetch("/api/patient/"+patientID)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //console.log(result[0]);
-          var arr = [
-            {att:"PID", content:[]},
-            {att:"Name", content:[]},
-            {att:"Gender", content:[]},
-            {att:"SSN", content:[]},
-            {att:"Age", content:[]},
-            {att:"Room Staying", content:[]}
-          ]
-          for (var i = 0; i< arr.length; i++){
-            switch(i){
-              case 0:
-                arr[i]["content"].push(result[0].pid);
-                break;
-              case 1:
-                arr[i]["content"].push(result[0].name);
-                break;
-              case 2:
-                arr[i]["content"].push(result[0].gender);
-                break;
-              case 3:
-                arr[i]["content"].push(result[0].pssn);
-                break;
-              case 4:
-                arr[i]["content"].push(result[0].age);
-                break;
-              case 5:
-                arr[i]["content"].push(result[0].rid);
-                break;
-            }
-          }
-          
-          console.log(arr);
-          this.setState({data: arr});
-          //console.log(this.state);
-        }
-        
-    )
-  }
+  
 
   handleChangePageClick(num){
     if (num == 1){
       var sendData = {};
-      var sendPid = parseInt(this.state.data[0].content);
-      sendData.pssn = this.state.data[3].content.toString();
-      sendData.pname = this.state.data[1].content.toString();
-      sendData.gender = this.state.data[2].content.toString();
-      sendData.age = parseInt(this.state.data[4].content);
+      sendData.pssn = this.state.data[2].content.toString();
+      sendData.pname = this.state.data[0].content.toString();
+      sendData.gender = this.state.data[1].content.toString();
+      sendData.age = parseInt(this.state.data[3].content);
       console.log(sendData);
-      var request = new Request("/api/modifyPatient/"+sendPid,{
+      var request = new Request("/api/addPatient/",{
         method:"POST",
         mode: "cors",
         body: JSON.stringify(sendData),
@@ -154,7 +113,7 @@ class ModifyPatient extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              defaultPageSize = {5}
+              defaultPageSize = {4}
               columns={[
                 
                   
@@ -190,11 +149,11 @@ class ModifyPatient extends React.Component {
         break;
       }
     return (
-      <div className="ModifyPatient">
+      <div className="AddNewPatient">
         {page}
       </div>
     );
   }
 }
 
-export default ModifyPatient
+export default AddNewPatient

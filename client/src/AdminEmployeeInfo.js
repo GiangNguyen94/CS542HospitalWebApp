@@ -12,7 +12,7 @@ class AdminEmployeeInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      employeeData: []
+      employeeData: makeDataEmployee()
     };
   }
 
@@ -197,7 +197,10 @@ class AdminEmployeeInfo extends React.Component {
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "coral",
+                    fontStyle: "italic",
+                    textAlign: "center",
+                    color: "#0066ff",
+                    textDecoration: "underline",
                     borderRadius: "2px"
                   }}
                 > Check </div>   ) 
@@ -222,7 +225,10 @@ class AdminEmployeeInfo extends React.Component {
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "coral",
+                    fontStyle: "italic",
+                    color: "#0066ff",
+                    textAlign: "center",
+                    textDecoration: "underline",
                     borderRadius: "2px"
                   }}
                 > Modify </div>   ) 
@@ -247,7 +253,10 @@ class AdminEmployeeInfo extends React.Component {
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "coral",
+                    fontStyle: "italic",
+                    textAlign: "center",
+                    color: "#0066ff",
+                    textDecoration: "underline",
                     borderRadius: "2px"
                   }}
                 > Delete </div>   ) 

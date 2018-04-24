@@ -6,10 +6,10 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { makeOnePerson, makeDataAdmission, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter';
-import AdminClientInfo from './AdminClientInfo';
+import AdminAdmissionInfo from './AdminAdmissionInfo';
 
 
-class ModifyPatient extends React.Component {
+class AddNewAdmission extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -18,6 +18,12 @@ class ModifyPatient extends React.Component {
       data: 
         [
           
+          {att:"PID", content:[]},
+          {att:"Enter Time", content:[]},
+          {att:"Leave Time", content:[]},
+          {att:"Payment Info", content:[]},
+          {att:"Insurance Cover", content:[]},
+          {att:"Detail", content:[]}
         ]
     };
 
@@ -26,63 +32,19 @@ class ModifyPatient extends React.Component {
   }
 
   //API
-  componentDidMount(){
-    console.log('props',this.props.singlePatientFromParent);
-    var patientID = this.props.singlePatientFromParent;
-    fetch("/api/patient/"+patientID)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //console.log(result[0]);
-          var arr = [
-            {att:"PID", content:[]},
-            {att:"Name", content:[]},
-            {att:"Gender", content:[]},
-            {att:"SSN", content:[]},
-            {att:"Age", content:[]},
-            {att:"Room Staying", content:[]}
-          ]
-          for (var i = 0; i< arr.length; i++){
-            switch(i){
-              case 0:
-                arr[i]["content"].push(result[0].pid);
-                break;
-              case 1:
-                arr[i]["content"].push(result[0].name);
-                break;
-              case 2:
-                arr[i]["content"].push(result[0].gender);
-                break;
-              case 3:
-                arr[i]["content"].push(result[0].pssn);
-                break;
-              case 4:
-                arr[i]["content"].push(result[0].age);
-                break;
-              case 5:
-                arr[i]["content"].push(result[0].rid);
-                break;
-            }
-          }
-          
-          console.log(arr);
-          this.setState({data: arr});
-          //console.log(this.state);
-        }
-        
-    )
-  }
+  
 
   handleChangePageClick(num){
     if (num == 1){
       var sendData = {};
-      var sendPid = parseInt(this.state.data[0].content);
-      sendData.pssn = this.state.data[3].content.toString();
-      sendData.pname = this.state.data[1].content.toString();
-      sendData.gender = this.state.data[2].content.toString();
-      sendData.age = parseInt(this.state.data[4].content);
+      sendData.pid = parseInt(this.state.data[0].content);
+      sendData.enter = this.state.data[1].content.toString();
+      sendData.leave = this.state.data[2].content.toString();
+      sendData.payment = this.state.data[3].content.toString();
+      sendData.insurance = this.state.data[4].content.toString();
+      sendData.detail = this.state.data[5].content.toString();
       console.log(sendData);
-      var request = new Request("/api/modifyPatient/"+sendPid,{
+      var request = new Request("/api/addAdmission/",{
         method:"POST",
         mode: "cors",
         body: JSON.stringify(sendData),
@@ -154,7 +116,7 @@ class ModifyPatient extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              defaultPageSize = {5}
+              defaultPageSize = {6}
               columns={[
                 
                   
@@ -183,18 +145,18 @@ class ModifyPatient extends React.Component {
           );
         break;
       case 1:
-        page.push(<AdminClientInfo/>);
+        page.push(<AdminAdmissionInfo/>);
         break;
       case 2:
-        page.push(<AdminClientInfo/>);
+        page.push(<AdminAdmissionInfo/>);
         break;
       }
     return (
-      <div className="ModifyPatient">
+      <div className="AddNewAdmission">
         {page}
       </div>
     );
   }
 }
 
-export default ModifyPatient
+export default AddNewAdmission

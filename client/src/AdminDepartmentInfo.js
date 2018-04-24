@@ -105,7 +105,10 @@ class AdminDepartmentInfo extends React.Component {
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "coral",
+                    fontStyle: "italic",
+                    textAlign: "center",
+                    color: "#0066ff",
+                    textDecoration: "underline",
                     borderRadius: "2px"
                   }}
                 > Check </div>   ) 
@@ -130,7 +133,10 @@ class AdminDepartmentInfo extends React.Component {
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "coral",
+                    fontStyle: "italic",
+                    color: "#0066ff",
+                    textDecoration: "underline",
+                    textAlign: "center",
                     borderRadius: "2px"
                   }}
                 > Modify </div>   ) 
@@ -155,7 +161,10 @@ class AdminDepartmentInfo extends React.Component {
                   style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "coral",
+                    fontStyle: "italic",
+                    color: "#0066ff",
+                    textDecoration: "underline",
+                    textAlign: "center",
                     borderRadius: "2px"
                   }}
                 > Delete </div>   ) 

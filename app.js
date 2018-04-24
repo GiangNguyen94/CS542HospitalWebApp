@@ -77,6 +77,129 @@ app.post('/api/addPatient', function(req,res){
 		}
 	})
 })
+//For Insert Admissions
+app.post('/api/addAdmission', function(req,res){
+	
+	var enter = req.body.enter;
+	var leave = req.body.leave;
+	var payment = req.body.payment;
+	var insurance = req.body.insurance;
+	var detail = req.body.detail;
+	var pid = req.body.pid;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			var values = sprintf("'%s', '%s', '%s', ",[payment,insurance,detail]);
+			client.query("INSERT INTO Admission(PaymentInfo,InsuranceCover, Detail, PID, Enter_time,Leave_time) VALUES ("+values+pid+", DATE\'"+enter+"\', DATE\'"+leave+"\' );", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Insert Success'});
+			})
+		}
+	})
+})
+//For Modify Patients
+app.post('/api/modifyPatient/:id', function(req,res){
+	//console.log(req.body);
+	var patientID = req.params.id;
+	var pssn = req.body.pssn;
+	//console.log(pssn);
+	var pname = req.body.pname;
+	var gender = req.body.gender;
+	var age = req.body.age;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			//var values = sprintf("'%s', '%s', '%s', ",[pssn,pname,gender]);
+			client.query("Update Patient set PSSN=\'"+pssn+"\', Name=\'"+pname+"\', Gender=\'"+gender+"\', Age="+age+" WHERE pid="+patientID+";", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Modify Success'});
+			})
+		}
+	})
+})
+//For Delete patient
+app.delete('/api/deletePatient/:id', function(req,res){
+	//console.log(req.body);
+	var patientID = req.params.id;
+	pool.connect(function(err, client, done) {
+    // Handle connection errors
+	    if(err) {
+	      done();
+	      console.log(err);
+	      return res.status(500).json({success: false, data: err});
+	    }
+	    // SQL Query > Delete Data
+	    client.query('DELETE FROM Patient WHERE pid=($1)', [patientID], function(err, result){
+			done();
+			if (err){
+				//res.json(values+''+age);
+				return res.send(err);
+			}
+			res.send({status: 'Delete Success'});
+		});
+	   
+	 });
+})
+//For Delete Admission
+app.delete('/api/deleteAdmission/:id', function(req,res){
+	//console.log(req.body);
+	var admissionID = req.params.id;
+	pool.connect(function(err, client, done) {
+    // Handle connection errors
+	    if(err) {
+	      done();
+	      console.log(err);
+	      return res.status(500).json({success: false, data: err});
+	    }
+	    // SQL Query > Delete Data
+	    client.query('DELETE FROM Admission WHERE aid=($1)', [admissionID], function(err, result){
+			done();
+			if (err){
+				//res.json(values+''+age);
+				return res.send(err);
+			}
+			res.send({status: 'Delete Success'});
+		});
+	   
+	 });
+})
+//For Delete Stay
+app.delete('/api/deleteStay/:id', function(req,res){
+	//console.log(req.body);
+	var patientID = req.params.id;
+	pool.connect(function(err, client, done) {
+    // Handle connection errors
+	    if(err) {
+	      done();
+	      console.log(err);
+	      return res.status(500).json({success: false, data: err});
+	    }
+	    // SQL Query > Delete Data
+	    client.query('DELETE FROM Stay WHERE pid=($1)', [patientID], function(err, result){
+			done();
+			if (err){
+				//res.json(values+''+age);
+				return res.send(err);
+			}
+			res.send({status: 'Delete Success'});
+		});
+	   
+	 });
+})
+//For Modify Admission
+
 //Get
 //Patient select all
 app.get('/api/patient',function(req,res,next){
@@ -84,7 +207,7 @@ app.get('/api/patient',function(req,res,next){
 		if (err){
 			return res.status(400).send(err);
 		}
-		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient Join stay s ON Patient.PID = s.PID join room r on r.rid=s.rid;', [], function(err, result) {
+		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient left Join stay s ON Patient.PID = s.PID left join room r on r.rid=s.rid;', [], function(err, result) {
 			done();
 			if (err){
 				return next(err);
@@ -104,7 +227,7 @@ app.get('/api/patient/:id',function(req,res,next){
 		if (err){
 			return res.status(400).send(err);
 		}
-		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient Join stay s ON Patient.PID = s.PID where patient.pid='+patientID+' ;', [], function(err, result) {
+		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient left Join stay s ON Patient.PID = s.PID where patient.pid='+patientID+' ;', [], function(err, result) {
 			done();
 			if (err){
 				return next(err);
@@ -213,7 +336,25 @@ app.get('/api/room',function(req,res,next){
 		})
 	})
 });
-
+//Room available
+app.get('/api/availableRoom',function(req,res,next){
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select r.rid, r.location from room r where r.occupiedflag=false;", [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
 //Equipment select all
 app.get('/api/equipment',function(req,res,next){
 	pool.connect(function(err,client,done){

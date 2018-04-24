@@ -10,12 +10,14 @@ import { makeDataPerson, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
 import BookRoom from './BookRoom';
 import ModifyAdmission from './ModifyAdmission';
+import AddNewPatient from './AddNewPatient';
 
 
 class AdminClientInfo extends React.Component {
   constructor() {
     super();
     this.handleChangePageClick = this.handleChangePageClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       Page: 0,
       /*
@@ -28,10 +30,15 @@ class AdminClientInfo extends React.Component {
       History Admission 7
       New Admission 8
       */
-      patientData: [],
-      singlePatient: []
+      singlePatientID: [],
+      singlePatientName: [],
+      singlePatientGender: [],
+      singlePatientSSN: [],
+      patientData: []
     };
   }
+
+
 
   //API
   componentDidMount(){
@@ -56,14 +63,35 @@ class AdminClientInfo extends React.Component {
     )
   }
 
+
   handleChangePageClick(num){
     this.setState({Page:num});
   }
 
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ AgeRange1: e });
+    }else{
+      this.setState({ AgeRange2: e });
+
+    }
+  }
+
+
   render() {
     const { patientData } = this.state;
-    const {singlePatient} = this.state;
-    console.log('toReact',{patientData});
+    const { singlePatientID } = this.state;
+    const { singlePatientName } = this.state;
+    const {singlePatientGender} = this.state;
+    const {singlePatientSSN} = this.state;
+    let rangeCond = getRange(patientData, this.state.AgeRange1, this.state.AgeRange2, 'age');
+    if(rangeCond !== -1){
+      var data = rangeCond;
+
+    }else{
+      var data = patientData;
+    }
+    //console.log('toReact',{patientData});
     let page = [];
     const onRowClick = (state, rowInfo, column, instance) => {
       return {
@@ -73,21 +101,64 @@ class AdminClientInfo extends React.Component {
               console.log('It was in this column:', column);
               console.log('It was in this row:', rowInfo);
               console.log('It was in this table instance:', instance);
-
+              this.setState({singlePatientID:rowInfo["original"]["pid"]});
+              this.setState({singlePatientName:rowInfo["original"]["name"]});
+              this.setState({singlePatientGender:rowInfo["original"]["gender"]});
+              this.setState({singlePatientSSN:rowInfo["original"]["pssn"]});
+              
+                  
               if (handleOriginal) {
                 if (column["Header"] == "Modify"){
-                  this.setState({singlePatient:rowInfo["original"]["pid"]});
-                  console.log({singlePatient});
                   this.setState({Page:1})
                 }
                 if (column["Header"] == "Delete"){
                   if (window.confirm("Are you sure you want to DELETE patient "+rowInfo["original"]["name"]+" record?")){
                     //Delete Call to API
+                    var request = new Request("/api/deletePatient/"+rowInfo["original"]["pid"],{
+                      method:"DELETE",
+                      mode: "cors",
+                      
+                      headers: {
+                        "Content-Type": "application/json"
+                      }
+                    });
+                    fetch(request)
+                    .then(function(response){
+                      response.json()
+                      .then(function(data){
+                        console.log(data)
+                      })
+                    });
                     this.setState({Page:0});
                     this.forceUpdate();
                     // handle error?
-                    alert("Delete success!");
-                    console.log("reloaded");
+                    
+                  }else{
+                    console.log("");
+                  };
+                }
+                if (column["Header"]=="Leave"){
+                  if (window.confirm("Are you sure you want to DELETE patient "+rowInfo["original"]["name"]+" record?")){
+                    //Delete Call to API
+                    var request = new Request("/api/deleteStay/"+rowInfo["original"]["pid"],{
+                      method:"DELETE",
+                      mode: "cors",
+                      
+                      headers: {
+                        "Content-Type": "application/json"
+                      }
+                    });
+                    fetch(request)
+                    .then(function(response){
+                      response.json()
+                      .then(function(data){
+                        console.log(data)
+                      })
+                    });
+                    this.setState({Page:0});
+                    this.forceUpdate();
+                    // handle error?
+                    
                   }else{
                     console.log("");
                   };
@@ -109,11 +180,11 @@ class AdminClientInfo extends React.Component {
         page.push(
           <div>
           <div>
-          <button type="button" onClick={this.handleChangePageClick.bind(this,1)}> Add New Patient </button>
+          <button type="button" onClick={this.handleChangePageClick.bind(this,2)}> Add New Patient </button>
           </div>
             <ReactTable
               getTdProps={onRowClick}
-              data={patientData}
+              data={data}
               filterable
               columns={[
                 {
@@ -169,11 +240,16 @@ class AdminClientInfo extends React.Component {
                     {
                       Header: "Age",
                       accessor: "age",
-                      filterMethod: (filter, rows) =>
-                           matchSorter(rows, filter.value, { keys: ["age"] }),
+                      Filter: () => (
+                               <div >
+                                 <form action="/action_page.php">
+                                   <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
+                                ></input>-
+                                  <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                                 </form>
+                               </div>),
 
-
-                      width: 50
+                      width: 100
                     },
                     {
                       Header: "SSN",
@@ -206,7 +282,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > Leave </div>   )
@@ -221,7 +300,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > Book </div>   )
@@ -243,7 +325,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > History </div>   )
@@ -258,7 +343,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > New </div>   )
@@ -280,7 +368,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > History </div>   )
@@ -304,7 +395,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > Modify </div>   )
@@ -319,7 +413,10 @@ class AdminClientInfo extends React.Component {
                           style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: "coral",
+                            fontStyle: "italic",
+                            color: "#0066ff",
+                            textDecoration: "underline",
+                            textAlign: "center",
                             borderRadius: "2px"
                           }}
                         > Delete </div>   )
@@ -340,10 +437,13 @@ class AdminClientInfo extends React.Component {
         break;
 
       case 1:
-        page.push(<ModifyPatient singlePatientFromParent={singlePatient}/>);
+        page.push(<ModifyPatient singlePatientFromParent={singlePatientID}/>);
+        break;
+      case 2:
+        page.push(<AddNewPatient/>);
         break;
       case 6:
-        page.push(<BookRoom/>);
+        page.push(<BookRoom singleID={singlePatientID} singleGender={singlePatientGender} singleName={singlePatientName} singleSSN={singlePatientSSN}/>);
         break;
       case 8:
         page.push(<ModifyAdmission/>);
@@ -366,3 +466,24 @@ class AdminClientInfo extends React.Component {
 }
 
 export default AdminClientInfo
+
+//helper function
+  function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+  function getRange(rows, val1, val2, key){
+    let dataLength = rows.length;
+    let data = [];
+    let value1 = parseInt(val1,10);
+    let value2 = parseInt(val2,10);
+    if(isNumber(val1) && isNumber(val2) && val1 != '' && val1 != ''){
+      for(let i = 0; i < dataLength; i++){
+        if(rows[i][key] >= value1 && rows[i][key] <= value2){
+          data.push(rows[i]);
+        }
+      }
+      return data;
+    }
+    return -1;
+
+  }

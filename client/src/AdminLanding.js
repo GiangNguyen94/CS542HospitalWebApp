@@ -53,7 +53,7 @@ class AdminLanding extends React.Component{
 			console.log("Report");
 			this.setState({Page: 3});
 		}
-		if (keyMenu == "Employee Menu"){
+		if (keyMenu == "Employee Info"){
 			console.log("Employee");
 			this.setState({Page: 4});
 		}
@@ -115,7 +115,12 @@ class AdminLanding extends React.Component{
 					<div class="contentPage">
 						<div>
 						<center>
+						<font size="+2">
+						<br></br><br></br>
+						<br></br><br></br>
+						<br></br><br></br>
 						Welcome Admin user!
+						</font>
 						</center>
 						</div>
 		     	 	</div>
