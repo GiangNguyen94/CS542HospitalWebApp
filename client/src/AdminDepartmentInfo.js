@@ -30,12 +30,12 @@ class AdminDepartmentInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           //console.log(arr);
           this.setState({departmentData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
 
@@ -45,7 +45,7 @@ class AdminDepartmentInfo extends React.Component {
 
     return (
       <div>
-      
+
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -70,8 +70,8 @@ class AdminDepartmentInfo extends React.Component {
           data={departmentData}
           filterable
           columns={[
-            
-              
+
+
             {
               Header: "DID",
               accessor: "did",
@@ -86,15 +86,15 @@ class AdminDepartmentInfo extends React.Component {
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["DepName"] }),
               filterAll: true,
-              
+
             },
             {
               Header: "Rooms",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -111,18 +111,18 @@ class AdminDepartmentInfo extends React.Component {
                     textDecoration: "underline",
                     borderRadius: "2px"
                   }}
-                > Check </div>   ) 
+                > Check </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Modify",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -139,18 +139,18 @@ class AdminDepartmentInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Modify </div>   ) 
+                > Modify </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Delete",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -167,19 +167,19 @@ class AdminDepartmentInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Delete </div>   ) 
+                > Delete </div>   )
               //  }
-                
+
              // ]
             }
-            
+
           ]}
-          
+
           defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />
-        
+
       </div>
     );
   }

@@ -56,10 +56,10 @@ class AdminAdmissionInfo extends React.Component {
               arr.push(result[i]);
 
             }
-            
+
             this.setState({admissionData: arr});
             console.log(this.state);
-          }   
+          }
         )
 
     }
@@ -74,12 +74,12 @@ class AdminAdmissionInfo extends React.Component {
               arr.push(result[i]);
 
             }
-            
+
             this.setState({admissionData: arr});
             //console.log(this.state);
-          }   
+          }
         )
-    } 
+    }
   }
 
 
@@ -299,43 +299,47 @@ class AdminAdmissionInfo extends React.Component {
 export default AdminAdmissionInfo
 
 function testcase(rows, val1, val2, key){
-let dataLength = rows.length;
-let data = [];
+  let dataLength = rows.length;
+  let data = [];
 
-if( val1 != ''){
+  if( val1 != ''){
 
-if(val2 != ''){
+    if(val2 != ''){
 
-  var date1array = new Date(val1);
-  var date2array = new Date(val2);
+      var date1array = new Date(val1);
+      var date2array = addDays(new Date(val2),1);
 
-    for(let i = 0; i < dataLength; i++){
-      var cell = new Date(rows[i][key]);
+      for(let i = 0; i < dataLength; i++){
+        var cell = new Date(rows[i][key]);
 
-  if(cell >= date1array && cell <= date2array){
-  data.push(rows[i]);
+        if(cell >= date1array && cell <= date2array){
+          data.push(rows[i]);
+
+        }
+
+      }
+      return data;
+
+    } else {
+
+      var date1array = new Date(val1);
+
+      for(let i = 0; i < dataLength; i++){
+        var cell = new Date(rows[i][key]);
+
+        if(cell == date1array){
+          data.push(rows[i]);
+
+        }
+
+      }
+      return data;
+
+    }
+
 
   }
 
-    }
-  return data;
+  return -1;
 
-} else {
-
-  var date1array = new Date(val1);
-
-    for(let i = 0; i < dataLength; i++){
-      var cell = new Date(rows[i][key]);
-
-  if(cell == date1array){
-  data.push(rows[i]);
-
-  }
-
-    }
-  return data;
-}
-}
-
-return -1;
 }
