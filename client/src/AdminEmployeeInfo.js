@@ -53,7 +53,7 @@ class AdminEmployeeInfo extends React.Component {
   render() {
     const { employeeData } = this.state;
 
-    let rangeCond = getRange(employeeData, this.state.salary1, this.state.salary2, 'age');
+    let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'age');
     if(rangeCond !== -1){
       var data = rangeCond;
 
@@ -303,6 +303,11 @@ class AdminEmployeeInfo extends React.Component {
 }
 
 export default AdminEmployeeInfo
+
+//helper function
+  function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
 
 function testcase(rows, val1, val2, key){
     let dataLength = rows.length;
