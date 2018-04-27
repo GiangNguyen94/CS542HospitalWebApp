@@ -27,7 +27,7 @@ class BookRoom extends React.Component {
       ],
       dataAvailableRoom:
       [
-        {RID:"", Location:"", Operation: ""}
+        {RID:"", Location:""}
 
       ]
     };
@@ -193,7 +193,7 @@ class BookRoom extends React.Component {
           }}
           data={dataAvailableRoom}
           showPagination = {false}
-          defaultPageSize = {3}
+          defaultPageSize = {1}
 
           columns={[
 
@@ -208,17 +208,13 @@ class BookRoom extends React.Component {
               accessor: "Location",
               
             },
-            {
-              Header: "Operation",
-              accessor: "Operation",
-              
-            },
+            
 
           ]}
 
           />
 
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" onClick={this.handleSubmitButton.bind(this,1)}> Submit </button>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" onClick={this.handleSubmitButton.bind(this,2)}> Cancel </button>
