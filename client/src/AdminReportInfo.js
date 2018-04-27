@@ -5,6 +5,7 @@ import { render } from "react-dom";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { makeDataReport, Logo, Tips } from "./Utils";
+import ModifyReport from "./ModifyReport";
 import matchSorter from 'match-sorter'
 
 
@@ -85,100 +86,118 @@ class AdminReportInfo extends React.Component {
       var reportData = constdata;
     }
 
-    return (
-      <div>
+    let page=[];
 
-        <ReactTable
-          getTdProps={(state, rowInfo, column, instance) => {
-            return {
-              onClick: (e, handleOriginal) => {
-                console.log("A Td Element was clicked!");
-                console.log("it produced this event:", e);
-                console.log("It was in this column:", column);
-                console.log("It was in this row:", rowInfo);
-                console.log("It was in this table instance:", instance);
+    switch(this.state.Page){
+      case 0:
+        page.push(
+          <div>
 
-                // IMPORTANT! React-Table uses onClick internally to trigger
-                // events like expanding SubComponents and pivots.
-                // By default a custom 'onClick' handler will override this functionality.
-                // If you want to fire the original onClick handler, call the
-                // 'handleOriginal' function.
-                if (handleOriginal) {
-                  if (column.parentColumn.Header == "Detail"){
-                    if (column.Header == "Check"){
-                      this.setState({Page: 1});
+            <ReactTable
+              getTdProps={(state, rowInfo, column, instance) => {
+                return {
+                  onClick: (e, handleOriginal) => {
+                    console.log("A Td Element was clicked!");
+                    console.log("it produced this event:", e);
+                    console.log("It was in this column:", column);
+                    console.log("It was in this row:", rowInfo);
+                    console.log("It was in this table instance:", instance);
+
+                    // IMPORTANT! React-Table uses onClick internally to trigger
+                    // events like expanding SubComponents and pivots.
+                    // By default a custom 'onClick' handler will override this functionality.
+                    // If you want to fire the original onClick handler, call the
+                    // 'handleOriginal' function.
+                    if (handleOriginal) {
+                        if (column.Header == "Detail"){
+                          this.setState({Page: 1});
+                        }
+                      
                     }
                   }
+                };
+              }}
+              data={reportData}
+              filterable
+              columns={[
+
+
+                {
+                  Header: "Patient",
+                  accessor: "p_name",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["PatientName"] }),
+                  filterAll: true,
+                  },
+                {
+                  Header: "Doctor",
+                  accessor: "e_name",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["DocName"] }),
+                  filterAll: true,
+
+                },
+                {
+                  Header: "Record Time",
+                  accessor: "record_date",
+
+                  filterMethod: (filter, rows) =>
+                       matchSorter(rows, filter.value, { keys: ["Record_date"] }),
+                       Filter: () => (
+                         <div >
+                           <form action="/action_page.php">
+                            <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}>
+                          </input>-
+                            <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                           </form>
+                         </div>),
+                  filterAll: true,
+
+
+                },
+                {
+                  Header: "Detail",
+                  accessor: "detail",
+                  filterable: false,
+                  Cell: row => (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        fontStyle: "italic",
+                        color: "#0066ff",
+                        textDecoration: "underline",
+                        textAlign: "center",
+                        borderRadius: "2px"
+                      }}
+                    > Check </div>   )
+
                 }
-              }
-            };
-          }}
-          data={reportData}
-          filterable
-          columns={[
+              ]}
+
+              defaultPageSize={10}
+              className="-striped -highlight"
+            />
+            <br />
+
+          </div>
 
 
-            {
-              Header: "Patient",
-              accessor: "p_name",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["PatientName"] }),
-              filterAll: true,
-              },
-            {
-              Header: "Doctor",
-              accessor: "e_name",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["DocName"] }),
-              filterAll: true,
-
-            },
-            {
-              Header: "Record Time",
-              accessor: "record_date",
-
-              filterMethod: (filter, rows) =>
-                   matchSorter(rows, filter.value, { keys: ["Record_date"] }),
-                   Filter: () => (
-                     <div >
-                       <form action="/action_page.php">
-                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}>
-                      </input>-
-                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
-                       </form>
-                     </div>),
-              filterAll: true,
 
 
-            },
-            {
-              Header: "Detail",
-              accessor: "detail",
-              filterable: false,
-              Cell: row => (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    fontStyle: "italic",
-                    color: "#0066ff",
-                    textDecoration: "underline",
-                    textAlign: "center",
-                    borderRadius: "2px"
-                  }}
-                > Check </div>   )
+        )
+      break;
+      case 1:
+        page.push(<ModifyReport/>);
+        break;
 
-            }
-          ]}
-
-          defaultPageSize={10}
-          className="-striped -highlight"
-        />
-        <br />
-
-      </div>
-    );
-  }
+      }
+      return (
+        <div>
+        {page}
+        </div>
+      );
+    }
 }
 
 export default AdminReportInfo

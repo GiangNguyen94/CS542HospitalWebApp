@@ -5,6 +5,7 @@ import { render } from "react-dom";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import AddNewAdmission from "./AddNewAdmission";
+import ModifyReport from "./ModifyReport";
 import { makeDataPerson, makeDataAdmission, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
 
@@ -114,9 +115,7 @@ class AdminAdmissionInfo extends React.Component {
       case 0:
         page.push(
           <div>
-          <div>
-          <button type="button" onClick={this.handleChangePageClick.bind(this,1)}> Add New Admission </button>
-          </div>
+        
           <ReactTable
             getTdProps={(state, rowInfo, column, instance) => {
               return {
