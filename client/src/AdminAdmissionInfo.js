@@ -298,6 +298,10 @@ class AdminAdmissionInfo extends React.Component {
 
 export default AdminAdmissionInfo
 
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
+
 function testcase(rows, val1, val2, key){
   let dataLength = rows.length;
   let data = [];
