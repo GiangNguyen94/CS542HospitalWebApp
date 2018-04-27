@@ -43,10 +43,10 @@ class AdminReportInfo extends React.Component {
               arr.push(result[i]);
 
             }
-            
+
             this.setState({reportData: arr});
             console.log(this.state);
-          }   
+          }
         )
 
     }
@@ -182,6 +182,10 @@ class AdminReportInfo extends React.Component {
 }
 
 export default AdminReportInfo
+
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
 
 function testcase(rows, val1, val2, key){
 let dataLength = rows.length;
