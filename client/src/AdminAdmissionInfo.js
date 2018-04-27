@@ -307,7 +307,7 @@ function testcase(rows, val1, val2, key){
     if(val2 != ''){
 
       var date1array = new Date(val1);
-      var date2array = addDays(new Date(val2),1);
+      var date2array = new Date(val2);
 
       for(let i = 0; i < dataLength; i++){
         var cell = new Date(rows[i][key]);
