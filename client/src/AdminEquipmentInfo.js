@@ -134,11 +134,11 @@ class AdminEquipmentInfo extends React.Component {
                    matchSorter(rows, filter.value, { keys: ["PurchaseTime"] }),
                    Filter: () => (
                      <div >
-                     <form action="/action_page.php">
-                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
-                     ></input>-
-                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
-                     </form>
+                       <form action="/action_page.php">
+                       <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}>
+                   </input>-
+                       <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+                       </form>
                      </div>),
               filterAll: true,
 
@@ -150,11 +150,11 @@ class AdminEquipmentInfo extends React.Component {
                    matchSorter(rows, filter.value, { keys: ["LatestInspect"] }),
                    Filter: () => (
                      <div >
-                     <form action="/action_page.php">
-                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}
-                     ></input>-
-                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
-                     </form>
+                       <form action="/action_page.php">
+                       <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}>
+                   </input>-
+                       <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+                       </form>
                      </div>),
 
             },
@@ -257,28 +257,52 @@ class AdminEquipmentInfo extends React.Component {
 
 export default AdminEquipmentInfo
 
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
+
 function testcase(rows, val1, val2, key){
   let dataLength = rows.length;
   let data = [];
 
-  if( val1 != '' && val2 != ''){
-    let date1array = new Date(val1);
-    let date2array = new Date(val2);
+  if( val1 != ''){
 
-    for(let i = 0; i < dataLength; i++){
-      var cell = new Date(rows[i][key]);
+    if(val2 != ''){
 
-      if(cell >= date1array && cell <= date2array){
-        data.push(rows[i]);
+      var date1array = new Date(val1);
+      var date2array = addDays(new Date(val2),1);
+
+      for(let i = 0; i < dataLength; i++){
+        var cell = new Date(rows[i][key]);
+
+        if(cell >= date1array && cell <= date2array){
+          data.push(rows[i]);
+
+        }
 
       }
+      return data;
+
+    } else {
+
+      var date1array = new Date(val1);
+
+      for(let i = 0; i < dataLength; i++){
+        var cell = new Date(rows[i][key]);
+
+        if(cell == date1array){
+          data.push(rows[i]);
+
+        }
+
+      }
+      return data;
 
     }
-    return data;
+
 
   }
 
   return -1;
-
 
 }
