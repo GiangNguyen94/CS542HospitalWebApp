@@ -12,8 +12,20 @@ class AdminReportInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      reportData: []
+      reportData: [],
+      RecordTime1: '',
+      RecordTime2: '',
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ RecordTime1: e });
+    }  else if(num == 1){
+      this.setState({ RecordTime2: e });
+    }
+
   }
 
   componentDidMount(){
@@ -29,23 +41,32 @@ class AdminReportInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           //console.log(arr);
           this.setState({reportData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
-  
+
 
   render() {
-    const { reportData } = this.state;
 
+    let constdata  = this.state.reportData;
+
+    let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'Record_date');
+
+    if(rangeCond !== -1){
+      var reportData = rangeCond;
+
+    } else {
+      var reportData = constdata;
+    }
 
     return (
       <div>
-      
+
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -70,8 +91,8 @@ class AdminReportInfo extends React.Component {
           data={reportData}
           filterable
           columns={[
-            
-              
+
+
             {
               Header: "Patient",
               accessor: "p_name",
@@ -85,17 +106,25 @@ class AdminReportInfo extends React.Component {
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["DocName"] }),
               filterAll: true,
-              
+
             },
             {
               Header: "Record Time",
               accessor: "record_date",
-              
+
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["Record_date"] }),
+                   Filter: () => (
+                     <div >
+                       <form action="/action_page.php">
+                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}>
+                      </input>-
+                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                       </form>
+                     </div>),
               filterAll: true,
-            
-              
+
+
             },
             {
               Header: "Detail",
@@ -112,19 +141,67 @@ class AdminReportInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Check </div>   ) 
-              
+                > Check </div>   )
+
             }
           ]}
-          
+
           defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />
-        
+
       </div>
     );
   }
 }
 
 export default AdminReportInfo
+
+function testcase(rows, val1, val2, key){
+let dataLength = rows.length;
+let data = [];
+
+if( val1 != ''){
+
+if(val2 != ''){
+
+  var date1array = new Date(val1);
+  var date2array = new Date(val2);
+
+    for(let i = 0; i < dataLength; i++){
+      var cell = new Date(rows[i][key]);
+
+  if(cell >= date1array && cell <= date2array){
+  data.push(rows[i]);
+
+  }
+
+    }
+  return data;
+
+} else {
+
+  var date1array = new Date(val1);
+
+
+    for(let i = 0; i < dataLength; i++){
+      var cell = new Date(rows[i][key]);
+
+  if(cell == date1array){
+  data.push(rows[i]);
+
+  }
+
+    }
+  return data;
+
+}
+
+
+}
+
+return -1;
+
+
+}
