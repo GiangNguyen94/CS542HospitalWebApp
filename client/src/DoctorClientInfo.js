@@ -31,14 +31,14 @@ class DoctorClientInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           //console.log(arr);
           this.setState({patientData: arr});
           //console.log(this.state);
         }
-        
+
     )
-  }  
+  }
 
   render() {
     const { patientData } = this.state;
@@ -46,7 +46,7 @@ class DoctorClientInfo extends React.Component {
 
     return (
       <div>
-      
+
 
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
@@ -72,7 +72,7 @@ class DoctorClientInfo extends React.Component {
           data={patientData}
           filterable
           columns={[
-            { 
+            {
                   Header: "Details",
                   filterable: false,
                   columns: [
@@ -90,7 +90,7 @@ class DoctorClientInfo extends React.Component {
                       filterMethod: (filter, rows) =>
                             matchSorter(rows, filter.value, { keys: ["name"] }),
                       filterAll: true,
-                      
+
                     },
                     {
                       Header: "Sex",
@@ -115,7 +115,7 @@ class DoctorClientInfo extends React.Component {
                           style={{ width: "100%" }}
                           value={filter ? filter.value : "all"}
                         >
-                          <option value="all">Show All</option>
+                          <option value="all">All</option>
                           <option value="true">Male</option>
                           <option value="false">Female</option>
                         </select>,
@@ -145,12 +145,12 @@ class DoctorClientInfo extends React.Component {
                       accessor: "rid",
                       width: 50
                     },
-                    
+
                     {
                       Header: "Book",
                       //accessor: "age"
                       filterable: false,
-                      
+
                       Cell: row => (
                         <div
                           style={{
@@ -172,7 +172,7 @@ class DoctorClientInfo extends React.Component {
                       Header: "History",
                       //accessor: "age"
                       filterable: false,
-                      
+
                       Cell: row => (
                         <div
                           style={{
@@ -194,7 +194,7 @@ class DoctorClientInfo extends React.Component {
                       Header: "History",
                       //accessor: "age"
                       filterable: false,
-                      
+
                       Cell: row => (
                         <div
                           style={{
@@ -208,16 +208,16 @@ class DoctorClientInfo extends React.Component {
 
                   ]
                 }
-                
-              
-            
+
+
+
           ]}
-          
+
           defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />
-        
+
       </div>
     );
   }

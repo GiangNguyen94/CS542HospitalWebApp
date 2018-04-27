@@ -30,15 +30,15 @@ class AdminEmployeeInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           //console.log(arr);
           this.setState({employeeData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
-  
+
 
   render() {
     const { employeeData } = this.state;
@@ -46,7 +46,7 @@ class AdminEmployeeInfo extends React.Component {
 
     return (
       <div>
-      
+
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -71,8 +71,8 @@ class AdminEmployeeInfo extends React.Component {
           data={employeeData}
           filterable
           columns={[
-            
-              
+
+
             {
               Header: "EID",
               accessor: "eid",
@@ -92,7 +92,7 @@ class AdminEmployeeInfo extends React.Component {
             {
               Header: "Gender",
               accessor: "gender",
-              
+
               filterMethod: (filter, row) => {
                     if (filter.value === "all") {
                       return true;
@@ -110,11 +110,11 @@ class AdminEmployeeInfo extends React.Component {
                       style={{ width: "100%" }}
                       value={filter ? filter.value : "all"}
                     >
-                      <option value="all">Show All</option>
+                      <option value="all">All</option>
                       <option value="true">Male</option>
                       <option value="false">Female</option>
                     </select>,
-            
+
               width: 45
             },
             {
@@ -122,7 +122,7 @@ class AdminEmployeeInfo extends React.Component {
               accessor: "age",
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["Age"] }),
-              
+
               width: 50
             },
             {
@@ -149,7 +149,7 @@ class AdminEmployeeInfo extends React.Component {
                     matchSorter(rows, filter.value, { keys: ["JobTitle"] }),
               filterAll: true,
               width: 80
-            },  
+            },
             {
               Header: "Type",
               accessor: "type",
@@ -173,7 +173,7 @@ class AdminEmployeeInfo extends React.Component {
                       style={{ width: "100%" }}
                       value={filter ? filter.value : "all"}
                     >
-                      <option value="all">Show All</option>
+                      <option value="all">All</option>
                       <option value="true">Doctor</option>
                       <option value="false">Administrator</option>
                       <option value="both">Both</option>
@@ -184,9 +184,9 @@ class AdminEmployeeInfo extends React.Component {
               Header: "Detail",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -203,18 +203,18 @@ class AdminEmployeeInfo extends React.Component {
                     textDecoration: "underline",
                     borderRadius: "2px"
                   }}
-                > Check </div>   ) 
+                > Check </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Modify",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -231,18 +231,18 @@ class AdminEmployeeInfo extends React.Component {
                     textDecoration: "underline",
                     borderRadius: "2px"
                   }}
-                > Modify </div>   ) 
+                > Modify </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Delete",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -259,19 +259,19 @@ class AdminEmployeeInfo extends React.Component {
                     textDecoration: "underline",
                     borderRadius: "2px"
                   }}
-                > Delete </div>   ) 
+                > Delete </div>   )
               //  }
-                
+
              // ]
             },
-            
+
           ]}
-          
+
           defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />
-        
+
       </div>
     );
   }

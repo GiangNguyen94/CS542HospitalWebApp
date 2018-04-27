@@ -241,7 +241,7 @@ class AdminClientInfo extends React.Component {
                           style={{ width: "100%" }}
                           value={filter ? filter.value : "all"}
                         >
-                          <option value="all">Show All</option>
+                          <option value="all">All</option>
                           <option value="true">Male</option>
                           <option value="false">Female</option>
                         </select>,
@@ -490,35 +490,33 @@ export default AdminClientInfo
   }
   function getRange(rows, val1, val2, key){
     let dataLength = rows.length;
-  let data = [];
-  let value1 = parseInt(val1,10);
-  let value2 = parseInt(val2,10);
-  if(isNumber(val1) && val1 != ''){
+    let data = [];
+    let value1 = parseInt(val1,10);
+    let value2 = parseInt(val2,10);
+    if(isNumber(val1) && val1 != ''){
 
 
-    for(let i = 0; i < dataLength; i++){
-if(val2 != '' && isNumber(val2)){
-  if(rows[i][key] >= value1 && rows[i][key] <= value2){
-  data.push(rows[i]);
-  }
+      for(let i = 0; i < dataLength; i++){
+        if(val2 != '' && isNumber(val2)){
+          if(rows[i][key] >= value1 && rows[i][key] <= value2){
+            data.push(rows[i]);
+          }
 
-} else {
+        } else {
 
-  if(rows[i][key] == value1){
-  data.push(rows[i]);
-  }
+          if(rows[i][key] == value1){
+            data.push(rows[i]);
+          }
 
-}
+        }
 
+      }
+
+      return data;
 
     }
 
-  return data;
-
-  }
-
-  return -1;
-
+    return -1;
 
 
   }

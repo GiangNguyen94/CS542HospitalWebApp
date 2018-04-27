@@ -30,15 +30,15 @@ class AdminRoomInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           console.log(arr[0]["occupiedflag"].toString()=="false");
           this.setState({roomData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
-  
+
 
   render() {
     const { roomData } = this.state;
@@ -46,7 +46,7 @@ class AdminRoomInfo extends React.Component {
 
     return (
       <div>
-      
+
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -71,8 +71,8 @@ class AdminRoomInfo extends React.Component {
           data={roomData}
           filterable
           columns={[
-            
-              
+
+
             {
               Header: "RID",
               accessor: "rid",
@@ -92,20 +92,20 @@ class AdminRoomInfo extends React.Component {
             {
               Header: "Department",
               accessor: "d_name",
-              
+
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["DepName"] }),
               filterAll: true,
-            
+
             },
             {
               Header: "Capacity",
               accessor: "capacity",
-              
+
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["DepName"] }),
               filterAll: true,
-            
+
             },
             {
               Header: "Occupied",
@@ -128,20 +128,20 @@ class AdminRoomInfo extends React.Component {
                       style={{ width: "100%" }}
                       value={filter ? filter.value : "all"}
                     >
-                      <option value="all">Show All</option>
+                      <option value="all">All</option>
                       <option value="true">True</option>
                       <option value="false">False</option>
                     </select>,
-              
-             
+
+
             },
             {
               Header: "Detail",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -158,18 +158,18 @@ class AdminRoomInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Check </div>   ) 
+                > Check </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Modify",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -186,18 +186,18 @@ class AdminRoomInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Modify </div>   ) 
+                > Modify </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Delete",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -214,19 +214,19 @@ class AdminRoomInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Delete </div>   ) 
+                > Delete </div>   )
               //  }
-                
+
              // ]
             }
-            
+
           ]}
-          
+
           defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />
-        
+
       </div>
     );
   }
