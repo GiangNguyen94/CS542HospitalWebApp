@@ -114,11 +114,11 @@ class DoctorReportInfo extends React.Component {
                    matchSorter(rows, filter.value, { keys: ["Record_date"] }),
                    Filter: () => (
                      <div >
-                     <form action="/action_page.php">
-                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
-                     ></input>-
-                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
-                     </form>
+                       <form action="/action_page.php">
+                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}>
+                      </input>-
+                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                       </form>
                      </div>),
               filterAll: true,
 
@@ -181,28 +181,54 @@ class DoctorReportInfo extends React.Component {
 
 export default DoctorReportInfo
 
-function testcase(rows, val1, val2, key){
-  let dataLength = rows.length;
-  let data = [];
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
 
-  if( val1 != '' && val2 != ''){
-    let date1array = new Date(val1);
-    let date2array = new Date(val2);
+function testcase(rows, val1, val2, key){
+let dataLength = rows.length;
+let data = [];
+
+if( val1 != ''){
+
+if(val2 != ''){
+
+  var date1array = new Date(val1);
+  var date2array = new Date(val2);
 
     for(let i = 0; i < dataLength; i++){
       var cell = new Date(rows[i][key]);
 
-      if(cell >= date1array && cell <= date2array){
-        data.push(rows[i]);
-
-      }
-
-    }
-    return data;
+  if(cell >= date1array && cell <= date2array){
+  data.push(rows[i]);
 
   }
 
-  return -1;
+    }
+  return data;
+
+} else {
+
+  var date1array = new Date(val1);
+
+
+    for(let i = 0; i < dataLength; i++){
+      var cell = new Date(rows[i][key]);
+
+  if(cell == date1array){
+  data.push(rows[i]);
+
+  }
+
+    }
+  return data;
+
+}
+
+
+}
+
+return -1;
 
 
 }
