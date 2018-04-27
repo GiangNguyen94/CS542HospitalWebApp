@@ -57,12 +57,12 @@ class AdminClientInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           //console.log(arr);
           this.setState({patientData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
 
@@ -108,8 +108,8 @@ class AdminClientInfo extends React.Component {
               this.setState({singlePatientName:rowInfo["original"]["name"]});
               this.setState({singlePatientGender:rowInfo["original"]["gender"]});
               this.setState({singlePatientSSN:rowInfo["original"]["pssn"]});
-              
-                  
+
+
               if (handleOriginal) {
                 if (column["Header"] == "Modify"){
                   this.setState({Page:1})
@@ -120,7 +120,7 @@ class AdminClientInfo extends React.Component {
                     var request = new Request("/api/deletePatient/"+rowInfo["original"]["pid"],{
                       method:"DELETE",
                       mode: "cors",
-                      
+
                       headers: {
                         "Content-Type": "application/json"
                       }
@@ -135,7 +135,7 @@ class AdminClientInfo extends React.Component {
                     this.setState({Page:0});
                     this.forceUpdate();
                     // handle error?
-                    
+
                   }else{
                     console.log("");
                   };
@@ -146,7 +146,7 @@ class AdminClientInfo extends React.Component {
                     var request = new Request("/api/deleteStay/"+rowInfo["original"]["pid"],{
                       method:"DELETE",
                       mode: "cors",
-                      
+
                       headers: {
                         "Content-Type": "application/json"
                       }
@@ -161,7 +161,7 @@ class AdminClientInfo extends React.Component {
                     this.setState({Page:0});
                     this.forceUpdate();
                     // handle error?
-                    
+
                   }else{
                     console.log("");
                   };
@@ -490,17 +490,35 @@ export default AdminClientInfo
   }
   function getRange(rows, val1, val2, key){
     let dataLength = rows.length;
-    let data = [];
-    let value1 = parseInt(val1,10);
-    let value2 = parseInt(val2,10);
-    if(isNumber(val1) && isNumber(val2) && val1 != '' && val1 != ''){
-      for(let i = 0; i < dataLength; i++){
-        if(rows[i][key] >= value1 && rows[i][key] <= value2){
-          data.push(rows[i]);
-        }
-      }
-      return data;
+  let data = [];
+  let value1 = parseInt(val1,10);
+  let value2 = parseInt(val2,10);
+  if(isNumber(val1) && val1 != ''){
+
+
+    for(let i = 0; i < dataLength; i++){
+if(val2 != '' && isNumber(val2)){
+  if(rows[i][key] >= value1 && rows[i][key] <= value2){
+  data.push(rows[i]);
+  }
+
+} else {
+
+  if(rows[i][key] == value1){
+  data.push(rows[i]);
+  }
+
+}
+
+
     }
-    return -1;
+
+  return data;
+
+  }
+
+  return -1;
+
+
 
   }
