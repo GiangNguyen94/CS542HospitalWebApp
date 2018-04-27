@@ -29,6 +29,7 @@ class AddNewAdmission extends React.Component {
     console.log(this.props.singleID);
     this.setState({data:[
           {att:"PID", content:this.props.singleID},
+          {att:"Name", content:this.props.singleName},
           {att:"Enter Time", content:[]},
           {att:"Leave Time", content:[]},
           {att:"Payment Info", content:[]},
@@ -41,11 +42,11 @@ class AddNewAdmission extends React.Component {
     if (num == 1){
       var sendData = {};
       sendData.pid = parseInt(this.state.data[0].content);
-      sendData.enter = this.state.data[1].content.toString();
-      sendData.leave = this.state.data[2].content.toString();
-      sendData.payment = this.state.data[3].content.toString();
-      sendData.insurance = this.state.data[4].content.toString();
-      sendData.detail = this.state.data[5].content.toString();
+      sendData.enter = this.state.data[2].content.toString();
+      sendData.leave = this.state.data[3].content.toString();
+      sendData.payment = this.state.data[4].content.toString();
+      sendData.insurance = this.state.data[5].content.toString();
+      sendData.detail = this.state.data[6].content.toString();
       console.log(sendData);
       var request = new Request("/api/addAdmission/",{
         method:"POST",
@@ -68,21 +69,25 @@ class AddNewAdmission extends React.Component {
   }
 
   renderEditable(cellInfo) {
-    return (
-      <div
-        style={{ backgroundColor: "#fafafa" }}
-        contentEditable
-        suppressContentEditableWarning
-        onBlur={e => {
-          const data = [...this.state.data];
-          data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-          this.setState({ data });
-        }}
-        dangerouslySetInnerHTML={{
-          __html: this.state.data[cellInfo.index][cellInfo.column.id]
-        }}
-      />
-    );
+    console.log(cellInfo.index);
+    if ((cellInfo.index!=0)||(cellInfo.index!=1)){
+      return (
+        <div
+          style={{ backgroundColor: "#fafafa" }}
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={e => {
+            console.log(cellInfo)
+            const data = [...this.state.data];
+            data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+            this.setState({ data });
+          }}
+          dangerouslySetInnerHTML={{
+            __html: this.state.data[cellInfo.index][cellInfo.column.id]
+          }}
+        />
+      );
+    }
   }
 
 
@@ -94,7 +99,7 @@ class AddNewAdmission extends React.Component {
     switch(this.state.submit){
       case 0:
         page.push(
-          <div>
+          <div class = "contentPage">
       
             <ReactTable
               getTdProps={(state, rowInfo, column, instance) => {
@@ -119,7 +124,7 @@ class AddNewAdmission extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              defaultPageSize = {6}
+              defaultPageSize = {7}
               columns={[
                 
                   
@@ -131,7 +136,7 @@ class AddNewAdmission extends React.Component {
                 {
                   Header: "Content",
                   accessor: "content",
-                  Cell: this.renderEditable
+                  Cell: this.renderEditable 
                 }
                 
               ]}

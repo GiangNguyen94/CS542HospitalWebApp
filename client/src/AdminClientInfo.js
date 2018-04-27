@@ -155,7 +155,10 @@ class AdminClientInfo extends React.Component {
                     .then(function(response){
                       response.json()
                       .then(function(data){
-                        console.log(data)
+                        console.log(data);
+                        if (data.status.includes("Success")){
+                          alert("Donezo");
+                        }
                       })
                     });
                     this.setState({Page:0});
@@ -206,7 +209,7 @@ class AdminClientInfo extends React.Component {
                       Header: "PID",
                       accessor: "pid",
                       filterMethod: (filter, rows) =>
-                            matchSorter(rows, filter.value, { keys: ["PID"] }),
+                            matchSorter(rows, filter.value, { keys: ["pid"] }),
                       filterAll: true,
                       width: 50
                       },
@@ -266,7 +269,7 @@ class AdminClientInfo extends React.Component {
                       Header: "SSN",
                       accessor: "pssn",
                       filterMethod: (filter, rows) =>
-                            matchSorter(rows, filter.value, { keys: ["SSN"] }),
+                            matchSorter(rows, filter.value, { keys: ["pssn"] }),
                       filterAll: true,
                       width: 100
                     }
@@ -463,7 +466,7 @@ class AdminClientInfo extends React.Component {
         page.push(<AdminAdmissionInfo singleID={singlePatientID}/>);
         break;
       case 8:
-        page.push(<AddNewAdmission singleID={singlePatientID}/>);
+        page.push(<AddNewAdmission singleID={singlePatientID} singleName={singlePatientName}/>);
         break;
     //    case 6:
       //    page.push(<BookRoom/>);
