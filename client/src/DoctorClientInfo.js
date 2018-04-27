@@ -12,9 +12,19 @@ class DoctorClientInfo extends React.Component {
   //constructor
   constructor() {
     super();
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       patientData: []
     };
+  }
+
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ AgeRange1: e });
+    }else{
+      this.setState({ AgeRange2: e });
+
+    }
   }
 
   //API
@@ -43,6 +53,13 @@ class DoctorClientInfo extends React.Component {
   render() {
     const { patientData } = this.state;
 
+    let rangeCond = getRange(patientData, this.state.AgeRange1, this.state.AgeRange2, 'age');
+    if(rangeCond !== -1){
+      var data = rangeCond;
+
+    }else{
+      var data = patientData;
+    }
 
     return (
       <div>
@@ -127,7 +144,14 @@ class DoctorClientInfo extends React.Component {
                       accessor: "age",
                       filterMethod: (filter, rows) =>
                            matchSorter(rows, filter.value, { keys: ["age"] }),
-
+                           Filter: () => (
+                                    <div >
+                                      <form action="/action_page.php">
+                                        <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
+                                     ></input>-
+                                       <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                                      </form>
+                                    </div>),
 
                       width: 50
                     }
@@ -224,3 +248,39 @@ class DoctorClientInfo extends React.Component {
 }
 
 export default DoctorClientInfo
+
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function getRange(rows, val1, val2, key){
+  let dataLength = rows.length;
+  let data = [];
+  let value1 = parseInt(val1,10);
+  let value2 = parseInt(val2,10);
+  if(isNumber(val1) && val1 != ''){
+
+
+    for(let i = 0; i < dataLength; i++){
+      if(val2 != '' && isNumber(val2)){
+        if(rows[i][key] >= value1 && rows[i][key] <= value2){
+          data.push(rows[i]);
+        }
+
+      } else {
+
+        if(rows[i][key] == value1){
+          data.push(rows[i]);
+        }
+
+      }
+
+    }
+
+    return data;
+
+  }
+
+  return -1;
+
+
+}
