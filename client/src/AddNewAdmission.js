@@ -69,8 +69,17 @@ class AddNewAdmission extends React.Component {
   }
 
   renderEditable(cellInfo) {
-    console.log(cellInfo.index);
-    if ((cellInfo.index!=0)||(cellInfo.index!=1)){
+    //console.log(cellInfo.index);
+    if ((cellInfo.index==0)||(cellInfo.index==1)){
+      return (
+          <div 
+          dangerouslySetInnerHTML={{
+              __html: this.state.data[cellInfo.index][cellInfo.column.id]
+            }}
+          />
+      );
+    }
+    if ((cellInfo.index!=0)&&(cellInfo.index!=1)){
       return (
         <div
           style={{ backgroundColor: "#fafafa" }}
