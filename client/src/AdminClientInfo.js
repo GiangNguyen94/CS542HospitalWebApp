@@ -219,7 +219,7 @@ class AdminClientInfo extends React.Component {
                       width: 100
                     },
                     {
-                      Header: "Sex",
+                      Header: "Gender",
                       accessor: "gender",
                       id: "sex",
                       //filterMethod: (filter, rows) =>
@@ -246,7 +246,7 @@ class AdminClientInfo extends React.Component {
                           <option value="false">Female</option>
                         </select>,
 
-                      width: 45
+                      width: 70
                     },
                     {
                       Header: "Age",

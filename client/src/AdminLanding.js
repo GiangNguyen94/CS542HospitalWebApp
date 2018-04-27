@@ -116,7 +116,7 @@ class AdminLanding extends React.Component{
 						<div>
 						<center>
 						<font size="+2">
-						
+						<br></br><br></br><br></br>
 						<p>Welcome to our system, Admin!</p>
 						<p>
 						Click on items on the left and</p>
