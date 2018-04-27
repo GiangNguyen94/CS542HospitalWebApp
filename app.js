@@ -129,6 +129,29 @@ app.post('/api/modifyPatient/:id', function(req,res){
 		}
 	})
 })
+//For booking rooms
+app.post('/api/bookRoom/:id', function(req,res){
+	//console.log(req.body);
+	var roomID = req.params.id;
+	var patientID = req.body.pid;
+	//console.log("Insert into Stay(pid,rid) values ("+patientID+","+roomID+");");
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			//var values = sprintf("'%s', '%s', '%s', ",[pssn,pname,gender]);
+			client.query("Insert into Stay(pid,rid) values ("+patientID+","+roomID+");", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Book Room Success'});
+			})
+		}
+	})
+})
 //For Delete patient
 app.delete('/api/deletePatient/:id', function(req,res){
 	//console.log(req.body);
@@ -200,7 +223,7 @@ app.delete('/api/deleteStay/:id', function(req,res){
 })
 //For Modify Admission
 
-//Get
+//GET
 //Patient select all
 app.get('/api/patient',function(req,res,next){
 	pool.connect(function(err,client,done){
@@ -256,6 +279,27 @@ app.get('/api/admission',function(req,res,next){
 		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
 		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 			res.json(result.rows);
+		})
+	})
+});
+//Get Admission by ID
+app.get('/api/admission/:id',function(req,res,next){
+	var patientID = req.params.id;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select AID,P.Name,to_char(\"enter_time\",'MM/DD/YYYY') AS enter_time,to_char(\"leave_time\",'MM/DD/YYYY') AS leave_time,PaymentInfo,InsuranceCover,Detail from Admission Join Patient P ON P.PID=Admission.PID where P.PID="+patientID+";", [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+			
 		})
 	})
 });

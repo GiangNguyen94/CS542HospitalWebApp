@@ -22,7 +22,7 @@ class ModifyPatient extends React.Component {
     };
 
     this.renderEditable = this.renderEditable.bind(this);
- 
+    this.handleChangePageClick = this.handleChangePageClick.bind(this);
   }
 
   //API

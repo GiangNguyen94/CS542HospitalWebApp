@@ -7,7 +7,7 @@ import "react-table/react-table.css";
 import { makeOnePerson, makeDataAdmission, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter';
 import AdminAdmissionInfo from './AdminAdmissionInfo';
-
+import AdminClientInfo from './AdminClientInfo';
 
 class AddNewAdmission extends React.Component {
   constructor() {
@@ -17,13 +17,6 @@ class AddNewAdmission extends React.Component {
       //1 is submit, 2 is cancel
       data: 
         [
-          
-          {att:"PID", content:[]},
-          {att:"Enter Time", content:[]},
-          {att:"Leave Time", content:[]},
-          {att:"Payment Info", content:[]},
-          {att:"Insurance Cover", content:[]},
-          {att:"Detail", content:[]}
         ]
     };
 
@@ -32,7 +25,17 @@ class AddNewAdmission extends React.Component {
   }
 
   //API
-  
+  componentDidMount(){
+    console.log(this.props.singleID);
+    this.setState({data:[
+          {att:"PID", content:this.props.singleID},
+          {att:"Enter Time", content:[]},
+          {att:"Leave Time", content:[]},
+          {att:"Payment Info", content:[]},
+          {att:"Insurance Cover", content:[]},
+          {att:"Detail", content:[]}
+        ]});
+  }
 
   handleChangePageClick(num){
     if (num == 1){
@@ -148,7 +151,12 @@ class AddNewAdmission extends React.Component {
         page.push(<AdminAdmissionInfo/>);
         break;
       case 2:
-        page.push(<AdminAdmissionInfo/>);
+        if (this.props.singleID){
+          page.push(<AdminClientInfo/>);
+        }
+        else {
+          page.push(<AdminAdmissionInfo/>);
+        }
         break;
       }
     return (

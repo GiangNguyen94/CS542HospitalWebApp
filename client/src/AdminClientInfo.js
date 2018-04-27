@@ -11,6 +11,8 @@ import matchSorter from 'match-sorter'
 import BookRoom from './BookRoom';
 import ModifyAdmission from './ModifyAdmission';
 import AddNewPatient from './AddNewPatient';
+import AdminAdmissionInfo from './AdminAdmissionInfo';
+import AddNewAdmission from './AddNewAdmission';
 
 
 class AdminClientInfo extends React.Component {
@@ -165,6 +167,11 @@ class AdminClientInfo extends React.Component {
                 }
                 if (column["Header"] == "Book"){
                   this.setState({Page:6})
+                }
+                if (column["Header"] == "History"){
+                  if (column.parentColumn.Header == "Admission"){
+                    this.setState({Page:7});
+                  }
                 }
                 if (column["Header"] == "New"){
                   this.setState({Page:8})
@@ -445,8 +452,11 @@ class AdminClientInfo extends React.Component {
       case 6:
         page.push(<BookRoom singleID={singlePatientID} singleGender={singlePatientGender} singleName={singlePatientName} singleSSN={singlePatientSSN}/>);
         break;
+      case 7:
+        page.push(<AdminAdmissionInfo singleID={singlePatientID}/>);
+        break;
       case 8:
-        page.push(<ModifyAdmission/>);
+        page.push(<AddNewAdmission singleID={singlePatientID}/>);
         break;
     //    case 6:
       //    page.push(<BookRoom/>);

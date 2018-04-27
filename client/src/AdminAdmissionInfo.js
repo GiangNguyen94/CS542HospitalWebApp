@@ -26,22 +26,41 @@ class AdminAdmissionInfo extends React.Component {
   componentDidMount(){
     console.log('Component has mounted');
 
-    fetch("/api/admission")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //console.log(result[0]);
-          let arr = [];
-          for (var i = 0; i< result.length; i++){
-            arr.push(result[i]);
+    if (this.props.singleID){
+      fetch("api/admission/"+this.props.singleID)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
 
-          }
-          
-          this.setState({admissionData: arr});
-          //console.log(this.state);
-        }
-        
-    )
+            }
+            
+            this.setState({admissionData: arr});
+            console.log(this.state);
+          }   
+        )
+
+    }
+    else {
+      fetch("/api/admission")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
+
+            }
+            
+            this.setState({admissionData: arr});
+            //console.log(this.state);
+          }   
+        )
+    } 
   }
   
 
