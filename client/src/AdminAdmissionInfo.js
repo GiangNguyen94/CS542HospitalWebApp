@@ -174,7 +174,7 @@ class AdminAdmissionInfo extends React.Component {
                 Header: "AID",
                 accessor: "aid",
                 filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["AID"] }),
+                      matchSorter(rows, filter.value, { keys: ["aid"] }),
                 filterAll: true,
                 width: 50
                 },
@@ -191,7 +191,7 @@ class AdminAdmissionInfo extends React.Component {
                 accessor: "enter_time",
 
                 filterMethod: (filter, rows) =>
-                     matchSorter(rows, filter.value, { keys: ["EnterTime"] }),
+                     matchSorter(rows, filter.value, { keys: ["enter_time"] }),
                 filterAll: true,
                 Filter: () => (
                   <div >
@@ -207,7 +207,7 @@ class AdminAdmissionInfo extends React.Component {
                 Header: "Leave Time",
                 accessor: "leave_time",
                 filterMethod: (filter, rows) =>
-                     matchSorter(rows, filter.value, { keys: ["LeaveTime"] }),
+                     matchSorter(rows, filter.value, { keys: ["leave_time"] }),
                      Filter: () => (
                        <div >
                          <form action="/action_page.php">
@@ -223,7 +223,7 @@ class AdminAdmissionInfo extends React.Component {
                 Header: "Payment",
                 accessor: "paymentinfo",
                 filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["PaymentInfo"] }),
+                      matchSorter(rows, filter.value, { keys: ["paymentinfo"] }),
                 filterAll: true,
                 width: 100
               },
@@ -231,7 +231,7 @@ class AdminAdmissionInfo extends React.Component {
                 Header: "Insurance",
                 accessor: "insurancecover",
                 filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["InsuranceCover"] }),
+                      matchSorter(rows, filter.value, { keys: ["insurancecover"] }),
                 filterAll: true,
                 width: 100
               },
@@ -239,7 +239,7 @@ class AdminAdmissionInfo extends React.Component {
                 Header: "Notes",
                 accessor: "detail",
                 filterMethod: (filter, rows) =>
-                      matchSorter(rows, filter.value, { keys: ["Detail"] }),
+                      matchSorter(rows, filter.value, { keys: ["detail"] }),
                 filterAll: true,
                 width: 100
               },
