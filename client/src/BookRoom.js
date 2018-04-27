@@ -160,7 +160,7 @@ class BookRoom extends React.Component {
             {
               Header: "Content",
               accessor: "content",
-              Cell: this.renderEditable
+             
             }
 
           ]}
