@@ -11,9 +11,19 @@ import matchSorter from 'match-sorter'
 class AdminEmployeeInfo extends React.Component {
   constructor() {
     super();
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       employeeData: makeDataEmployee()
     };
+  }
+
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ salary1: e });
+    }else{
+      this.setState({ salary2: e });
+
+    }
   }
 
   //API
@@ -43,6 +53,13 @@ class AdminEmployeeInfo extends React.Component {
   render() {
     const { employeeData } = this.state;
 
+    let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'age');
+    if(rangeCond !== -1){
+      var data = rangeCond;
+
+    }else{
+      var data = employeeData;
+    }
 
     return (
       <div>
@@ -139,6 +156,14 @@ class AdminEmployeeInfo extends React.Component {
               accessor: "salary",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["Salary"] }),
+                    Filter: () => (
+                      <div >
+                      <form action="/action_page.php">
+                      <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
+                      ></input>-
+                      <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                      </form>
+                      </div>),
               filterAll: true,
               width: 80
             },
@@ -278,3 +303,41 @@ class AdminEmployeeInfo extends React.Component {
 }
 
 export default AdminEmployeeInfo
+
+//helper function
+  function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
+function testcase(rows, val1, val2, key){
+    let dataLength = rows.length;
+    let data = [];
+    let value1 = parseInt(val1,10);
+    let value2 = parseInt(val2,10);
+    if(isNumber(val1) && val1 != ''){
+
+
+      for(let i = 0; i < dataLength; i++){
+        if(val2 != '' && isNumber(val2)){
+          if(rows[i][key] >= value1 && rows[i][key] <= value2){
+            data.push(rows[i]);
+          }
+
+        } else {
+
+          if(rows[i][key] == value1){
+            data.push(rows[i]);
+          }
+
+        }
+
+      }
+
+      return data;
+
+    }
+
+    return -1;
+
+
+  }
