@@ -58,7 +58,7 @@ class AdminEmployeeInfo extends React.Component {
       var data = rangeCond;
 
     }else{
-      var data = patientData;
+      var data = employeeData;
     }
 
     return (
