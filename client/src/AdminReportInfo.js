@@ -12,6 +12,7 @@ class AdminReportInfo extends React.Component {
   constructor() {
     super();
     this.state = {
+      Page: 0,
       reportData: [],
       RecordTime1: '',
       RecordTime2: '',
@@ -103,7 +104,11 @@ class AdminReportInfo extends React.Component {
                 // If you want to fire the original onClick handler, call the
                 // 'handleOriginal' function.
                 if (handleOriginal) {
-                  handleOriginal();
+                  if (column.parentColumn.Header == "Detail"){
+                    if (column.Header == "Check"){
+                      this.setState({Page: 1});
+                    }
+                  }
                 }
               }
             };

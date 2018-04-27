@@ -141,7 +141,7 @@ class AdminClientInfo extends React.Component {
                   };
                 }
                 if (column["Header"]=="Leave"){
-                  if (window.confirm("Are you sure you want to DELETE patient "+rowInfo["original"]["name"]+" record?")){
+                  if (window.confirm("Are you sure Patient "+rowInfo["original"]["name"]+" is leaving Room "+rowInfo["original"]["rid"]+"?")){
                     //Delete Call to API
                     var request = new Request("/api/deleteStay/"+rowInfo["original"]["pid"],{
                       method:"DELETE",
