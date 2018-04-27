@@ -299,7 +299,28 @@ app.get('/api/admission/:id',function(req,res,next){
 		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
 		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 			res.json(result.rows);
-			
+
+		})
+	})
+});
+//Get Report by ID
+app.get('/api/report/:id',function(req,res,next){
+	var patientID = req.params.id;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select E.name as e_name,P.name as p_name,Diagnosis,to_char(\"record_date\",'MM/DD/YYYY') AS record_date,Detail,Remark from Report join employee E ON E.eid = Report.docid join Patient P ON P.pid=Report.pid where P.pid="+patientID+";", [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+
 		})
 	})
 });

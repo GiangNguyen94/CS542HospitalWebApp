@@ -31,23 +31,43 @@ class AdminReportInfo extends React.Component {
   componentDidMount(){
     console.log('Component has mounted');
 
-    fetch("/api/report")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //console.log(result[0]);
-          let arr = [];
-          for (var i = 0; i< result.length; i++){
-            arr.push(result[i]);
+    if (this.props.singleID){
+      fetch("api/report/"+this.props.singleID)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
 
+            }
+            
+            this.setState({reportData: arr});
+            console.log(this.state);
+          }   
+        )
+
+    }
+    else{
+      fetch("/api/report")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
+
+            }
+
+            //console.log(arr);
+            this.setState({reportData: arr});
+            //console.log(this.state);
           }
 
-          //console.log(arr);
-          this.setState({reportData: arr});
-          //console.log(this.state);
-        }
-
-    )
+      )
+    }
   }
 
 

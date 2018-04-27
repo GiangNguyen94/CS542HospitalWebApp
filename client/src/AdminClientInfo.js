@@ -13,6 +13,7 @@ import ModifyAdmission from './ModifyAdmission';
 import AddNewPatient from './AddNewPatient';
 import AdminAdmissionInfo from './AdminAdmissionInfo';
 import AddNewAdmission from './AddNewAdmission';
+import AdminReportInfo from './AdminReportInfo';
 
 
 class AdminClientInfo extends React.Component {
@@ -171,6 +172,9 @@ class AdminClientInfo extends React.Component {
                 if (column["Header"] == "History"){
                   if (column.parentColumn.Header == "Admission"){
                     this.setState({Page:7});
+                  }
+                  if (column.parentColumn.Header == "Report"){
+                    this.setState({Page:4});
                   }
                 }
                 if (column["Header"] == "New"){
@@ -448,6 +452,9 @@ class AdminClientInfo extends React.Component {
         break;
       case 2:
         page.push(<AddNewPatient/>);
+        break;
+      case 4:
+        page.push(<AdminReportInfo singleID={singlePatientID}/>);
         break;
       case 6:
         page.push(<BookRoom singleID={singlePatientID} singleGender={singlePatientGender} singleName={singlePatientName} singleSSN={singlePatientSSN}/>);
