@@ -15,8 +15,27 @@ class AdminAdmissionInfo extends React.Component {
     this.handleChangePageClick=this.handleChangePageClick.bind(this);
     this.state = {
       Page: 0,
-      admissionData: []
+      admissionData: [],
+      EnterTime1: '',
+      EnterTime2: '',
+      LeaveTime1: '',
+      LeaveTime2: '',
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ EnterTime1: e });
+    }  else if(num == 1){
+      this.setState({ EnterTime2: e });
+    } else   if(num == 2){
+      this.setState({ LeaveTime1: e });
+    }else{
+      this.setState({ LeaveTime2: e });
+
+    }
+
   }
 
   handleChangePageClick(num){
@@ -36,18 +55,41 @@ class AdminAdmissionInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           this.setState({admissionData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
-  
+
 
   render() {
-    const { admissionData } = this.state;
+
     let page = [];
+
+
+    let constdata  = this.state.admissionData;
+
+    let rangeCond = testcase(constdata, this.state.EnterTime1, this.state.EnterTime2, 'EnterTime');
+
+    if(rangeCond !== -1){
+      var admissionData = rangeCond;
+
+    } else {
+      var admissionData = constdata;
+    }
+
+    rangeCond = testcase(admissionData, this.state.LeaveTime1, this.state.LeaveTime2, 'LeaveTime');
+
+    if(rangeCond !== -1){
+      admissionData = rangeCond;
+
+    } else {
+
+    }
+
+
 
     switch(this.state.Page){
       case 0:
@@ -78,7 +120,7 @@ class AdminAdmissionInfo extends React.Component {
                         var request = new Request("/api/deleteAdmission/"+rowInfo["original"]["aid"],{
                           method:"DELETE",
                           mode: "cors",
-                          
+
                           headers: {
                             "Content-Type": "application/json"
                           }
@@ -107,8 +149,8 @@ class AdminAdmissionInfo extends React.Component {
             data={admissionData}
             filterable
             columns={[
-              
-                
+
+
               {
                 Header: "AID",
                 accessor: "aid",
@@ -128,11 +170,18 @@ class AdminAdmissionInfo extends React.Component {
               {
                 Header: "Enter Time",
                 accessor: "enter_time",
-                
+
                 filterMethod: (filter, rows) =>
                      matchSorter(rows, filter.value, { keys: ["EnterTime"] }),
                 filterAll: true,
-              
+                Filter: () => (
+                  <div >
+                  <form action="/action_page.php">
+                  <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
+                  ></input>-
+                  <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                  </form>
+                  </div>),
                 width: 100
               },
               {
@@ -140,8 +189,15 @@ class AdminAdmissionInfo extends React.Component {
                 accessor: "leave_time",
                 filterMethod: (filter, rows) =>
                      matchSorter(rows, filter.value, { keys: ["LeaveTime"] }),
-                
-                
+                     Filter: () => (
+                       <div >
+                       <form action="/action_page.php">
+                       <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}
+                       ></input>-
+                       <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+                       </form>
+                       </div>),
+
                 width: 100
               },
               {
@@ -168,15 +224,15 @@ class AdminAdmissionInfo extends React.Component {
                 filterAll: true,
                 width: 100
               },
-                
-              
+
+
               {
                 Header: "Delete",
                 //accessor: "age"
                 filterable: false,
-                
+
                 // columns:[
-                  
+
                 //   {
                 //     Header: "Delete",
                 //     //accessor: "age"
@@ -193,19 +249,19 @@ class AdminAdmissionInfo extends React.Component {
                       textAlign: "center",
                       borderRadius: "2px"
                     }}
-                  > Delete </div>   ) 
+                  > Delete </div>   )
                 //  }
-                  
+
                // ]
               }
-              
+
             ]}
-            
+
             defaultPageSize={10}
             className="-striped -highlight"
           />
           <br />
-          
+
         </div>
         );
         break;
@@ -222,3 +278,29 @@ class AdminAdmissionInfo extends React.Component {
 }
 
 export default AdminAdmissionInfo
+
+function testcase(rows, val1, val2, key){
+  let dataLength = rows.length;
+  let data = [];
+
+  if( val1 != '' && val2 != ''){
+    let date1array = new Date(val1);
+    let date2array = new Date(val2);
+
+    for(let i = 0; i < dataLength; i++){
+      var cell = new Date(rows[i][key]);
+
+      if(cell >= date1array && cell <= date2array){
+        data.push(rows[i]);
+
+      }
+
+    }
+    return data;
+
+  }
+
+  return -1;
+
+
+}

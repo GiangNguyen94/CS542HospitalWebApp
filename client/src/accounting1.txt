@@ -1,0 +1,254 @@
+rt React from "react";
+import { render } from "react-dom";
+
+// Import React Table
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import { makeDataEquipment, Logo, Tips } from "./Utils";
+import matchSorter from 'match-sorter'
+
+
+class AdminEquipmentInfo extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      data: makeDataEquipment(),
+      PurchaseTime1: '',
+      PurchaseTime2: '',
+      InspectionTime1: '',
+      InspectionTime2: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ PurchaseTime1: e });
+    }  else if(num == 1){
+      this.setState({ PurchaseTime2: e });
+    } else   if(num == 2){
+      this.setState({ InspectionTime1: e });
+    }else{
+      this.setState({ InspectionTime2: e });
+
+    }
+
+  }
+
+
+  render() {
+    let constdata  = this.state.data;
+
+    let rangeCond = testcase(constdata, this.state.EnterTime1, this.state.EnterTime2, 'PurchaseTime');
+
+    if(rangeCond !== -1){
+      var data = rangeCond;
+
+    } else {
+      var data = constdata;
+    }
+
+    rangeCond = testcase(data, this.state.LeaveTime1, this.state.LeaveTime2, 'LatestInspect');
+
+    if(rangeCond !== -1){
+      data = rangeCond;
+
+    } else {
+
+    }
+
+
+
+    return (
+      <div>
+
+      <ReactTable
+      getTdProps={(state, rowInfo, column, instance) => {
+        return {
+          onClick: (e, handleOriginal) => {
+            console.log("A Td Element was clicked!");
+            console.log("it produced this event:", e);
+            console.log("It was in this column:", column);
+            console.log("It was in this row:", rowInfo);
+            console.log("It was in this table instance:", instance);
+
+            // IMPORTANT! React-Table uses onClick internally to trigger
+            // events like expanding SubComponents and pivots.
+            // By default a custom 'onClick' handler will override this functionality.
+            // If you want to fire the original onClick handler, call the
+            // 'handleOriginal' function.
+            if (handleOriginal) {
+              handleOriginal();
+            }
+          }
+        };
+      }}
+      data={data}
+      filterable
+      columns={[
+
+
+        {
+          Header: "SerialNum",
+          accessor: "SerialNum",
+          filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ["SerialNum"] }),
+          filterAll: true,
+
+        },
+        {
+          Header: "RID",
+          accessor: "RID",
+          filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ["RID"] }),
+          filterAll: true,
+          width: 50
+        },
+        {
+          Header: "Purchase Time",
+          accessor: "PurchaseTime",
+
+          filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ["PurchaseTime"] }),
+          Filter: () => (
+            <div >
+            <form action="/action_page.php">
+            <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
+            ></input>-
+            <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+            </form>
+            </div>),
+            filterAll: true,
+
+          },
+          {
+            Header: "Inspection Time",
+            accessor: "LatestInspect",
+            filterMethod: (filter, rows) =>
+            matchSorter(rows, filter.value, { keys: ["LatestInspect"] }),
+            Filter: () => (
+              <div >
+              <form action="/action_page.php">
+              <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}
+              ></input>-
+              <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+              </form>
+              </div>),
+
+
+            },
+            {
+              Header: "Detail",
+              //accessor: "age"
+              filterable: false,
+
+              // columns:[
+
+              //   {
+              //     Header: "Delete",
+              //     //accessor: "age"
+              //     filterable: false,
+              //     width: 75,
+              Cell: row => (
+                <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "coral",
+                  borderRadius: "2px"
+                }}
+                > Check </div>   )
+                //  }
+
+                // ]
+              },
+              {
+                Header: "Modify",
+                //accessor: "age"
+                filterable: false,
+
+                // columns:[
+
+                //   {
+                //     Header: "Delete",
+                //     //accessor: "age"
+                //     filterable: false,
+                //     width: 75,
+                Cell: row => (
+                  <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "coral",
+                    borderRadius: "2px"
+                  }}
+                  > Modify </div>   )
+                  //  }
+
+                  // ]
+                },
+                {
+                  Header: "Delete",
+                  //accessor: "age"
+                  filterable: false,
+
+                  // columns:[
+
+                  //   {
+                  //     Header: "Delete",
+                  //     //accessor: "age"
+                  //     filterable: false,
+                  //     width: 75,
+                  Cell: row => (
+                    <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "coral",
+                      borderRadius: "2px"
+                    }}
+                    > Delete </div>   )
+                    //  }
+
+                    // ]
+                  }
+
+                ]}
+
+                defaultPageSize={10}
+                className="-striped -highlight"
+                />
+                <br />
+
+                </div>
+              );
+            }
+          }
+
+          export default AdminEquipmentInfo
+
+          function testcase(rows, val1, val2, key){
+            let dataLength = rows.length;
+            let data = [];
+
+            if( val1 != '' && val2 != ''){
+              let date1array = new Date(val1);
+              let date2array = new Date(val2);
+
+              for(let i = 0; i < dataLength; i++){
+                var cell = new Date(rows[i][key]);
+
+                if(cell >= date1array && cell <= date2array){
+                  data.push(rows[i]);
+
+                }
+
+              }
+              return data;
+
+            }
+
+            return -1;
+
+
+          }

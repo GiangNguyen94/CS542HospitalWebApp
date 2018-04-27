@@ -12,8 +12,27 @@ class AdminEquipmentInfo extends React.Component {
   constructor() {
     super();
     this.state = {
-      equipmentData: []
+      equipmentData: [],
+      PurchaseTime1: '',
+      PurchaseTime2: '',
+      LatestInspect1: '',
+      LatestInspect2: '',
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e, num){
+    if(num == 0){
+      this.setState({ PurchaseTime1: e });
+    }  else if(num == 1){
+      this.setState({ PurchaseTime2: e });
+    } else   if(num == 2){
+      this.setState({ LatestInspect1: e });
+    }else{
+      this.setState({ LatestInspect2: e });
+
+    }
+
   }
 
   //API
@@ -30,22 +49,41 @@ class AdminEquipmentInfo extends React.Component {
             arr.push(result[i]);
 
           }
-          
+
           //console.log(arr);
           this.setState({equipmentData: arr});
           //console.log(this.state);
         }
-        
+
     )
   }
 
   render() {
-    const { equipmentData } = this.state;
+
+    let constdata  = this.state.equipmentData;
+
+    let rangeCond = testcase(constdata, this.state.PurchaseTime1, this.state.PurchaseTime2, 'PurchaseTime');
+
+    if(rangeCond !== -1){
+      var equipmentData = rangeCond;
+
+    } else {
+      var equipmentData = constdata;
+    }
+
+    rangeCond = testcase(equipmentData, this.state.LatestInspect1, this.state.LatestInspect2, 'LatestInspect');
+
+    if(rangeCond !== -1){
+      equipmentData = rangeCond;
+
+    } else {
+
+    }
 
 
     return (
       <div>
-      
+
         <ReactTable
           getTdProps={(state, rowInfo, column, instance) => {
             return {
@@ -70,15 +108,15 @@ class AdminEquipmentInfo extends React.Component {
           data={equipmentData}
           filterable
           columns={[
-            
-              
+
+
             {
               Header: "SerialNum",
               accessor: "serialnum",
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["SerialNum"] }),
               filterAll: true,
-              
+
               },
             {
               Header: "RID",
@@ -91,27 +129,42 @@ class AdminEquipmentInfo extends React.Component {
             {
               Header: "Purchase Time",
               accessor: "purchasetime",
-              
+
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["PurchaseTime"] }),
+                   Filter: () => (
+                     <div >
+                     <form action="/action_page.php">
+                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}
+                     ></input>-
+                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                     </form>
+                     </div>),
               filterAll: true,
-            
+
             },
             {
               Header: "Inspection Time",
               accessor: "inspectime",
               filterMethod: (filter, rows) =>
                    matchSorter(rows, filter.value, { keys: ["LatestInspect"] }),
-              
-             
+                   Filter: () => (
+                     <div >
+                     <form action="/action_page.php">
+                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}
+                     ></input>-
+                     <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+                     </form>
+                     </div>),
+
             },
             {
               Header: "Detail",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -128,18 +181,18 @@ class AdminEquipmentInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Check </div>   ) 
+                > Check </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Modify",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -156,18 +209,18 @@ class AdminEquipmentInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Modify </div>   ) 
+                > Modify </div>   )
               //  }
-                
+
              // ]
             },
             {
               Header: "Delete",
               //accessor: "age"
               filterable: false,
-              
+
               // columns:[
-                
+
               //   {
               //     Header: "Delete",
               //     //accessor: "age"
@@ -184,22 +237,48 @@ class AdminEquipmentInfo extends React.Component {
                     textAlign: "center",
                     borderRadius: "2px"
                   }}
-                > Delete </div>   ) 
+                > Delete </div>   )
               //  }
-                
+
              // ]
             }
-            
+
           ]}
-          
+
           defaultPageSize={10}
           className="-striped -highlight"
         />
         <br />
-        
+
       </div>
     );
   }
 }
 
 export default AdminEquipmentInfo
+
+function testcase(rows, val1, val2, key){
+  let dataLength = rows.length;
+  let data = [];
+
+  if( val1 != '' && val2 != ''){
+    let date1array = new Date(val1);
+    let date2array = new Date(val2);
+
+    for(let i = 0; i < dataLength; i++){
+      var cell = new Date(rows[i][key]);
+
+      if(cell >= date1array && cell <= date2array){
+        data.push(rows[i]);
+
+      }
+
+    }
+    return data;
+
+  }
+
+  return -1;
+
+
+}
