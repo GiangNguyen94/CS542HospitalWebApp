@@ -116,10 +116,15 @@ class AdminLanding extends React.Component{
 						<div>
 						<center>
 						<font size="+2">
-						<br></br><br></br>
-						<br></br><br></br>
-						<br></br><br></br>
-						Welcome Admin user!
+						
+						<p>Welcome to our system, Admin!</p>
+						<p>
+						Click on items on the left and</p>
+						<p>
+						Check for what you want</p>
+						<p>
+						Have a good day!
+						</p>
 						</font>
 						</center>
 						</div>

@@ -81,7 +81,16 @@ class DoctorLanding extends React.Component{
 					<div class="contentPage">
 						<div>
 						<center>
-						Welcome Doctor user!
+						<font size="+2">
+						<p>Welcome to our system, Doctor!</p>
+						<p>
+						Click on items on the left and</p>
+						<p>
+						Check for what you want</p>
+						<p>
+						Have a good day!
+						</p>
+						</font>
 						</center>
 						</div>
 		     	 	</div>
