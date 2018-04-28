@@ -90,7 +90,7 @@ class AdminDepartmentInfo extends React.Component {
                         this.setState({Page:1});
                       }
                       if (column.Header == "Delete"){
-                        if (window.confirm("Are you sure you want to DELETE department "+rowInfo["original"]["name"]+" record?")){
+                        if (window.confirm("Are you sure you want to DELETE department "+rowInfo["original"]["d_name"]+" record?")){
                           //Delete Call to API
                           var request = new Request("/api/deleteDepartment/"+rowInfo["original"]["did"],{
                             method:"DELETE",
