@@ -199,9 +199,7 @@ class AdminEmployeeInfo extends React.Component {
                 {
                   Header: "Age",
                   accessor: "age",
-                  filterMethod: (filter, rows) =>
-                       matchSorter(rows, filter.value, { keys: ["age"] }),
-
+                  
                   width: 50
                 },
                 {

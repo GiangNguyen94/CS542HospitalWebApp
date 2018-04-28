@@ -31,6 +31,7 @@ class ModifyEmployee extends React.Component {
     };
 
     this.renderEditable = this.renderEditable.bind(this);
+    this.renderEditableAddNew = this.renderEditableAddNew.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleAddNew = this.handleAddNew.bind(this);
     this.handleModify = this.handleModify.bind(this);
@@ -230,6 +231,26 @@ class ModifyEmployee extends React.Component {
     }
   }
 
+  renderEditableAddNew(cellInfo) {
+    
+      return (
+        <div
+          style={{ backgroundColor: "#fafafa" }}
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={e => {
+            const data = [...this.state.data];
+            data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+            this.setState({ data });
+          }}
+          dangerouslySetInnerHTML={{
+            __html: this.state.data[cellInfo.index][cellInfo.column.id]
+          }}
+        />
+      );
+    
+  }
+
   render() {
     const { data } = this.state;
     let page = [];
@@ -382,7 +403,7 @@ class ModifyEmployee extends React.Component {
                 {
                   Header: "Content",
                   accessor: "content",
-                  Cell: this.renderEditable
+                  Cell: this.renderEditableAddNew
                 }
 
               ]}
