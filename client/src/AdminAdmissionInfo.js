@@ -115,7 +115,7 @@ class AdminAdmissionInfo extends React.Component {
       case 0:
         page.push(
           <div>
-        
+
           <ReactTable
             getTdProps={(state, rowInfo, column, instance) => {
               return {
@@ -310,10 +310,11 @@ function testcase(rows, val1, val2, key){
     if(val2 != ''){
 
       var date1array = new Date(val1);
-      var date2array = new Date(val2);
+      var date2array = addDays(new Date(val2),1);
 
       for(let i = 0; i < dataLength; i++){
-        var cell = new Date(rows[i][key]);
+        var cell = String(rows[i][key]);
+        cell = new Date(cell);
 
         if(cell >= date1array && cell <= date2array){
           data.push(rows[i]);
@@ -326,11 +327,13 @@ function testcase(rows, val1, val2, key){
     } else {
 
       var date1array = new Date(val1);
+      var date2array = addDays(new Date(val1),1);
 
       for(let i = 0; i < dataLength; i++){
-        var cell = new Date(rows[i][key]);
+        var cell = String(rows[i][key]);
+        cell = new Date(cell);
 
-        if(cell == date1array){
+        if(cell >= date1array && cell <= date2array){
           data.push(rows[i]);
 
         }
