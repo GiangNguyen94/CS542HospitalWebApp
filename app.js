@@ -104,7 +104,7 @@ app.post('/api/addAdmission', function(req,res){
 	})
 })
 //For Modify Patients
-app.post('/api/modifyPatient/:id', function(req,res){
+app.put('/api/modifyPatient/:id', function(req,res){
 	//console.log(req.body);
 	var patientID = req.params.id;
 	var pssn = req.body.pssn;
@@ -152,6 +152,8 @@ app.post('/api/bookRoom/:id', function(req,res){
 		}
 	})
 })
+//For Modify Employee
+
 //For Delete patient
 app.delete('/api/deletePatient/:id', function(req,res){
 	//console.log(req.body);
@@ -349,7 +351,7 @@ app.get('/api/employee',function(req,res,next){
 		if (err){
 			return res.status(400).send(err);
 		}
-		client.query("Select e.essn, e.eid, e.name, e.gender, e.age, e.salary, e.job_title, case when (e.eid in (select a.eid from administrator a)) then 'Admnistrator' when (e.eid in (select d.eid from doctor d)) then 'Doctor' else 'Other' end as type from employee e;", [], function(err, result) {
+		client.query("Select e.essn, e.eid, e.name, e.gender, e.age, e.salary, e.job_title, case when (e.eid in (select a.eid from administrator a)) then 'Administrator' when (e.eid in (select d.eid from doctor d)) then 'Doctor' else 'Other' end as type from employee e;", [], function(err, result) {
 			done();
 			if (err){
 				return next(err);

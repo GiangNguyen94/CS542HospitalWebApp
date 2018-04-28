@@ -20,7 +20,8 @@ class AdminEmployeeInfo extends React.Component {
       //Check: 1,
       //Modify: 2
       employeeData: makeDataEmployee(),
-      singleEmployee: []
+      singleEmployee: [],
+      modifyFlag: false
     };
   }
 
@@ -64,6 +65,7 @@ class AdminEmployeeInfo extends React.Component {
   render() {
     const { employeeData } = this.state;
     const { singleEmployee } = this.state;
+    const { modifyFlag } = this.state;
     let page = [];
 
     let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'age');
@@ -98,6 +100,11 @@ class AdminEmployeeInfo extends React.Component {
                       if (column.Header=="Detail"){
                         this.setState({singleEmployee: rowInfo.original});
                         this.setState({Page:1});
+                      }
+                      if (column.Header=="Modify"){
+                        this.setState({singleEmployee: rowInfo.original});
+                        this.setState({modifyFlag: true});
+                        this.setState({Page:2});
                       }
                     }
                   }
@@ -323,7 +330,7 @@ class AdminEmployeeInfo extends React.Component {
         page.push(<ModifyEmployee singleEmployee={singleEmployee}/>);
         break;
       case 2:
-        page.push();
+        page.push(<ModifyEmployee singleEmployee={singleEmployee} modifyFlag={modifyFlag}/>);
         break;
 
     }

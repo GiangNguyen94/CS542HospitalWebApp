@@ -83,7 +83,7 @@ class ModifyPatient extends React.Component {
       sendData.age = parseInt(this.state.data[4].content);
       console.log(sendData);
       var request = new Request("/api/modifyPatient/"+sendPid,{
-        method:"POST",
+        method:"PUT",
         mode: "cors",
         body: JSON.stringify(sendData),
         headers: {

@@ -184,7 +184,7 @@ class ModifyReport extends React.Component {
     }
 
     return (
-      <div class="contentPage">
+      <div >
 
         {page}
       </div>
