@@ -114,6 +114,21 @@ class ModifyEmployee extends React.Component {
 
         )
       }
+      if (d.type=="Other"){
+        this.setState({
+              data:[
+                {att:"EID", content:d.eid},
+                {att:"Name", content:d.name},
+                {att:"Gender", content:d.gender},
+                {att:"Age", content:d.age},
+                {att:"SSN", content: d.essn},
+                {att:"Salary", content:d.salary},
+                {att:"Job Title", content:d.job_title},
+                {att:"Employee Type", content:d.type},
+                
+              ]
+        })   
+      }
     }
     if (this.props.modifyFlag==1){
       this.setState({Page:1});
@@ -386,7 +401,7 @@ class ModifyEmployee extends React.Component {
         break;
       case 3:
         page.push(<AdminEmployeeInfo/>);
-        
+
         break;
 
     }

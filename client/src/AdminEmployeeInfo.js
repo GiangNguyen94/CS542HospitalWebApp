@@ -244,8 +244,8 @@ class AdminEmployeeInfo extends React.Component {
                         if (filter.value === "all") {
                           return true;
                         }
-                        if (filter.value === "both"){
-                          return row[filter.id] =="Administrator, Doctor";
+                        if (filter.value === "other"){
+                          return row[filter.id] =="Other";
                         }
                         if (filter.value === "true") {
                           return row[filter.id] =="Doctor" ;
@@ -263,7 +263,7 @@ class AdminEmployeeInfo extends React.Component {
                           <option value="all">All</option>
                           <option value="true">Doctor</option>
                           <option value="false">Administrator</option>
-                          <option value="both">Both</option>
+                          <option value="other">Other</option>
                         </select>,
                   width: 100
                 },
