@@ -14,23 +14,33 @@ class ModifyEmployee extends React.Component {
     this.state = {
       data:
         [
-          {att:"EID", content:makeOnePerson()[0]["EID"]},
-          {att:"Name", content:makeOnePerson()[0]["Name"]},
-          {att:"Gender", content:makeOnePerson()[0]["Gender"]},
-          {att:"Age", content:makeOnePerson()[0]["Age"]},
-          {att:"Salary", content:"Salary"},
-          {att:"Employee Type", content:"JobTitle"},
-          {att:"Supervisor", content:""},
-          {att:"Level", content:""},
-          {att:"Job Title", content:""},
-          {att:"Specialization", content:""},
-
+          
         ]
     };
 
     this.renderEditable = this.renderEditable.bind(this);
 
   }
+
+
+  componentDidMount(){
+    console.log(this.props.singleEmployee);
+    var d = this.props.singleEmployee
+    this.setState({data:[
+          {att:"EID", content:d.eid},
+          {att:"Name", content:d.name},
+          {att:"Gender", content:d.gender},
+          {att:"Age", content:d.age},
+          {att:"Salary", content:d.salary},
+          {att:"Employee Type", content:d.type},
+          {att:"Supervisor", content:""},
+          {att:"Level", content:""},
+          {att:"Job Title", content:""},
+          {att:"Specialization", content:""},
+
+        ]});
+  }
+
 
   renderEditable(cellInfo) {
     return (

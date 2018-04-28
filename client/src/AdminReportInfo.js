@@ -15,6 +15,7 @@ class AdminReportInfo extends React.Component {
     this.state = {
       Page: 0,
       reportData: [],
+      singleReport: [],
       RecordTime1: '',
       RecordTime2: '',
     };
@@ -75,7 +76,8 @@ class AdminReportInfo extends React.Component {
 
   render() {
 
-    let constdata  = this.state.reportData;
+    const constdata  = this.state.reportData;
+    const singleReportData = this.state.singleReport;
 
     let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'Record_date');
 
@@ -110,9 +112,10 @@ class AdminReportInfo extends React.Component {
                     // 'handleOriginal' function.
                     if (handleOriginal) {
                         if (column.Header == "Detail"){
+                          this.setState({singleReport: rowInfo.original});
                           this.setState({Page: 1});
                         }
-                      
+                        
                     }
                   }
                 };
@@ -126,14 +129,14 @@ class AdminReportInfo extends React.Component {
                   Header: "Patient",
                   accessor: "p_name",
                   filterMethod: (filter, rows) =>
-                        matchSorter(rows, filter.value, { keys: ["PatientName"] }),
+                        matchSorter(rows, filter.value, { keys: ["p_name"] }),
                   filterAll: true,
                   },
                 {
                   Header: "Doctor",
                   accessor: "e_name",
                   filterMethod: (filter, rows) =>
-                        matchSorter(rows, filter.value, { keys: ["DocName"] }),
+                        matchSorter(rows, filter.value, { keys: ["e_name"] }),
                   filterAll: true,
 
                 },
@@ -142,7 +145,7 @@ class AdminReportInfo extends React.Component {
                   accessor: "record_date",
 
                   filterMethod: (filter, rows) =>
-                       matchSorter(rows, filter.value, { keys: ["Record_date"] }),
+                       matchSorter(rows, filter.value, { keys: ["record_date"] }),
                        Filter: () => (
                          <div >
                            <form action="/action_page.php">
@@ -186,12 +189,13 @@ class AdminReportInfo extends React.Component {
 
 
         )
-      break;
-      case 1:
-        page.push(<ModifyReport/>);
         break;
-
+      case 1:
+        page.push(<ModifyReport reportData={singleReportData}/>);
+        break;
+      
       }
+
       return (
         <div>
         {page}
