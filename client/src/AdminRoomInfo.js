@@ -19,24 +19,44 @@ class AdminRoomInfo extends React.Component {
 //API
   componentDidMount(){
     console.log('Component has mounted');
+    if (this.props.singleDep){
+      console.log(this.props.singleDep);
+      fetch("api/room/"+this.props.singleDep.did)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
 
-    fetch("/api/room")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //console.log(result[0]);
-          let arr = [];
-          for (var i = 0; i< result.length; i++){
-            arr.push(result[i]);
+            }
 
+            this.setState({roomData: arr});
+            console.log(this.state);
+          }
+        )
+    } else {
+      fetch("/api/room")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
+
+            }
+
+            console.log(arr[0]["occupiedflag"].toString()=="false");
+            this.setState({roomData: arr});
+            //console.log(this.state);
           }
 
-          console.log(arr[0]["occupiedflag"].toString()=="false");
-          this.setState({roomData: arr});
-          //console.log(this.state);
-        }
+      )
 
-    )
+    }
+    
   }
 
 

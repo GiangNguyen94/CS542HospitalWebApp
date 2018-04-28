@@ -129,6 +129,50 @@ app.post('/api/addEmployee', function(req,res){
 		}
 	})
 })
+//For Add Department
+app.post('/api/addDepartment', function(req,res){
+	var d_name = req.body.d_name;
+	
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			//var values = sprintf("'%s', '%s', '%s', ",[essn,name,job_title]);
+			client.query("INSERT INTO Department(d_name) VALUES (\'"+d_name+"\');", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Insert Success'});
+			})
+		}
+	})
+})
+//For Modify Department
+app.put('/api/modifyDepartment/:id', function(req,res){
+	//console.log(req.body);
+	var did = req.params.id;
+	var d_name = req.body.d_name;
+	
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			//var values = sprintf("'%s', '%s', '%s', ",[pssn,pname,gender]);
+			client.query("Update Department set d_name=\'"+d_name+"\' WHERE did="+did+";", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Modify Success'});
+			})
+		}
+	})
+})
 //For Modify Patients
 app.put('/api/modifyPatient/:id', function(req,res){
 	//console.log(req.body);
@@ -298,6 +342,29 @@ app.delete('/api/deleteEmployee/:id', function(req,res){
 	   
 	 });
 })
+//For Delete Department by ID
+app.delete('/api/deleteDepartment/:id', function(req,res){
+	//console.log(req.body);
+	var did = req.params.id;
+	pool.connect(function(err, client, done) {
+    // Handle connection errors
+	    if(err) {
+	      done();
+	      console.log(err);
+	      return res.status(500).json({success: false, data: err});
+	    }
+	    // SQL Query > Delete Data
+	    client.query('DELETE FROM Department WHERE did=($1)', [did], function(err, result){
+			done();
+			if (err){
+				//res.json(values+''+age);
+				return res.send(err);
+			}
+			res.send({status: 'Delete Success'});
+		});
+	   
+	 });
+})
 //GET
 //Patient select all
 app.get('/api/patient',function(req,res,next){
@@ -326,6 +393,26 @@ app.get('/api/patient/:id',function(req,res,next){
 			return res.status(400).send(err);
 		}
 		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient left Join stay s ON Patient.PID = s.PID where patient.pid='+patientID+' ;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Room by Department ID
+app.get('/api/room/:id',function(req,res,next){
+	var did = req.params.id;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select r.rid, r.location, r.occupiedflag, d.d_name, r.capacity from room r join hasroom on r.rid=hasroom.rid join department d on hasroom.did=d.did where d.did="+did+";", [], function(err, result) {
 			done();
 			if (err){
 				return next(err);
