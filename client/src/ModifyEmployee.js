@@ -20,7 +20,7 @@ class ModifyEmployee extends React.Component {
       //Return: 3
       data:
         [
-          {att:"EID", content:""},
+          
           {att:"Name", content:""},
           {att:"Gender", content:""},
           {att:"Age", content:""},
@@ -262,7 +262,7 @@ class ModifyEmployee extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              defaultPageSize = {10}
+              pageSize = {10}
               columns={[
 
 
@@ -315,7 +315,7 @@ class ModifyEmployee extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              defaultPageSize = {10}
+              pageSize = {10}
               columns={[
 
 
@@ -370,7 +370,7 @@ class ModifyEmployee extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              pageSize = {7}
+              pageSize = {6}
               columns={[
 
 
