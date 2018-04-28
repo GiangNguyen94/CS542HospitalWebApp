@@ -103,6 +103,32 @@ app.post('/api/addAdmission', function(req,res){
 		}
 	})
 })
+//For Add Employee
+app.post('/api/addEmployee', function(req,res){
+	
+	var essn = req.body.essn;
+	var name = req.body.name;
+	var gender = req.body.gender;
+	var age = req.body.age;
+	var salary = req.body.salary;
+	var job_title = req.body.job_title;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			var values = sprintf("'%s', '%s', '%s', ",[essn,name,job_title]);
+			client.query("INSERT INTO employee(essn,name,job_title,salary,gender,age) VALUES ("+values+salary+", \'"+gender+"\', "+age+");", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Insert Success'});
+			})
+		}
+	})
+})
 //For Modify Patients
 app.put('/api/modifyPatient/:id', function(req,res){
 	//console.log(req.body);
@@ -153,7 +179,33 @@ app.post('/api/bookRoom/:id', function(req,res){
 	})
 })
 //For Modify Employee
-
+app.put('/api/modifyEmployee/:id', function(req,res){
+	//console.log(req.body);
+	var eid = req.params.id;
+	var essn = req.body.essn;
+	//console.log(pssn);
+	var name = req.body.name;
+	var gender = req.body.gender;
+	var age = req.body.age;
+	var salary = req.body.salary;
+	var job_title = req.body.job_title;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			//var values = sprintf("'%s', '%s', '%s', ",[pssn,pname,gender]);
+			client.query("Update Employee set ESSN=\'"+essn+"\', Name=\'"+name+"\', Gender=\'"+gender+"\', Age="+age+", salary=\'"+salary+"\',job_title=\'"+job_title+"\' WHERE eid="+eid+";", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Modify Success'});
+			})
+		}
+	})
+})
 //For Delete patient
 app.delete('/api/deletePatient/:id', function(req,res){
 	//console.log(req.body);
@@ -223,8 +275,29 @@ app.delete('/api/deleteStay/:id', function(req,res){
 	   
 	 });
 })
-//For Modify Admission
-
+//For Delete Employee
+app.delete('/api/deleteEmployee/:id', function(req,res){
+	//console.log(req.body);
+	var eid = req.params.id;
+	pool.connect(function(err, client, done) {
+    // Handle connection errors
+	    if(err) {
+	      done();
+	      console.log(err);
+	      return res.status(500).json({success: false, data: err});
+	    }
+	    // SQL Query > Delete Data
+	    client.query('DELETE FROM Employee WHERE eid=($1)', [eid], function(err, result){
+			done();
+			if (err){
+				//res.json(values+''+age);
+				return res.send(err);
+			}
+			res.send({status: 'Delete Success'});
+		});
+	   
+	 });
+})
 //GET
 //Patient select all
 app.get('/api/patient',function(req,res,next){
@@ -253,6 +326,46 @@ app.get('/api/patient/:id',function(req,res,next){
 			return res.status(400).send(err);
 		}
 		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient left Join stay s ON Patient.PID = s.PID where patient.pid='+patientID+' ;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Doctor by ID
+app.get('/api/doctor/:id',function(req,res,next){
+	var eid = req.params.id;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query('Select E.Name,D.Specialization from Employee E join Doctor D ON E.EID = D.adminID where D.eid='+eid+' ;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Admin by ID
+app.get('/api/administrator/:id',function(req,res,next){
+	var eid = req.params.id;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query('Select A.level from Administrator A where A.eid='+eid+' ;', [], function(err, result) {
 			done();
 			if (err){
 				return next(err);

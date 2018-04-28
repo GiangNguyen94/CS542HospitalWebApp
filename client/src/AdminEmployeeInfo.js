@@ -18,10 +18,11 @@ class AdminEmployeeInfo extends React.Component {
       Page: 0,
       //Default: 0,
       //Check: 1,
-      //Modify: 2
+      //Modify: 2,
+      //New: 3
       employeeData: makeDataEmployee(),
       singleEmployee: [],
-      modifyFlag: false
+      modifyFlag: 0
     };
   }
 
@@ -58,7 +59,11 @@ class AdminEmployeeInfo extends React.Component {
   }
 
   handlePageChange(num){
+    if (num==3){
+      this.setState({modifyFlag:2})
+    }
     this.setState({Page:num});
+
   }
 
 
@@ -80,7 +85,9 @@ class AdminEmployeeInfo extends React.Component {
       case 0:
         page.push(
           <div>
-
+            <div>
+            <button type="button" onClick={this.handlePageChange.bind(this,3)}> Add New Employee </button>
+            </div>
             <ReactTable
               getTdProps={(state, rowInfo, column, instance) => {
                 return {
@@ -103,8 +110,38 @@ class AdminEmployeeInfo extends React.Component {
                       }
                       if (column.Header=="Modify"){
                         this.setState({singleEmployee: rowInfo.original});
-                        this.setState({modifyFlag: true});
+                        this.setState({modifyFlag: 1});
                         this.setState({Page:2});
+                      }
+                      if (column.Header=="Delete"){
+                        if (window.confirm("Are you sure to DELETE Employee "+rowInfo["original"]["name"]+" record?")){
+                          //Delete Call to API
+                          var request = new Request("/api/deleteEmployee/"+rowInfo["original"]["eid"],{
+                            method:"DELETE",
+                            mode: "cors",
+
+                            headers: {
+                              "Content-Type": "application/json"
+                            }
+                          });
+                          fetch(request)
+                          .then(function(response){
+                            response.json()
+                            .then(function(data){
+                              console.log(data);
+                              if (data.status.includes("Success")){
+                                alert("Deletion success! Please refresh the list!");
+                              }
+                            })
+                          });
+                          this.setState({Page:0});
+                          
+                          // handle error?
+
+                        }else{
+                          console.log("");
+                        };
+                        
                       }
                     }
                   }
@@ -325,6 +362,7 @@ class AdminEmployeeInfo extends React.Component {
           </div>
 
         );
+        
         break;
       case 1:
         page.push(<ModifyEmployee singleEmployee={singleEmployee}/>);
@@ -332,7 +370,9 @@ class AdminEmployeeInfo extends React.Component {
       case 2:
         page.push(<ModifyEmployee singleEmployee={singleEmployee} modifyFlag={modifyFlag}/>);
         break;
-
+      case 3:
+        page.push(<ModifyEmployee modifyFlag={modifyFlag}/>);
+        break;
     }
 
     return (

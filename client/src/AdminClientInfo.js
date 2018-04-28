@@ -157,7 +157,7 @@ class AdminClientInfo extends React.Component {
                       .then(function(data){
                         console.log(data);
                         if (data.status.includes("Success")){
-                          alert("Donezo");
+                          alert("Patient "+rowInfo["original"].name+" has left Room "+rowInfo.original.rid+". Please refresh the list!");
                         }
                       })
                     });
