@@ -21,6 +21,10 @@ class AdminEmployeeInfo extends React.Component {
       //Modify: 2,
       //New: 3
       employeeData: makeDataEmployee(),
+      salary1: '',
+      salary2: '',
+      age1: '',
+      age2: '',
       singleEmployee: [],
       modifyFlag: 0
     };
@@ -29,8 +33,14 @@ class AdminEmployeeInfo extends React.Component {
   handleChange(e, num){
     if(num == 0){
       this.setState({ salary1: e });
-    }else{
+    }else if(num == 1){
       this.setState({ salary2: e });
+
+    }else if(num == 2){
+      this.setState({ age1: e });
+
+    }else {
+      this.setState({ age2: e });
 
     }
   }
@@ -73,12 +83,20 @@ class AdminEmployeeInfo extends React.Component {
     const { modifyFlag } = this.state;
     let page = [];
 
-    let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'age');
+    let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'salary');
     if(rangeCond !== -1){
       var data = rangeCond;
 
     }else{
       var data = employeeData;
+    }
+    
+        rangeCond =  testcase(data, this.state.age1, this.state.age2, 'age');
+    if(rangeCond !== -1){
+       data = rangeCond;
+
+    }else{
+
     }
 
     switch(this.state.Page){
@@ -199,7 +217,14 @@ class AdminEmployeeInfo extends React.Component {
                 {
                   Header: "Age",
                   accessor: "age",
-                  
+                          Filter: () => (
+                          <div >
+                          <form action="/action_page.php">
+                          <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}
+                          ></input>-
+                          <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+                          </form>
+                          </div>),
                   width: 50
                 },
                 {
