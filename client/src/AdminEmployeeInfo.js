@@ -165,7 +165,7 @@ class AdminEmployeeInfo extends React.Component {
                   }
                 };
               }}
-              data={employeeData}
+              data={data}
               filterable
               columns={[
 
