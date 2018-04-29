@@ -5,6 +5,7 @@ import { render } from "react-dom";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { makeDataReport, Logo, Tips } from "./Utils";
+import DoctorModifyReport from "./DoctorModifyReport";
 import matchSorter from 'match-sorter'
 
 
@@ -12,11 +13,14 @@ class DoctorReportInfo extends React.Component {
   constructor() {
     super();
     this.state = {
+      Page: 0,
       reportData: [],
+      singleReport: [],
       RecordTime1: '',
       RecordTime2: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangePageClick = this.handleChangePageClick.bind(this);
   }
 
   handleChange(e, num){
@@ -28,33 +32,59 @@ class DoctorReportInfo extends React.Component {
 
   }
 
-  //API
+  handleChangePageClick(num){
+    this.setState({Page:num});
+  }
+
   componentDidMount(){
     console.log('Component has mounted');
 
-    fetch("/api/report")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //console.log(result[0]);
-          let arr = [];
-          for (var i = 0; i< result.length; i++){
-            arr.push(result[i]);
+    if (this.props.singleID){
+      fetch("api/report/"+this.props.singleID)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
 
+            }
+
+            this.setState({reportData: arr});
+            console.log(this.state);
+          }
+        )
+
+    }
+    else{
+      fetch("/api/report")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            let arr = [];
+            for (var i = 0; i< result.length; i++){
+              arr.push(result[i]);
+
+            }
+
+            //console.log(arr);
+            this.setState({reportData: arr});
+            //console.log(this.state);
           }
 
-          //console.log(arr);
-          this.setState({reportData: arr});
-          //console.log(this.state);
-        }
-
-    )
+      )
+    }
   }
 
-  render() {
-    let constdata  = this.state.reportData;
 
-    let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'Record_date');
+  render() {
+
+    const constdata  = this.state.reportData;
+    const singleReportData = this.state.singleReport;
+
+    let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'record_date');
 
     if(rangeCond !== -1){
       var reportData = rangeCond;
@@ -63,120 +93,156 @@ class DoctorReportInfo extends React.Component {
       var reportData = constdata;
     }
 
-    return (
-      <div>
+    let page=[];
 
-        <ReactTable
-          getTdProps={(state, rowInfo, column, instance) => {
-            return {
-              onClick: (e, handleOriginal) => {
-                console.log("A Td Element was clicked!");
-                console.log("it produced this event:", e);
-                console.log("It was in this column:", column);
-                console.log("It was in this row:", rowInfo);
-                console.log("It was in this table instance:", instance);
+    switch(this.state.Page){
+      case 0:
+        page.push(
+          <div>
+          
+            <ReactTable
+              getTdProps={(state, rowInfo, column, instance) => {
+                return {
+                  onClick: (e, handleOriginal) => {
+                    console.log("A Td Element was clicked!");
+                    console.log("it produced this event:", e);
+                    console.log("It was in this column:", column);
+                    console.log("It was in this row:", rowInfo);
+                    console.log("It was in this table instance:", instance);
 
-                // IMPORTANT! React-Table uses onClick internally to trigger
-                // events like expanding SubComponents and pivots.
-                // By default a custom 'onClick' handler will override this functionality.
-                // If you want to fire the original onClick handler, call the
-                // 'handleOriginal' function.
-                if (handleOriginal) {
-                  handleOriginal();
-                }
-              }
-            };
-          }}
-          data={reportData}
-          filterable
-          columns={[
+                    // IMPORTANT! React-Table uses onClick internally to trigger
+                    // events like expanding SubComponents and pivots.
+                    // By default a custom 'onClick' handler will override this functionality.
+                    // If you want to fire the original onClick handler, call the
+                    // 'handleOriginal' function.
+                    if (handleOriginal) {
+                        if (column.Header == "Detail"){
+                          this.setState({singleReport: rowInfo.original});
+                          this.setState({Page: 1});
+                        }
 
-            {
-              Header: "Patient",
-              accessor: "p_name",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["PatientName"] }),
-              filterAll: true,
-              },
-            {
-              Header: "Doctor",
-              accessor: "e_name",
-              filterMethod: (filter, rows) =>
-                    matchSorter(rows, filter.value, { keys: ["DocName"] }),
-              filterAll: true,
-
-            },
-            {
-              Header: "Record Time",
-              accessor: "record_date",
-
-              filterMethod: (filter, rows) =>
-                   matchSorter(rows, filter.value, { keys: ["Record_date"] }),
-                   Filter: () => (
-                     <div >
-                       <form action="/action_page.php">
-                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}>
-                      </input>-
-                        <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
-                       </form>
-                     </div>),
-              filterAll: true,
+                    }
+                  }
+                };
+              }}
+              data={reportData}
+              filterable
+              columns={[
 
 
-            },
-            {
-              Header: "Detail",
-              accessor: "detail",
-              filterable: false,
-              Cell: row => (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "coral",
-                    borderRadius: "2px"
-                  }}
-                > Check </div>   )
+                {
+                  Header: "Patient",
+                  accessor: "p_name",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["p_name"] }),
+                  filterAll: true,
+                  },
+                {
+                  Header: "Doctor",
+                  accessor: "e_name",
+                  filterMethod: (filter, rows) =>
+                        matchSorter(rows, filter.value, { keys: ["e_name"] }),
+                  filterAll: true,
 
-            },
-            {
-              Header: "Modify",
-              filterable: false,
-              Cell: row => (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "coral",
-                    borderRadius: "2px"
-                  }}
-                > Modify </div>   )
+                },
+                {
+                  Header: "Record Time",
+                  accessor: "record_date",
 
-            },
-            {
-              Header: "Delete",
-              filterable: false,
-              Cell: row => (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "coral",
-                    borderRadius: "2px"
-                  }}
-                > Delete </div>   )
+                  filterMethod: (filter, rows) =>
+                       matchSorter(rows, filter.value, { keys: ["record_date"] }),
+                       Filter: () => (
+                         <div >
+                           <form action="/action_page.php">
+                            <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 0)}>
+                          </input>-
+                            <input id="date" type="date" size="1" onChange={(event) => this.handleChange(event.target.value, 1)}></input>
+                           </form>
+                         </div>),
+                  filterAll: true,
 
-            },
-          ]}
 
-          defaultPageSize={10}
-          className="-striped -highlight"
-        />
-        <br />
+                },
+                {
+                  Header: "Detail",
+                  accessor: "detail",
+                  filterable: false,
+                  Cell: row => (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        fontStyle: "italic",
+                        color: "#0066ff",
+                        textDecoration: "underline",
+                        textAlign: "center",
+                        borderRadius: "2px"
+                      }}
+                    > Check </div>   )
 
-      </div>
-    );
-  }
+                },
+                {
+                  Header: "Modify",
+                  accessor: "modify",
+                  filterable: false,
+                  Cell: row => (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        fontStyle: "italic",
+                        color: "#0066ff",
+                        textDecoration: "underline",
+                        textAlign: "center",
+                        borderRadius: "2px"
+                      }}
+                    > Modify </div>   )
+
+                },
+                {
+                  Header: "Delete",
+                  accessor: "delete",
+                  filterable: false,
+                  Cell: row => (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        fontStyle: "italic",
+                        color: "#0066ff",
+                        textDecoration: "underline",
+                        textAlign: "center",
+                        borderRadius: "2px"
+                      }}
+                    > Delete </div>   )
+
+                },
+              ]}
+
+              defaultPageSize={10}
+              className="-striped -highlight"
+            />
+            <br />
+
+          </div>
+
+
+
+
+        )
+        break;
+      case 1:
+        page.push(<DoctorModifyReport reportData={singleReportData}/>);
+        break;
+      
+      }
+
+      return (
+        <div>
+        {page}
+        </div>
+      );
+    }
 }
 
 export default DoctorReportInfo

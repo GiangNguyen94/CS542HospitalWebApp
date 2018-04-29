@@ -245,6 +245,31 @@ app.put('/api/modifyPatient/:id', function(req,res){
 		}
 	})
 })
+//For Insert Report
+app.post('/api/addReport', function(req,res){
+	var docid = req.body.docid;
+	var pid = req.body.pid;
+	var diagnosis = req.body.diagnosis;
+	var detail = req.body.detail;
+	var remark = req.body.remark;
+	var record_date = req.body.record_date;
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			var values = sprintf("'%s', '%s', '%s', ",[diagnosis,detail,remark]);
+			client.query("INSERT INTO Report(docid,pid,diagnosis,detail,remark,record_date) VALUES ("+docid+","+pid+","+values+"DATE\'"+record_date+"\');", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Insert Success'});
+			})
+		}
+	})
+})
 //For booking rooms
 app.post('/api/bookRoom/:id', function(req,res){
 	//console.log(req.body);

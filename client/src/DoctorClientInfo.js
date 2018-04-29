@@ -13,6 +13,7 @@ import ModifyAdmission from './ModifyAdmission';
 import AddNewPatient from './AddNewPatient';
 import AdminAdmissionInfo from './AdminAdmissionInfo';
 import DoctorAdmissionInfo from './DoctorAdmissionInfo';
+import DoctorModifyReport from './DoctorModifyReport';
 import AddNewAdmission from './AddNewAdmission';
 import AdminReportInfo from './AdminReportInfo';
 
@@ -123,7 +124,11 @@ class DoctorClientInfo extends React.Component {
                     this.setState({Page:4});
                   }
                 }
-                
+                if (column.Header == "New"){
+                  if (column.parentColumn.Header == "Report"){
+                    this.setState({Page:9})
+                  }
+                }
 
               }
           }
@@ -327,10 +332,13 @@ class DoctorClientInfo extends React.Component {
         page.push(<BookRoom singleID={singlePatientID} singleGender={singlePatientGender} singleName={singlePatientName} singleSSN={singlePatientSSN}/>);
         break;
       case 7:
-        page.push(<AdminAdmissionInfo singleID={singlePatientID}/>);
+        page.push(<DoctorAdmissionInfo singleID={singlePatientID}/>);
         break;
       case 8:
         page.push(<AddNewAdmission singleID={singlePatientID} singleName={singlePatientName}/>);
+        break;
+      case 9:
+        page.push(<DoctorModifyReport singleID={singlePatientID} singleName={singlePatientName}/>);
         break;
     //    case 6:
       //    page.push(<BookRoom/>);

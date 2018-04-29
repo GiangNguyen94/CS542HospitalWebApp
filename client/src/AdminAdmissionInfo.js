@@ -5,7 +5,7 @@ import { render } from "react-dom";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import AddNewAdmission from "./AddNewAdmission";
-import ModifyReport from "./ModifyReport";
+import AdminModifyReport from "./AdminModifyReport";
 import { makeDataPerson, makeDataAdmission, Logo, Tips } from "./Utils";
 import matchSorter from 'match-sorter'
 

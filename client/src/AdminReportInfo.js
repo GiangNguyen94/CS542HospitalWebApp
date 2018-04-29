@@ -5,7 +5,7 @@ import { render } from "react-dom";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { makeDataReport, Logo, Tips } from "./Utils";
-import ModifyReport from "./ModifyReport";
+import AdminModifyReport from "./AdminModifyReport";
 import matchSorter from 'match-sorter'
 
 
@@ -191,7 +191,7 @@ class AdminReportInfo extends React.Component {
         )
         break;
       case 1:
-        page.push(<ModifyReport reportData={singleReportData}/>);
+        page.push(<AdminModifyReport reportData={singleReportData}/>);
         break;
       
       }

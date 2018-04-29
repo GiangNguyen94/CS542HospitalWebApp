@@ -9,7 +9,7 @@ import AdminReportInfo from './AdminReportInfo';
 import matchSorter from 'match-sorter'
 
 
-class ModifyReport extends React.Component {
+class AdminModifyReport extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -192,4 +192,4 @@ class ModifyReport extends React.Component {
   }
 }
 
-export default ModifyReport
+export default AdminModifyReport
