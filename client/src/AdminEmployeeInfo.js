@@ -73,7 +73,7 @@ class AdminEmployeeInfo extends React.Component {
     const { modifyFlag } = this.state;
     let page = [];
 
-    let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'age');
+    let rangeCond =  testcase(employeeData, this.state.salary1, this.state.salary2, 'salary');
     if(rangeCond !== -1){
       var data = rangeCond;
 
