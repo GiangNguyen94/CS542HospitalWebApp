@@ -87,9 +87,9 @@ class AdminEmployeeInfo extends React.Component {
       var data = employeeData;
     }
     
-        let rangeCond =  testcase(data, this.state.age1, this.state.age2, 'age');
+        rangeCond =  testcase(data, this.state.age1, this.state.age2, 'age');
     if(rangeCond !== -1){
-      var data = rangeCond;
+       data = rangeCond;
 
     }else{
 
