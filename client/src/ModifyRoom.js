@@ -186,7 +186,7 @@ class ModifyRoom extends React.Component {
   }
 
   renderEditable(cellInfo) {
-    if ((cellInfo.index==0)||(cellInfo.index==4)||(cellInfo.index==5)){
+    if ((cellInfo.index==0)||(cellInfo.index==4)||(cellInfo.index==5)||(cellInfo.index==3)){
       return (
           <div 
           dangerouslySetInnerHTML={{
