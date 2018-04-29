@@ -21,6 +21,10 @@ class AdminEmployeeInfo extends React.Component {
       //Modify: 2,
       //New: 3
       employeeData: makeDataEmployee(),
+      salary1: '',
+      salary2: '',
+      age1: '',
+      age2: '',
       singleEmployee: [],
       modifyFlag: 0
     };
