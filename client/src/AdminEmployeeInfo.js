@@ -29,8 +29,14 @@ class AdminEmployeeInfo extends React.Component {
   handleChange(e, num){
     if(num == 0){
       this.setState({ salary1: e });
-    }else{
+    }else if(num == 1){
       this.setState({ salary2: e });
+
+    }else if(num == 2){
+      this.setState({ age1: e });
+
+    }else {
+      this.setState({ age2: e });
 
     }
   }
@@ -79,6 +85,14 @@ class AdminEmployeeInfo extends React.Component {
 
     }else{
       var data = employeeData;
+    }
+    
+        let rangeCond =  testcase(data, this.state.age1, this.state.age2, 'age');
+    if(rangeCond !== -1){
+      var data = rangeCond;
+
+    }else{
+
     }
 
     switch(this.state.Page){
@@ -199,7 +213,14 @@ class AdminEmployeeInfo extends React.Component {
                 {
                   Header: "Age",
                   accessor: "age",
-                  
+                          Filter: () => (
+                          <div >
+                          <form action="/action_page.php">
+                          <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 2)}
+                          ></input>-
+                          <input type="search"  name="search" size="1" onChange={(event) => this.handleChange(event.target.value, 3)}></input>
+                          </form>
+                          </div>),
                   width: 50
                 },
                 {
