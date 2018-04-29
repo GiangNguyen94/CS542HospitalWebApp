@@ -14,10 +14,13 @@ class DoctorReportInfo extends React.Component {
     super();
     this.state = {
       Page: 0,
+      //Detail:1
+      //Modify: 2
       reportData: [],
       singleReport: [],
       RecordTime1: '',
       RecordTime2: '',
+      modifyFlag: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangePageClick = this.handleChangePageClick.bind(this);
@@ -83,6 +86,7 @@ class DoctorReportInfo extends React.Component {
 
     const constdata  = this.state.reportData;
     const singleReportData = this.state.singleReport;
+    const modifyFlag = this.state.modifyFlag;
 
     let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'record_date');
 
@@ -120,7 +124,12 @@ class DoctorReportInfo extends React.Component {
                           this.setState({singleReport: rowInfo.original});
                           this.setState({Page: 1});
                         }
-
+                        if (column.Header == "Modify"){
+                          this.setState({singleReport:rowInfo.original});
+                          this.setState({modifyFlag:true});
+                          this.setState({Page:2});
+                        }
+                        
                     }
                   }
                 };
@@ -234,7 +243,9 @@ class DoctorReportInfo extends React.Component {
       case 1:
         page.push(<DoctorModifyReport reportData={singleReportData}/>);
         break;
-      
+      case 2:
+        page.push(<DoctorModifyReport reportData={singleReportData} modifyFlag={modifyFlag}/>);
+        break;
       }
 
       return (

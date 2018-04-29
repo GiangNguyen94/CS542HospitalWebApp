@@ -29,6 +29,7 @@ class DoctorModifyReport extends React.Component {
     this.renderEditableModify = this.renderEditableModify.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleModify = this.handleModify.bind(this);
   }
 
   componentDidMount(){
@@ -47,16 +48,30 @@ class DoctorModifyReport extends React.Component {
           {att:"Detail", content:""},
         ]});
     } else{
-      this.setState({
-        
-        data:[
-          {att:"Patient Name", content:e.p_name},
-          {att:"Doctor Name", content:e.e_name},
-          {att:"Record Time", content:e.record_date},
-          {att:"Diagnosis", content:e.diagnosis},
-          {att:"Remark", content:e.remark},
-          {att:"Detail", content:e.detail},
+      if (this.props.modifyFlag){
+        this.setState({
+          Page: 2,
+          data:[
+            {att:"Patient Name", content:e.p_name},
+            {att:"Doctor Name", content:e.e_name},
+            {att:"Record Time", content:e.record_date},
+            {att:"Diagnosis", content:e.diagnosis},
+            {att:"Remark", content:e.remark},
+            {att:"Detail", content:e.detail},
         ]});
+      } else {
+        this.setState({
+          
+          data:[
+            {att:"Patient Name", content:e.p_name},
+            {att:"Doctor Name", content:e.e_name},
+            {att:"Record Time", content:e.record_date},
+            {att:"Diagnosis", content:e.diagnosis},
+            {att:"Remark", content:e.remark},
+            {att:"Detail", content:e.detail},
+        ]});
+      }
+      
 
     }
     
@@ -69,29 +84,58 @@ class DoctorModifyReport extends React.Component {
 
   handleSubmit(){
     var sendData = {};
-      sendData.pid = parseInt(this.state.data[0].content);
-      sendData.enter = this.state.data[2].content.toString();
-      sendData.leave = this.state.data[3].content.toString();
-      sendData.payment = this.state.data[4].content.toString();
-      sendData.insurance = this.state.data[5].content.toString();
-      sendData.detail = this.state.data[6].content.toString();
-      console.log(sendData);
-      var request = new Request("/api/addAdmission/",{
-        method:"POST",
-        mode: "cors",
-        body: JSON.stringify(sendData),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      fetch(request)
-      .then(function(response){
-        response.json()
-        .then(function(data){
-          console.log(data)
-        })
+    sendData.docid = parseInt(this.state.data[0].content);
+    sendData.pid = parseInt(this.state.data[1].content);
+    sendData.diagnosis = this.state.data[4].content;
+    sendData.detail = this.state.data[5].content;
+    sendData.remark = this.state.data[6].content;
+    sendData.record_date = this.state.data[3].content.toString();
+    console.log(sendData);
+    var request = new Request("/api/addReport/",{
+      method:"POST",
+      mode: "cors",
+      body: JSON.stringify(sendData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    fetch(request)
+    .then(function(response){
+      response.json()
+      .then(function(data){
+        console.log(data)
       })
+    })
+    this.setState({Page:3});
+  }
+
+  handleModify(){
+
+    var sendData={};
     
+    sendData.diagnosis = this.state.data[3].content;
+    sendData.detail = this.state.data[4].content;
+    sendData.remark = this.state.data[5].content;
+    sendData.record_date = this.state.data[2].content.toString();
+    
+    var rid = this.state.data[2].content.toString().replace(/\//g,'');
+    console.log(rid);
+    var request = new Request("/api/modifyReport/"+rid,{
+      method:"PUT",
+      mode: "cors",
+      body: JSON.stringify(sendData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    fetch(request)
+    .then(function(response){
+      response.json()
+      .then(function(data){
+        console.log(data)
+      })
+    })
+    this.setState({Page:3});
   }
 
   renderEditableAddNew(cellInfo) {
@@ -124,7 +168,7 @@ class DoctorModifyReport extends React.Component {
   }
 
   renderEditableModify(cellInfo){
-    if ((cellInfo.index==0)||(cellInfo.index==1)){
+    if ((cellInfo.index==0)||(cellInfo.index==1)||(cellInfo.index==2)){
       return (
           <div 
           dangerouslySetInnerHTML={{
@@ -206,7 +250,7 @@ class DoctorModifyReport extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              defaultPageSize = {6}
+              pageSize = {6}
               columns={[
 
 
@@ -262,7 +306,7 @@ class DoctorModifyReport extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              pageSize = {6}
+              pageSize = {7}
               columns={[
 
 
@@ -338,7 +382,7 @@ class DoctorModifyReport extends React.Component {
             />
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="button" onClick={this.handleSubmit.bind(this)}> Submit </button>
+          <button type="button" onClick={this.handleModify.bind(this)}> Submit </button>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" onClick={this.handleChange.bind(this,3)}> Cancel </button>
           </div>

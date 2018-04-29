@@ -11,6 +11,7 @@ import matchSorter from 'match-sorter'
 import BookRoom from './BookRoom';
 import ModifyAdmission from './ModifyAdmission';
 import AddNewPatient from './AddNewPatient';
+import DoctorAddNewPatient from './DoctorAddNewPatient';
 import AdminAdmissionInfo from './AdminAdmissionInfo';
 import DoctorAdmissionInfo from './DoctorAdmissionInfo';
 import DoctorModifyReport from './DoctorModifyReport';
@@ -323,7 +324,7 @@ class DoctorClientInfo extends React.Component {
         page.push(<ModifyPatient singlePatientFromParent={singlePatientID}/>);
         break;
       case 2:
-        page.push(<AddNewPatient/>);
+        page.push(<DoctorAddNewPatient/>);
         break;
       case 4:
         page.push(<DoctorAdmissionInfo singleID={singlePatientID}/>);
