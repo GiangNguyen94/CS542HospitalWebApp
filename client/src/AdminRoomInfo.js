@@ -198,10 +198,10 @@ class AdminRoomInfo extends React.Component {
                           return true;
                         }
                         if (filter.value === "true") {
-                          return row[filter.id] == "True" ;
+                          return row[filter.id] == true ;
                         }
                         if (filter.value ==="false"){
-                          return row[filter.id] == "False";
+                          return row[filter.id] == false;
                         }
                       },
                   Filter: ({ filter, onChange }) =>
