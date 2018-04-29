@@ -411,6 +411,29 @@ app.delete('/api/deleteDepartment/:id', function(req,res){
 	   
 	 });
 })
+//For Delete Room by ID
+app.delete('/api/deleteRoom/:id', function(req,res){
+	//console.log(req.body);
+	var rid = req.params.id;
+	pool.connect(function(err, client, done) {
+    // Handle connection errors
+	    if(err) {
+	      done();
+	      console.log(err);
+	      return res.status(500).json({success: false, data: err});
+	    }
+	    // SQL Query > Delete Data
+	    client.query('DELETE FROM Room WHERE rid=($1)', [rid], function(err, result){
+			done();
+			if (err){
+				//res.json(values+''+age);
+				return res.send(err);
+			}
+			res.send({status: 'Delete Success'});
+		});
+	   
+	 });
+})
 //GET
 //Patient select all
 app.get('/api/patient',function(req,res,next){
@@ -439,6 +462,27 @@ app.get('/api/patient/:id',function(req,res,next){
 			return res.status(400).send(err);
 		}
 		client.query('Select Patient.PID,PSSN,Name,Gender,Age,s.RID from Patient left Join stay s ON Patient.PID = s.PID where patient.pid='+patientID+' ;', [], function(err, result) {
+			done();
+			if (err){
+				return next(err);
+			}
+			res.setHeader("Access-Control-Allow-Origin", "*");
+		    res.setHeader("Access-Control-Allow-Credentials", "true");
+		    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+			res.json(result.rows);
+		})
+	})
+});
+//Patient in Room by Room ID
+app.get('/api/patientInRoom/:id',function(req,res,next){
+	var rid = req.params.id;
+	console.log("Select p.name from patient p join stay s on p.pid = s.pid join room r on s.rid = r.rid where r.rid="+rid+";");
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.status(400).send(err);
+		}
+		client.query("Select p.name from patient p join stay s on p.pid = s.pid join room r on s.rid = r.rid where r.rid="+rid+";", [], function(err, result) {
 			done();
 			if (err){
 				return next(err);

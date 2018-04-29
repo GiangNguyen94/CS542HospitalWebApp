@@ -117,6 +117,35 @@ class AdminRoomInfo extends React.Component {
                         this.setState({modifyFlag:2});
                         this.setState({Page:3});
                       }
+                      if (column.Header=="Delete"){
+                        if (window.confirm("Are you sure to DELETE Room "+rowInfo["original"]["rid"]+"?")){
+                          //Delete Call to API
+                          var request = new Request("/api/deleteRoom/"+rowInfo["original"]["rid"],{
+                            method:"DELETE",
+                            mode: "cors",
+
+                            headers: {
+                              "Content-Type": "application/json"
+                            }
+                          });
+                          fetch(request)
+                          .then(function(response){
+                            response.json()
+                            .then(function(data){
+                              console.log(data);
+                              if (data.status.includes("Success")){
+                                alert("Deletion success! Please refresh the list!");
+                              }
+                            })
+                          });
+                          this.setState({Page:0});
+                          
+                          // handle error?
+
+                        }else{
+                          console.log("");
+                        };
+                      }
                     }
                   }
                 };

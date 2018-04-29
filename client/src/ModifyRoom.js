@@ -13,6 +13,7 @@ class ModifyRoom extends React.Component {
   constructor() {
     super();
     this.state = {
+      inside:[],
       Page: 0,
       //Add: 0
       //Detail: 1
@@ -23,6 +24,13 @@ class ModifyRoom extends React.Component {
           {att:"Location", content:""},
           {att:"Capacity", content:""},
           
+
+          // {att:"RID", content:""},
+          //       {att:"Location", content:""},
+          //       {att:"Department", content:""},
+          //       {att:"Capacity", content:""},
+          //       {att:"Occupied/Full", content:""},
+          //       {att:"People Inside", content:""},
           
         ]
     };
@@ -35,30 +43,89 @@ class ModifyRoom extends React.Component {
   }
 
    componentDidMount(){
-    if (this.props.modifyFlag==1){
+    
+    let arr1 = [];
+    let arr2 = [];
+    const flag = this.props.modifyFlag;
+    if (flag==1){
+      
+      fetch("/api/patientInRoom/"+this.props.singleRoom.rid)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            
+            for (var i = 0; i< result.length; i++){
+              arr1.push(result[i].name);
 
-      this.state.data = [
-          {att:"RID", content:this.props.singleRoom.rid},
-          {att:"Location", content:this.props.singleRoom.location},
-          {att:"Department", content:this.props.singleRoom.d_name},
-          {att:"Capacity", content:this.props.singleRoom.capacity},
-          {att:"Occupied/Full", content:this.props.singleRoom.occupiedflag.toString()},
-          {att:"People Inside", content:""},
-      ];
-      //console.log(this.state);
-      this.setState({Page:1});
+            }
+            //this.setState({inside:arr})
+            //console.log(this.state.inside);
+
+            // this.setState({employeeData: arr});
+            //console.log(this.state);
+            //console.log(arr);
+            
+            this.setState({
+              Page:1,
+              data:[
+                {att:"RID", content:this.props.singleRoom.rid},
+                {att:"Location", content:this.props.singleRoom.location},
+                {att:"Department", content:this.props.singleRoom.d_name},
+                {att:"Capacity", content:this.props.singleRoom.capacity},
+                {att:"Occupied/Full", content:this.props.singleRoom.occupiedflag.toString()},
+                {att:"People Inside", content:arr1},
+              ],
+
+            })
+                
+            
+            //console.log(this.state);
+            //this.setState({Page:1});
+          }
+
+      )  
+      
     }
-    if (this.props.modifyFlag==2){
-      this.state.data = [
-          {att:"RID", content:this.props.singleRoom.rid},
-          {att:"Location", content:this.props.singleRoom.location},
-          {att:"Department", content:this.props.singleRoom.d_name},
-          {att:"Capacity", content:this.props.singleRoom.capacity},
-          {att:"Occupied/Full", content:this.props.singleRoom.occupiedflag.toString()},
-          {att:"People Inside", content:""},
-      ];
-      //console.log(this.state);
-      this.setState({Page:2});
+    if (flag==2){
+
+      fetch("/api/patientInRoom/"+this.props.singleRoom.rid)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //console.log(result[0]);
+            
+            for (var i = 0; i< result.length; i++){
+              arr2.push(result[i].name);
+
+            }
+            //this.setState({inside:arr})
+            //console.log(this.state.inside);
+
+            // this.setState({employeeData: arr});
+            //console.log(this.state);
+            //console.log(arr);
+            
+            this.setState({
+              Page:2,
+              data:[
+                {att:"RID", content:this.props.singleRoom.rid},
+                {att:"Location", content:this.props.singleRoom.location},
+                {att:"Department", content:this.props.singleRoom.d_name},
+                {att:"Capacity", content:this.props.singleRoom.capacity},
+                {att:"Occupied/Full", content:this.props.singleRoom.occupiedflag.toString()},
+                {att:"People Inside", content:arr2},
+              ],
+
+            })
+                
+            
+            //console.log(this.state);
+            //this.setState({Page:1});
+          }
+
+      )  
+      
     }
   }
 
@@ -119,7 +186,7 @@ class ModifyRoom extends React.Component {
   }
 
   renderEditable(cellInfo) {
-    if ((cellInfo.index==0)||(cellInfo.index==4)){
+    if ((cellInfo.index==0)||(cellInfo.index==4)||(cellInfo.index==5)){
       return (
           <div 
           dangerouslySetInnerHTML={{
@@ -199,7 +266,7 @@ class ModifyRoom extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              pageSize = {2}
+              pageSize = {6}
               columns={[
 
 
