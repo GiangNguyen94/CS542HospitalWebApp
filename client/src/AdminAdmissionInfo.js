@@ -91,7 +91,7 @@ class AdminAdmissionInfo extends React.Component {
 
     let constdata  = this.state.admissionData;
 
-    let rangeCond = testcase(constdata, this.state.EnterTime1, this.state.EnterTime2, 'EnterTime');
+    let rangeCond = testcase(constdata, this.state.EnterTime1, this.state.EnterTime2, 'enter_time');
 
     if(rangeCond !== -1){
       var admissionData = rangeCond;
@@ -100,7 +100,7 @@ class AdminAdmissionInfo extends React.Component {
       var admissionData = constdata;
     }
 
-    rangeCond = testcase(admissionData, this.state.LeaveTime1, this.state.LeaveTime2, 'LeaveTime');
+    rangeCond = testcase(admissionData, this.state.LeaveTime1, this.state.LeaveTime2, 'leave_time');
 
     if(rangeCond !== -1){
       admissionData = rangeCond;
