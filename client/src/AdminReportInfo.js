@@ -79,7 +79,7 @@ class AdminReportInfo extends React.Component {
     const constdata  = this.state.reportData;
     const singleReportData = this.state.singleReport;
 
-    let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'Record_date');
+    let rangeCond = testcase(constdata, this.state.RecordTime1, this.state.RecordTime2, 'record_date');
 
     if(rangeCond !== -1){
       var reportData = rangeCond;
