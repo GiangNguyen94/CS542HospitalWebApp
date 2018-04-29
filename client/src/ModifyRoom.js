@@ -21,16 +21,17 @@ class ModifyRoom extends React.Component {
       data:
         [
           {att:"Location", content:""},
-          {att:"Department", content:""},
           {att:"Capacity", content:""},
-          {att:"Occupied/Full", content:""},
-          {att:"People Inside", content:""},
+          
+          
         ]
     };
 
     this.renderEditable = this.renderEditable.bind(this);
     this.renderEditableAddNew = this.renderEditableAddNew.bind(this);
     this.handleChange=this.handleChange.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleModify = this.handleModify.bind(this);
   }
 
    componentDidMount(){
@@ -65,8 +66,60 @@ class ModifyRoom extends React.Component {
     this.setState({Page:num});
   }
 
+  handleAdd(){
+    var sendData = {};
+    sendData.location = this.state.data[0].content;
+    sendData.capacity = this.state.data[1].content;
+    
+    console.log(sendData);
+    var request = new Request("/api/addRoom/",{
+      method:"POST",
+      mode: "cors",
+      body: JSON.stringify(sendData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    fetch(request)
+    .then(function(response){
+      response.json()
+      .then(function(data){
+        console.log(data)
+      })
+    })
+
+    this.setState({Page:3});
+
+  }
+
+  handleModify(){
+    var rid = this.state.data[0].content;
+    var sendData = {};
+    sendData.location = this.state.data[1].content;
+    sendData.capacity = this.state.data[3].content;
+    console.log(sendData);
+    var request = new Request("/api/modifyRoom/"+rid,{
+      method:"PUT",
+      mode: "cors",
+      body: JSON.stringify(sendData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    fetch(request)
+    .then(function(response){
+      response.json()
+      .then(function(data){
+        console.log(data)
+      })
+    })
+
+    this.setState({Page:3});
+
+  }
+
   renderEditable(cellInfo) {
-    if (cellInfo.index==0){
+    if ((cellInfo.index==0)||(cellInfo.index==4)){
       return (
           <div 
           dangerouslySetInnerHTML={{
@@ -146,7 +199,7 @@ class ModifyRoom extends React.Component {
               }}
               data={data}
               showPagination = {false}
-              pageSize = {5}
+              pageSize = {2}
               columns={[
 
 
@@ -167,7 +220,7 @@ class ModifyRoom extends React.Component {
             />
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="button"> Submit </button>
+          <button type="button" onClick={this.handleAdd.bind()}> Submit </button>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" onClick={this.handleChange.bind(this,3)}> Cancel </button>
           </div>
@@ -274,7 +327,7 @@ class ModifyRoom extends React.Component {
             />
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="button"> Submit </button>
+          <button type="button" onClick={this.handleModify.bind()}> Submit </button>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" onClick={this.handleChange.bind(this,3)}> Cancel </button>
           </div>

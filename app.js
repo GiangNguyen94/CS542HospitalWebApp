@@ -129,6 +129,52 @@ app.post('/api/addEmployee', function(req,res){
 		}
 	})
 })
+//For Add Room
+app.post('/api/addRoom', function(req,res){
+	
+	var location = req.body.location;
+	var capacity = req.body.capacity;
+	console.log("INSERT INTO room(location,capacity,occupiedflag) VALUES (\'"+location+"\', "+capacity+", false);");
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			client.query("INSERT INTO room(location,capacity,occupiedflag) VALUES (\'"+location+"\', "+capacity+", false);", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Insert Success'});
+			})
+		}
+	})
+})
+//For Modify Room
+app.put('/api/modifyRoom/:id', function(req,res){
+	//console.log(req.body);
+	var rid = req.params.id;
+	var location = req.body.location;
+	var capacity = req.body.capacity;
+	console.log("Update Room set (location=\'"+location+"\', capacity="+capacity+") WHERE rid="+rid+";");
+	pool.connect(function(err,client,done){
+		if (err){
+			return res.send(err);
+		}
+		else {
+			//var values = sprintf("'%s', '%s', '%s', ",[pssn,pname,gender]);
+			client.query("Update Room set location=\'"+location+"\', capacity="+capacity+" WHERE rid="+rid+";", [], function(err, result){
+				done();
+				if (err){
+					//res.json(values+''+age);
+					return res.send(err);
+				}
+				res.send({status: 'Modify Success'});
+			})
+		}
+	})
+})
 //For Add Department
 app.post('/api/addDepartment', function(req,res){
 	var d_name = req.body.d_name;
@@ -590,7 +636,7 @@ app.get('/api/room',function(req,res,next){
 		if (err){
 			return res.status(400).send(err);
 		}
-		client.query("Select r.rid, r.location, r.occupiedflag, d.d_name, r.capacity from room r join hasroom on r.rid=hasroom.rid join department d on hasroom.did=d.did;", [], function(err, result) {
+		client.query("Select r.rid, r.location, r.occupiedflag, d.d_name, r.capacity from room r left join hasroom on r.rid=hasroom.rid left join department d on hasroom.did=d.did;", [], function(err, result) {
 			done();
 			if (err){
 				return next(err);
