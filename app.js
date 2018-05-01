@@ -22,8 +22,8 @@ var configDB = {
 	database: 'd5r8q9aits7tmi',
 	port: 5432,
 	host: 'ec2-23-21-217-27.compute-1.amazonaws.com',
-	user: 'cvbkopwrapmbzf',
-	password: 'e580720ea2ff3875334d1b84d5f33afccc2afe0c8b6f3c0aa88562c4e6367b8d',
+	user: '',
+	password: '',
 	ssl: true
 }
 
